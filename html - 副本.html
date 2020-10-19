@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+.assistor {
+  position: relative; /*关键点*/
+  display: block;
+  width: 500px;
+  height: 300px;
+  margin: 100px auto 0 auto;
+  background-color: #ddd;
+}
+.parent {
+  width: 500px;
+  height: 300px;
+  background-color: #888;
+  overflow: auto; /*关键点*/
+}
+.child {
+  position: absolute; /*关键点*/
+  width: 120px;
+  height: 120px;
+  margin: 100px 50px;
+  background-color: #333;
+}
+.placeholder {
+  width: 1000px;
+  height: 1000px;
+}
+    </style>
+</head>
+<body>
+    <div class="assistor">
+      <div class="parent">
+          <div class="child"></div>
+          <div class="placeholder"></div>
+      </div>
+    </div>
+    <script>
+ 
+    </script>
+</body>
+</html>

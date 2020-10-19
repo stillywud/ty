@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+</head>
+<body>
+    <script>
+        let arr = [0,1,2,3,4,5,6,7,8,9];
+        let arr1 = _.shuffle(arr);
+        let random1 = _.random(9)
+        // console.log(arr1["random"],'===1')
+        let arr2 = _.shuffle(arr);
+        let random2 = _.random(9)
+        // console.log(arr2["random"],'===2')
+        let arr3 = _.shuffle(arr);
+        let random3 = _.random(9)
+        // console.log(arr3["random"],'===3')
+        let arr4 = _.shuffle(arr);
+        let random4 = _.random(9)
+        // console.log(arr4["random"],'===4')
+        let arr5 = _.shuffle(arr);
+        let random5 = _.random(9)
+        // console.log(arr5["random"],'===5')
+        let arr6 = _.shuffle(arr);
+        let random6 = _.random(9)
+        console.log(arr1[random1],arr2[random2],arr3[random3],arr4[random4],arr5[random5],arr6[random6],'===6')
+        let harr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+        let harr1 = _.shuffle(harr);
+        let hrandom = _.random(13)
+        console.log(harr1[hrandom],'===00')
+    </script>
+</body>
+</html>
