@@ -220,10 +220,12 @@ export default {
             this.$refs.setSubForm.validate((valid) => {
                 if (valid) {
                     let eventCount = Number(this.setSubForm.eventCount)
-                    if(this.tablepackData.length < eventCount){
-                        return this.$message.error("缺少多包，请添加");
-                    }else if(this.tablepackData.length > eventCount){
-                        return this.$message.error("超出多包，请删除");
+                    if(![0,255].includes(eventCount)){
+                        if(this.tablepackData.length < eventCount){
+                            return this.$message.error("缺少多包，请添加");
+                        }else if(this.tablepackData.length > eventCount){
+                            return this.$message.error("超出多包，请删除");
+                        }
                     }
                     this.tyspining = true;
                     return new Promise(() => {

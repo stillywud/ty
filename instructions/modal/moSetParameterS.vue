@@ -63,8 +63,11 @@
               <a-input 
                 placeholder="请输入采集频率"  
                 v-model="packForm.frequency"
-                suffix="(ms)"
-                allow-clear/>
+                allow-clear>
+                <template #suffix>
+                    <span class="suffix-1">(ms)</span>
+                </template>          
+                </a-input>
             </a-form-model-item>
             <a-form-model-item  class="item-0" label="PGN ID"  prop="pgnId">
                 <a-input 

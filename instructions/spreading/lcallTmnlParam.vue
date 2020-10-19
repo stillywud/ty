@@ -348,10 +348,6 @@ export default {
     max-height: 500px;
     overflow-y:auto;
     overflow-x:hidden;
-    .suffix-1{
-        line-height: 1!important;
-        margin-left: 2px;
-    }
     .dialog-footer{
         text-align: right;
         padding: 20px;

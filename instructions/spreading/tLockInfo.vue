@@ -1,171 +1,186 @@
 <template>
-    <a-form-model
-        ref="setSubForm" 
-        :model="setSubForm" 
-        :rules="setSubRules" 
-        class="lockInfoForm">
-        <div class="list-box-1">
-            <a-form-model-item label="发送中心号" prop="tmnlSendCenterNo" class="item-0">
-                <a-input 
-                v-model="tmnlSelected.tmnlSendCenterNo" 
-                placeholder="请输入发送中心号"
-                disabled    
-                />
-            </a-form-model-item>
-            <a-form-model-item label="定时发送时间" prop="timingSendTime" class="item-0">
-                <a-date-picker
-                        show-time
+<div class="t-lock-info-box">
+    <div class="con-box">
+        <ty-a-spin v-if="tyspining"/>
+        <a-form-model
+            ref="setSubForm" 
+            :model="setSubForm" 
+            :rules="setSubRules">
+            <div class="con-box-wrapper">
+                <div class="list-0">
+                    <a-form-model-item label="发送中心号" prop="tmnlSendCenterNo" class="item-0">
+                        <a-input 
+                        v-model="tmnlSelected.tmnlSendCenterNo" 
+                        placeholder="请输入发送中心号"
+                        disabled    
+                        allow-clear/>
+                    </a-form-model-item>
+                    <a-form-model-item label="定时发送时间" prop="timingSendTime"  class="item-0">
+                        <a-date-picker
                         v-model="setSubForm.timingSendTime"
+                        show-time
                         placeholder="定时发送时间">
-                </a-date-picker>
-            </a-form-model-item>
-            <a-form-model-item label="重复次数" prop="triedTimes" class="item-0">
-                <a-input
-                @change="triedTimesCallback"
-                v-model="setSubForm.triedTimes"
-                placeholder="请输入重复次数"
-                />
-            </a-form-model-item>
-        </div>
-        <div class="list-box">
-            <a-form-model-item  class="item-0" prop="LockLevel" label=''>
-                <a-radio-group name="radioGroup" v-model="setSubForm.LockLevel" @change="radioGroupCallback">
-                    <a-radio :value="1">
-                        一级锁车
-                    </a-radio>
-                    <a-radio :value="2">
-                        二级锁车
-                    </a-radio>
-                    <a-radio :value="3">
-                        三级锁车
-                    </a-radio>
-                    <a-radio :value="4">
-                        解车
-                    </a-radio>
-                    <a-radio :value="5">
-                        全解车
-                    </a-radio>
-                </a-radio-group>
-            </a-form-model-item>
-        </div>
-        <!-- <div v-if="setSubForm.LockLevel !== 5"> -->
-           <div class="list-box">
-                <a-form-model-item label='' prop="immediatelyv"  class="item-2">
-                    <a-checkbox v-model="setSubForm.immediatelyv" @change="immediatelyvChange" :disabled="setSubForm.disabled">
-                        立即锁
-                    </a-checkbox>
-                </a-form-model-item>
-            </div>
-            <div class="list-box">
-                <a-form-model-item label='' prop="workingHoursv"  class="item-2">
-                    <a-checkbox v-model="setSubForm.workingHoursv" @change="workingHoursvChange" :disabled="setSubForm.disabled">
-                        按工作小时数
-                    </a-checkbox>
-                </a-form-model-item>
-                <a-form-model-item label='' prop="workingHoursLockTime"  class="item-0">
-                    <a-input
-                    :disabled="setSubForm.disabled1"
-                    v-model="setSubForm.workingHoursLockTime"
-                    placeholder="请输入工作时间"
-                    >
-                    <template #suffix>
-                        <span class="suffix-1">(时)</span>
-                    </template>          
+                        </a-date-picker>
+                    </a-form-model-item>
+                    <a-form-model-item label="超时时长" prop="timeOver" class="item-0">
+                        <a-input
+                        v-model.trim="setSubForm.timeOver"
+                        placeholder="请输入超时时长"
+                        @change="timeOverCallback"
+                        allow-clear>
+                        <template #suffix>
+                        <span class="suffix-1">(分)</span>
+                        </template>         
                     </a-input>
-                </a-form-model-item>
-            </div>
-            <div class="list-box">
-                <a-form-model-item label='' prop="datev"  class="item-2">
-                    <a-checkbox v-model="setSubForm.datev" @change="datevChange" :disabled="setSubForm.disabled">
-                        预置时间点
-                    </a-checkbox>
-                </a-form-model-item>
-                <a-form-model-item label='' prop="dateLockDate"  class="item-0">
-                    <a-date-picker
-                        :disabled="setSubForm.disabled2"
-                        :disabled-date="disabledDate"
-                        @change="dateLockDateCallback"
-                        style="width:193px"
-                        v-model="setSubForm.dateLockDate"
-                        show-time
-                        placeholder="预置时间点">
-                        </a-date-picker>
-                </a-form-model-item>
-            </div>
-            <div class="list-box">
-                <a-form-model-item label='' prop="cycDatev"  class="item-2">
-                    <a-checkbox v-model="setSubForm.cycDatev" @change="cycDatevChange" :disabled="setSubForm.disabled">
-                        按循环日期锁车
-                    </a-checkbox>
-                </a-form-model-item>
-                <a-form-model-item label='' prop="cycDate"  class="item-0">
-                    <a-date-picker
-                        :disabled="setSubForm.disabled3"
-                        style="width:193px"
-                        v-model="setSubForm.cycDate"
-                        show-time
-                        placeholder="选择日期">
-                        </a-date-picker>
-                </a-form-model-item>
-                <a-form-model-item label="锁车期数" prop="cycDateLockNum"  class="item-0">
-                    <a-select
-                        :disabled="setSubForm.disabled3"
-                        style="width:193px"
-                        v-model="setSubForm.cycDateLockNum"
-                        placeholder="请选择锁车期数"
+                    </a-form-model-item>
+                    <a-form-model-item label="重复次数" prop="triedTimes" class="item-0">
+                        <a-input
+                        @change="triedTimesCallback"
+                        v-model.trim="setSubForm.triedTimes"
+                        placeholder="请输入重复次数"
+                        allow-clear/>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item  class="item-0" prop="LockLevel" label=''>
+                        <a-radio-group name="radioGroup" v-model="setSubForm.LockLevel" @change="radioGroupCallback">
+                            <a-radio :value="1">
+                                一级锁车
+                            </a-radio>
+                            <a-radio :value="2">
+                                二级锁车
+                            </a-radio>
+                            <a-radio :value="3">
+                                三级锁车
+                            </a-radio>
+                            <a-radio :value="4">
+                                解车
+                            </a-radio>
+                            <a-radio :value="5">
+                                全解车
+                            </a-radio>
+                        </a-radio-group>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item label='' prop="immediatelyv"  class="item-2">
+                        <a-checkbox v-model="setSubForm.immediatelyv" @change="immediatelyvChange" :disabled="setSubForm.disabled">
+                            立即锁
+                        </a-checkbox>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item label='' prop="workingHoursv"  class="item-2">
+                        <a-checkbox v-model="setSubForm.workingHoursv" @change="workingHoursvChange" :disabled="setSubForm.disabled">
+                            按工作小时数
+                        </a-checkbox>
+                    </a-form-model-item>
+                    <a-form-model-item label='' prop="workingHoursLockTime"  class="item-0">
+                        <a-input
+                        :disabled="setSubForm.disabled1"
+                        v-model="setSubForm.workingHoursLockTime"
+                        placeholder="请输入工作时间"
                         >
-                        <a-select-option 
-                            v-for="cycDateLockNum in 48"
-                            :key="cycDateLockNum">
-                            {{cycDateLockNum}}
-                        </a-select-option>
-                    </a-select>
-                </a-form-model-item>
-            </div>
-            <div class="list-box">
-                <a-form-model-item label='' prop="areaLockv"  class="item-2">
-                    <a-checkbox v-model="setSubForm.areaLockv" @change="areaLockvChange" :disabled="setSubForm.disabled">
-                        按指定位置锁车
-                    </a-checkbox>
-                </a-form-model-item>
-                <a-form-model-item label="纬度" prop="areaLockLat" class="item-0 item-1">
-                    <a-input
-                    :disabled="setSubForm.disabled4"
-                    read-only
-                    v-model="setSubForm.areaLockLat"
-                    placeholder="纬度"
-                    />
-                </a-form-model-item>
-                <a-form-model-item label="经度" prop="areaLockLng" class="item-0 item-1">
-                    <a-input
-                    :disabled="setSubForm.disabled4"
-                    read-only
-                    v-model="setSubForm.areaLockLng"
-                    placeholder="经度"
-                    />
-                </a-form-model-item>
-                <a-form-model-item label="半径" prop="areaLockRange" class="item-0 item-1">
-                    <a-input
-                    :disabled="setSubForm.disabled4"
-                    read-only
-                    v-model="setSubForm.areaLockRange"
-                    placeholder="半径"
-                    >
-                    <template #suffix>
-                        <span class="suffix-1">(米)</span>
-                    </template>          
-                    </a-input>
-                </a-form-model-item>
-                <a-form-model-item class="item-0" >
-                     <a-button style="margin-left:15px"  v-if="!setSubForm.disabled4" @click="areaLo">点击画圆</a-button>
-                     <a-button style="margin-left:15px" type="primary" html-type="submit" @click="sendCommMessage">提交</a-button>
-                </a-form-model-item>
-            </div>
-            <div class="list-map" id="container11">
+                        <template #suffix>
+                            <span class="suffix-1">(时)</span>
+                        </template>          
+                        </a-input>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item label='' prop="datev"  class="item-2">
+                        <a-checkbox v-model="setSubForm.datev" @change="datevChange" :disabled="setSubForm.disabled">
+                            预置时间点
+                        </a-checkbox>
+                    </a-form-model-item>
+                    <a-form-model-item label='' prop="dateLockDate"  class="item-0">
+                        <a-date-picker
+                            :disabled="setSubForm.disabled2"
+                            :disabled-date="disabledDate"
+                            @change="dateLockDateCallback"
+                            style="width:193px"
+                            v-model="setSubForm.dateLockDate"
+                            show-time
+                            placeholder="预置时间点">
+                            </a-date-picker>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item label='' prop="cycDatev"  class="item-2">
+                        <a-checkbox v-model="setSubForm.cycDatev" @change="cycDatevChange" :disabled="setSubForm.disabled">
+                            按循环日期锁车
+                        </a-checkbox>
+                    </a-form-model-item>
+                    <a-form-model-item label='' prop="cycDate"  class="item-0">
+                        <a-date-picker
+                            :disabled="setSubForm.disabled3"
+                            style="width:193px"
+                            v-model="setSubForm.cycDate"
+                            show-time
+                            placeholder="选择日期">
+                            </a-date-picker>
+                    </a-form-model-item>
+                    <a-form-model-item label="锁车期数" prop="cycDateLockNum"  class="item-0">
+                        <a-select
+                            :disabled="setSubForm.disabled3"
+                            style="width:193px"
+                            v-model="setSubForm.cycDateLockNum"
+                            placeholder="请选择锁车期数"
+                            >
+                            <a-select-option 
+                                v-for="cycDateLockNum in 48"
+                                :key="cycDateLockNum">
+                                {{cycDateLockNum}}
+                            </a-select-option>
+                        </a-select>
+                    </a-form-model-item>
+                </div>
+                <div class="list-box">
+                    <a-form-model-item label='' prop="areaLockv"  class="item-2">
+                        <a-checkbox v-model="setSubForm.areaLockv" @change="areaLockvChange" :disabled="setSubForm.disabled">
+                            按指定位置锁车
+                        </a-checkbox>
+                    </a-form-model-item>
+                    <a-form-model-item label="纬度" prop="areaLockLat" class="item-0 item-1">
+                        <a-input
+                        :disabled="setSubForm.disabled4"
+                        read-only
+                        v-model="setSubForm.areaLockLat"
+                        placeholder="纬度"
+                        />
+                    </a-form-model-item>
+                    <a-form-model-item label="经度" prop="areaLockLng" class="item-0 item-1">
+                        <a-input
+                        :disabled="setSubForm.disabled4"
+                        read-only
+                        v-model="setSubForm.areaLockLng"
+                        placeholder="经度"
+                        />
+                    </a-form-model-item>
+                    <a-form-model-item label="半径" prop="areaLockRange" class="item-0 item-1">
+                        <a-input
+                        :disabled="setSubForm.disabled4"
+                        read-only
+                        v-model="setSubForm.areaLockRange"
+                        placeholder="半径"
+                        >
+                        <template #suffix>
+                            <span class="suffix-1">(米)</span>
+                        </template>          
+                        </a-input>
+                    </a-form-model-item>
+                    <a-form-model-item class="item-0" >
+                        <a-button style="margin-left:15px"  v-if="!setSubForm.disabled4" @click="areaLo">点击画圆</a-button>
+                        <a-button style="margin-left:15px" type="primary" html-type="submit" @click="sendCommMessage">提交</a-button>
+                    </a-form-model-item>
+                </div>
+                <div class="list-map" id="container11">
 
+                </div>
             </div>
-        <!-- </div> -->
-    </a-form-model>
+        </a-form-model>
+    </div>
+</div>
 </template>
 <script>
 
@@ -174,21 +189,26 @@ let draw = null;
 import {sendCommMessage, getParaLast} from '@/api/infodevice'
 import {parseTime, kmxCode} from '@/utils/index'
 import {getToken, jwtDecodeToken} from '@/utils/auth'
+import TyASpin from "@/components/TyASpin"
 import moment from 'dayjs'
 export default {
     name:"tLockInfo",
-    props:[
-        'recordData',
-        'send',
-        'tmnlSelected'
-    ],
+    props:{
+        recordData:{
+            default:{}
+        },
+        send:{},
+        tmnlSelected:{
+            default:{}
+        }
+    },
+    components:{TyASpin},
     data(){
         return {
-            
-            settmnlData: this.recordData || {},
             carSrc:'',
             point:[],
             dataJSon:{},
+            tyspining:false,
             setSubForm:{
                 disabled:false,
                 disabled1:true,
@@ -240,7 +260,8 @@ export default {
                 areaLockRange:'',
             },
             setSubRules:{
-                triedTimes:[{required:true,message:"请输入重复次数",trigger:"blur"}],
+                triedTimes:[{required:true,message:"重复次数不能为空",trigger:"blur"}],
+                timeOver: [{required:true,message: "请输入时间",trigger: "blur"}],
                 workingHoursLockTime:[{required:false,message:"请输入工作时间",trigger:"blur"}],
 
                 dateLockDate:[{required:false,message:"请选择时间",trigger:"change"}],
@@ -275,14 +296,17 @@ export default {
         this.getParaLast();
     },
     methods:{
+        regexpcomOne(val,type){
+            let sNum = val;
+            sNum = sNum.replace(/[^\d]/g,"");
+            if(sNum !==""){sNum = Number(sNum);}
+            this.setSubForm[type] = sNum;
+        },
+        timeOverCallback(e){
+            this.regexpcomOne(e.target.value,"timeOver")
+        },
         triedTimesCallback(e){
-            let sNum = e.target.value;
-            sNum = sNum.replace(/[^\d]/g,'');
-            if(sNum !== ''){sNum = Number(sNum);}
-            if(sNum === 0){
-                sNum = 1;
-            }
-            this.setSubForm.triedTimes = sNum;
+            this.regexpcomOne(e.target.value,"triedTimes")         
         },
         mapaliInit(){
             mapAli = new TYMapOptions({
@@ -566,13 +590,13 @@ export default {
             }
             
             this.$refs.setSubForm.validate((valid) => {
-                console.log(valid)
                 if (valid) {
                     if(this.setSubForm.areaLockv){
                         if(!this.setSubForm.areaLockLat){
                             return this.$message.error('请点击画圆')
                         }
                     }
+                    this.tyspining = true;
                     return new Promise(() => {
                         let data = {
                             'systemCode': kmxCode(this.settmnlData.vcl_dictvb_id),
@@ -606,6 +630,7 @@ export default {
                             }
                         }
                         sendCommMessage(data).then(response => {
+                            this.tyspining = false;
                             if (response.code == 200) {
                             this.$message.success(response.message)
                             this.$refs.setSubForm.resetFields()
@@ -620,6 +645,7 @@ export default {
                             }
 
                         }).catch(error => {
+                            this.tyspining = false;
                             this.$message.error('提交失败')
                         })
                     })
@@ -630,24 +656,19 @@ export default {
 }
 </script>
 <style lang="scss">
-    .lockInfoForm{
+    .t-lock-info-bo{
         height: 500px;
-        overflow-y: auto;
-        overflow-x: hidden;
+        position: relative;
+        .con-box{
+            height: 500px;
+            overflow-y: auto;
+        }
         .dialog-footer{
             text-align:right;
             margin-top: 40px;
             padding:20px
         }
-        .list-1-title{
-            font-size: 15px;
-            color: #000;
-        }
-        .suffix-1{
-            line-height: 1!important;
-            margin-left: 2px;
-        }
-        .list-box-1{
+        .list-0{
             display: flex;
             flex-wrap: wrap;
             .item-0{

@@ -48,7 +48,7 @@
             </a-form-model-item>
             <a-form-model-item label="多包时包与包之间间隔" prop="frequency" class="item-0">
                 <a-input 
-                    placeholder="请输入多包时包与包之间间隔"  
+                    placeholder="请输入间隔"  
                     v-model="packForm.frequency"
                     allow-clear>
                 <template #suffix>

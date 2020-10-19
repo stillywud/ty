@@ -608,7 +608,6 @@ export default {
                 receiptSwitch:0,
                 loadTimeout:'180'
             },
-            tablepackData: [],
             
             setSubRules: {
                 triedTimes: [{

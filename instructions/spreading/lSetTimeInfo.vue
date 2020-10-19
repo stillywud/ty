@@ -549,10 +549,6 @@ export default {
 .l-set-time-info-box{
     height: 500px;
     position: relative;
-    .suffix-1{
-        line-height: 1!important;
-        margin-left: 2px;
-    }
     .con-box{
         height: 500px;
         overflow-y: auto;

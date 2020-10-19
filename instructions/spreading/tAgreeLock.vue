@@ -1,83 +1,109 @@
 <template>
-    <a-form-model
-        ref="setSubForm" 
-        :model="setSubForm" 
-        :rules="setSubRules" 
-        class="callLockForm">
-
-        <div class="call-lock-wrapper">
-            
-            <a-form-model-item label="发送中心号" prop="tmnlSendCenterNo" class="item-0">
-                <a-input 
-                v-model="tmnlSelected.tmnlSendCenterNo" 
-                placeholder="请输入发送中心号"
-                disabled    
-                allow-clear/>
-            </a-form-model-item>
-            <a-form-model-item label="定时发送时间" prop="timingSendTime"  class="dflex">
-                <a-date-picker
-                v-model="setSubForm.timingSendTime"
-                show-time
-                placeholder="定时发送时间">
-                </a-date-picker>
-            </a-form-model-item>
-            <a-form-model-item label="重复次数" prop="triedTimes" class="item-0">
-                <a-input
-                @change="triedTimesCallback"
-                v-model.trim="setSubForm.triedTimes"
-                placeholder="请输入重复次数"
-                allow-clear/>
-            </a-form-model-item>
-            <a-form-model-item label="回叫锁车设置层" prop="backLockType"  class="item-0">
-                <a-select 
-                    v-model="setSubForm.backLockType"
-                    placeholder="请选择回叫锁车设置层"
-                    allow-clear>
-                    <a-select-option 
-                        v-for="backLockType in backLockTypeArr"
-                        :key="backLockType.key">
-                        {{backLockType.value}}
-                    </a-select-option>
-                </a-select>
-            </a-form-model-item>
-        </div>
-        <a-form-model-item class="dialog-footer">
+<div class="t-agree-lock-box">
+    <div class="con-box">
+        <ty-a-spin v-if="tyspining"/>
+        <a-form-model
+            ref="setSubForm" 
+            :model="setSubForm" 
+            :rules="setSubRules">
+            <div class="con-box-wrapper">
+                <div class="list-0">
+                    <a-form-model-item label="发送中心号" prop="tmnlSendCenterNo" class="item-0">
+                        <a-input 
+                        v-model="tmnlSelected.tmnlSendCenterNo" 
+                        placeholder="请输入发送中心号"
+                        disabled    
+                        allow-clear/>
+                    </a-form-model-item>
+                    <a-form-model-item label="定时发送时间" prop="timingSendTime"  class="item-0">
+                        <a-date-picker
+                        v-model="setSubForm.timingSendTime"
+                        show-time
+                        placeholder="定时发送时间">
+                        </a-date-picker>
+                    </a-form-model-item>
+                    <a-form-model-item label="超时时长" prop="timeOver" class="item-0">
+                        <a-input
+                        v-model.trim="setSubForm.timeOver"
+                        placeholder="请输入超时时长"
+                        @change="timeOverCallback"
+                        allow-clear>
+                        <template #suffix>
+                        <span class="suffix-1">(分)</span>
+                        </template>         
+                    </a-input>
+                    </a-form-model-item>
+                    <a-form-model-item label="重复次数" prop="triedTimes" class="item-0">
+                        <a-input
+                        @change="triedTimesCallback"
+                        v-model.trim="setSubForm.triedTimes"
+                        placeholder="请输入重复次数"
+                        allow-clear/>
+                    </a-form-model-item>
+                    <a-form-model-item label="回叫锁车设置层" prop="backLockType"  class="item-0">
+                        <a-select 
+                            v-model="setSubForm.backLockType"
+                            placeholder="请选择回叫锁车设置层"
+                            allow-clear>
+                            <a-select-option 
+                                v-for="backLockType in backLockTypeArr"
+                                :key="backLockType.key">
+                                {{backLockType.value}}
+                            </a-select-option>
+                        </a-select>
+                    </a-form-model-item>
+                </div>
+            </div>
+        </a-form-model>
+        <div class="dialog-footer">
             <a-button type="primary" html-type="submit" @click="sendCommMessage">
                 提交
             </a-button>
-        </a-form-model-item>
-    </a-form-model>
+        </div>
+    </div>
+</div>
 </template>
 <script>
 
-import {backLockTypeArr} from '@/utils/constant'
-import {sendCommMessage} from '@/api/infodevice'
-import {parseTime, kmxCode} from '@/utils/index'
-import {getToken, jwtDecodeToken} from '@/utils/auth'
+import {backLockTypeArr} from "@/utils/constant"
+import {sendCommMessage} from "@/api/infodevice"
+import {parseTime, kmxCode} from "@/utils/index"
+import {getToken, jwtDecodeToken} from "@/utils/auth"
+import TyASpin from "@/components/TyASpin"
+import cloneDeep from "lodash/cloneDeep"
 export default {
-    name:"downGprsDataPrompt",
-    props:[
-        'recordData',
-        'send',
-        'tmnlSelected'
-    ],
+    name:"tAgreeLock",
+    props:{
+        recordData:{
+            default:{}
+        },
+        send:{},
+        tmnlSelected:{
+            default:{}
+        }
+    },
+    components:{TyASpin},
     data(){
         return {
             backLockTypeArr,
-            settmnlData: this.recordData || {},
+            tyspining:false,
             setSubForm:{
-                timingSendTime,
-                triedTimes:1,
+                timingSendTime: "",
+                triedTimes: "1",
+                timeOver: "0",
                 backLockType:0
             },
             setSubRules:{
-                triedTimes:[
-                    {
-                        required: true,
-                        trigger: 'blur',
-                        message:'请输入重复次数'
-                    }
-                ],
+                triedTimes: [{
+                    required: true,
+                    message: "请输入重试次数",
+                    trigger: "blur"
+                }],
+                timeOver: [{
+                    required:true,
+                    message: "请输入时间",
+                    trigger: "blur"
+                }],
                 backLockType:[{required:true,message:"请选择摄回叫锁车设置层",trigger:"change"}]
             }
         }
@@ -90,26 +116,30 @@ export default {
     mounted() {
     },
     methods:{
+        regexpcomOne(val,type){
+            let sNum = val;
+            sNum = sNum.replace(/[^\d]/g,"");
+            if(sNum !==""){sNum = Number(sNum);}
+            this.setSubForm[type] = sNum;
+        },
         triedTimesCallback(e){
-            
-            let val = e.target.value;
-            console.log(val)
-            val = val.replace(/[^\d]/g,"");
-            if(val !== ""){val = Number(val);}
-            this.setSubForm.triedTimes= val;            
+            this.regexpcomOne(e.target.value,"triedTimes")         
+        },
+        timeOverCallback(e){
+            this.regexpcomOne(e.target.value,"timeOver")
         },
         sendCommMessage(){
-            
             this.$refs.setSubForm.validate((valid) => {
                 if (valid) {
+                    this.tyspining = true;
                     return new Promise(() => {
                         let data = {
-                            'systemCode': kmxCode(this.settmnlData.vcl_dictvb_id),
-                            'accountName': this.userInfo.realname,
-                            'accountPwd': '123',
-                            'jsonVersion': '1.0',
-                            'infoid': '87',
-                            'orderList': {
+                            systemCode:  kmxCode(this.recordData.vcl_dictvb_id),
+                            accountName:  this.userInfo.realname,
+                            accountPwd: "123",
+                            jsonVersion: "1.0",
+                            infoid: "87",
+                            orderList: {
                                 encodeFlag: "2",
                                 brandId: this.recordData.vcl_dictvb_id,
                                 model: this.recordData.vcl_dictvt_id,
@@ -126,14 +156,15 @@ export default {
                                 triedTimes: this.setSubForm.triedTimes,
                                 onlyCode: "uuid",
                                 timeOver: this.setSubForm.timeOver,
-                                    'paramContent': {
-                                        'infoId': '83',
-                                        "seqNo":"000000",
-                                        'backLockType':THIS.setSubForm.backLockType
+                                    paramContent: {
+                                        infoId: "83",
+                                        seqNo:"000000",
+                                        backLockType:THIS.setSubForm.backLockType
                                     }
                                 }
                             }
                         sendCommMessage(data).then(response => {
+                            this.tyspining = false;
                             if (response.code == 200) {
                             this.$message.success(response.message)
                             this.$refs.setSubForm.resetFields() // 表单重置
@@ -142,7 +173,8 @@ export default {
                             }
 
                         }).catch(error => {
-                            this.$message.error('提交失败')
+                            this.tyspining = false;
+                            this.$message.error("提交失败")
                         })
                     })
                 }
@@ -152,37 +184,30 @@ export default {
 }
 </script>
 <style lang="scss">
-    .callLockForm{
+    .t-agree-lock-box{
+        height: 500px;
+        position: relative;
+        .con-box{
+            height: 500px;
+            overflow-y: auto;
+        }
         .dialog-footer{
             text-align:right;
             margin-top: 40px;
             padding:20px
         }
-        .call-lock-wrapper{
+        .list-0{
             display: flex;
             flex-wrap: wrap;
             .item-0{
                 display: flex;
                 flex-basis: 50%;
-                padding: 0 10px;
                 .ant-form-item-label{
                     width: 120px;
                 }
                 .ant-form-item-control-wrapper{
-                    // flex: 1;
-                    width: 191px;
+                    width: 195px;
                 }
-            }
-            .item-8{
-                .ant-form-item-label{
-                    label{
-                        white-space: break-spaces;
-                        line-height: 1;
-                        display: inline-block;
-                        margin-top: 8px;
-                    }
-                }
-                
             }
         }
     }

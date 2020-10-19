@@ -213,10 +213,12 @@ export default {
             this.$refs.setSubForm.validate(valid => {
                 if(valid){
                     let pgnCount = Number(this.setSubForm.pgnCount)
-                    if(this.tablepackData.length < pgnCount){
-                        return this.$message.error("缺少多包，请添加");
-                    }else if(this.tablepackData.length > pgnCount){
-                        return this.$message.error("超出多包，请删除");
+                    if(![0,255].includes(pgnCount)){
+                        if(this.tablepackData.length < pgnCount){
+                            return this.$message.error("缺少多包，请添加");
+                        }else if(this.tablepackData.length > pgnCount){
+                            return this.$message.error("超出多包，请删除");
+                        }
                     }
                     this.tyspining = true;
                     try{

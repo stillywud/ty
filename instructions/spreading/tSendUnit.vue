@@ -1,11 +1,11 @@
 <template><!--/单元发送/-->
 <div class="s-send-unit-box">
-    <div class="con-box">
-      <ty-a-spin v-if="tyspining"/>
-        <a-form-model ref="setUnitForm" :model="setSubForm" :rules='rules1' >
-          <div class="con-box-wrapper">
-            <div class="list-0">
-                            <a-form-model-item label="发送中心号" class="item-0">
+  <div class="con-box">
+    <ty-a-spin v-if="tyspining"/>
+      <a-form-model ref="setUnitForm" :model="setSubForm" :rules='rules1' >
+        <div class="con-box-wrapper">
+          <div class="list-0">
+            <a-form-model-item label="发送中心号" class="item-0">
                 <a-input  v-model="tmnlSelected.tmnlSendCenterNo" placeholder="请输入发送中心号"
                             disabled/>
             </a-form-model-item>
@@ -28,9 +28,6 @@
               </template>          
             </a-input>
             </a-form-model-item>
-            
-            
-            
              <a-form-model-item label="设置个数" prop="unitCount" class="item-0">
                         <a-input v-model='setSubForm.unitCount' allow-clear  placeholder="发送单元设置个数"></a-input>
                     </a-form-model-item>
@@ -39,41 +36,39 @@
                 <a-select-option v-for="temp in tempData" :key="temp.msstId">{{temp.msstName}}</a-select-option>
               </a-select>
             </a-form-item>
-            </div>
-
           </div>
-            
-        </a-form-model>
-
-        <a-table
-          :data-source="tablepackData"
-          :columns="columns"
-          bordered
-          stripe
-          height="200px"
-          :scroll="{ x: 3920}"
-        >
-          <template v-slot:action="text,column">
-            <a @click="edit(column)">编辑 </a>
-            <a-divider type="vertical" />
-            <a @click="dele(column.key)">删除</a>
-          </template>
-        </a-table>
-
-
-        <div  class="dialog-footer">
-            <a-button type="primary" @click="addPackage">添加多包</a-button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a-button type="primary" @click="onSubmit">提交</a-button>
         </div>
+      </a-form-model>
 
-        <!-- 表格table 区域-->
-        <mo-send-unit-t
-            ref="modalForm"
-            :pgnIdsCopy="pgnIds"
-            @ontypeParams="ontypeParams"
-        />
-    </div>
-    </div>
+      <a-table
+        :data-source="tablepackData"
+        :columns="columns"
+        bordered
+        stripe
+        height="200px"
+        :scroll="{ x: 3920}"
+      >
+        <template v-slot:action="text,column">
+          <a @click="edit(column)">编辑 </a>
+          <a-divider type="vertical" />
+          <a @click="dele(column.key)">删除</a>
+        </template>
+      </a-table>
+
+
+      <div  class="dialog-footer">
+          <a-button type="primary" @click="addPackage">添加多包</a-button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <a-button type="primary" @click="onSubmit">提交</a-button>
+      </div>
+
+      <!-- 表格table 区域-->
+      <mo-send-unit-t
+          ref="modalForm"
+          :pgnIdsCopy="pgnIds"
+          @ontypeParams="ontypeParams"
+      />
+  </div>
+</div>
 </template>
 <script>
 import {sendCommMessage,getPGNInfo} from '@/api/infodevice'
@@ -114,23 +109,16 @@ export default {
             pgnIds:[],
             tyspining:false,
             rules1:{
-                timeOver:[{required: true,trigger: 'blur',
-                    validator:(rule,value,callback)=>{
-                        value = value + ''
-                        if(value === ''){
-                            callback(new Error("该值不允许为空"));
-                        }else{
-                            var timeOutInd=value.indexOf(".")
-                            var timeOutNum=Number(value)
-                            if(timeOutNum>=0&&timeOutInd=="-1"){
-                                callback();
-                            }else{
-                                callback(new Error("该值为大于等于0的整数"));
-                            }
-                        }
-                    },
+                triedTimes: [{
+                    required: true,
+                    message: "请输入重试次数",
+                    trigger: "blur"
                 }],
-                triedTimes:[{required: true,trigger: 'blur',message:'请输入重复次数'}],
+                timeOver: [{
+                    required:true,
+                    message: "请输入时间",
+                    trigger: "blur"
+                }],
                 unitCount:[{validator: checkunitCount,required: true,trigger: 'blur'}],
             },
             setSubForm:{
@@ -198,17 +186,17 @@ export default {
         this.getTempData()
     },
     methods:{
+      regexpcomOne(val,type){
+          let sNum = val;
+          sNum = sNum.replace(/[^\d]/g,"");
+          if(sNum !==""){sNum = Number(sNum);}
+          this.setSubForm[type] = sNum;
+      },
       timeOverCallback(e){
-          let val = e.target.value;
-          val = val.replace(/[^\d]/g,'');
-          if(val !== ''){val = Number(val);}
-          this.setSubForm.timeOver= val;              
+          this.regexpcomOne(e.target.value,"timeOver")
       },
       triedTimesCallback(e){
-          let val = e.target.value;
-          val = val.replace(/[^\d]/g,'');
-          if(val !== ''){val = Number(val);}
-          this.setSubForm.triedTimes= val;            
+          this.regexpcomOne(e.target.value,"triedTimes")            
       },
       dele(key){
           this.tablepackData = this.tablepackData.filter((item)=>{
@@ -336,8 +324,8 @@ export default {
           if(unitCount !== ''){
             unitCount = Number(unitCount);
             if([0,255].includes(unitCount)){
-              this.$message.error('值为0，255，254添加多包无效，请直接提交！')
-            }else if(!(unitCount >=0 && unitCount<=250 || unitCount === 255)){
+              this.$message.error('值为0，255添加多包无效，请直接提交！')
+            }else if(unitCount>250 && unitCount !== 255){
               this.$message.error('取值范围0-250或255的整数')
             }else if (this.tablepackData.length >= unitCount) {
               this.$message.error('已超出PGN参数ID个数限制')
@@ -379,11 +367,15 @@ export default {
         onSubmit(){
           this.$refs.setUnitForm.validate(valid => {
             if(valid){
-              try{
-                if (this.tablepackData.length > 250) {
-                  this.$message.error('已超出多包限制,请删除部分多包')
-                  return ;
+                let unitCount =  Number(this.setSubForm.unitCount);
+                if(![0,255].includes(unitCount)){
+                    if(this.tablepackData.length < unitCount){
+                        return this.$message.error("缺少多包，请添加");
+                    }else if(this.tablepackData.length > unitCount){
+                        return this.$message.error("超出多包，请删除");
+                    }
                 }
+                this.tyspining = true;
               return new Promise(() => {
                 let data = {
                   systemCode: kmxCode(this.recordData.vcl_dictvb_id),
@@ -392,22 +384,22 @@ export default {
                   jsonVersion: '1.0',
                   infoid: 'F1',
                   orderList: {
-                                encodeFlag: "2",
-                                brandId: this.recordData.vcl_dictvb_id,
-                                model: this.recordData.vcl_dictvt_id,
-                                vclId: this.recordData.vcl_id,
-                                tmnlId: this.tmnlSelected.tmnlId,
-                                imei: this.tmnlSelected.tmnlImei,
-                                simNo: this.tmnlSelected.tmnlSimNo,
-                                softwareVersion: this.tmnlSelected.tmnlSoftwareVersion,
-                                sendType: this.send,
-                                sendCenterNo: this.tmnlSelected.tmnlSendCenterNo,
-                                setTime: parseTime(new Date().getTime()),
-                                timeOut: 0,
-                                timingSendTime:!this.setSubForm.timingSendTime ? parseTime(new Date()): parseTime(new Date(this.setSubForm.timingSendTime)),
-                                triedTimes: this.setSubForm.triedTimes,
-                                onlyCode: "uuid",
-                                timeOver: this.setSubForm.timeOver,
+                    encodeFlag: "2",
+                    brandId: this.recordData.vcl_dictvb_id,
+                    model: this.recordData.vcl_dictvt_id,
+                    vclId: this.recordData.vcl_id,
+                    tmnlId: this.tmnlSelected.tmnlId,
+                    imei: this.tmnlSelected.tmnlImei,
+                    simNo: this.tmnlSelected.tmnlSimNo,
+                    softwareVersion: this.tmnlSelected.tmnlSoftwareVersion,
+                    sendType: this.send,
+                    sendCenterNo: this.tmnlSelected.tmnlSendCenterNo,
+                    setTime: parseTime(new Date().getTime()),
+                    timeOut: 0,
+                    timingSendTime:!this.setSubForm.timingSendTime ? parseTime(new Date()): parseTime(new Date(this.setSubForm.timingSendTime)),
+                    triedTimes: this.setSubForm.triedTimes,
+                    onlyCode: "uuid",
+                    timeOver: this.setSubForm.timeOver,
                     paramContent: {
                       infoId: 'F1',
                       seqNo: '000000',
@@ -416,18 +408,18 @@ export default {
                     }
                   }
                 }
-                console.log(data)
                 sendCommMessage(data).then((res) => {
+                  this.tyspining = false;
                   if (res.code == 200) {
                     this.$message.success(res.message)
                   } else {
                     this.$message.error(res.message)
                   }
                 }).catch(error => {
+                  this.tyspining = false;
                   this.$message.error('读取失败')
                 })
               }).catch((e)=>{console.log(e)})
-              }catch(e){console.log(e)}
               
             }
           })

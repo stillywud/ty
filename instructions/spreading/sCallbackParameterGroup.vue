@@ -210,10 +210,6 @@ export default {
             margin-top: 40px;
             padding:20px
         }
-        .suffix-1{
-            line-height: 1!important;
-            margin-left: 2px;
-        }
         .con-box-wrapper{
             .list-0{
                 display: flex;

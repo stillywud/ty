@@ -47,9 +47,11 @@
             <a-input 
               placeholder="请输入采集频率"
               v-model="packForm.frequency"
-              suffix="(ms)"
-              allow-clear
-              />
+              allow-clear>
+                <template #suffix>
+                    <span class="suffix-1">(ms)</span>
+                </template>          
+                </a-input>
           </a-form-model-item>
           <a-form-model-item label="有无数据ID" prop="isDataId"  class="item-0">
             <a-select 

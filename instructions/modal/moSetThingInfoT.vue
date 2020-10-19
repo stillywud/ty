@@ -131,15 +131,21 @@
               <a-input 
                 placeholder="事件条件满足后需持续时间"  
                 v-model="packForm.duration"
-                suffix="(ms)"
-                allow-clear/>
+                allow-clear>
+                <template #suffix>
+                    <span class="suffix-1">(ms)</span>
+                </template>          
+                </a-input>
             </a-form-model-item>
             <a-form-model-item  class="item-0" label="参数变化最大时长"  prop="paramChangeDuration">
               <a-input 
                 placeholder="参数变化最大时长"  
                 v-model="packForm.paramChangeDuration"
-                suffix="(ms)"
-                allow-clear/>
+                allow-clear>
+                <template #suffix>
+                    <span class="suffix-1">(ms)</span>
+                </template>          
+                </a-input>
             </a-form-model-item>
             
             <a-form-model-item label="数据ID长度" prop="dataIdLength"  class="item-0">
