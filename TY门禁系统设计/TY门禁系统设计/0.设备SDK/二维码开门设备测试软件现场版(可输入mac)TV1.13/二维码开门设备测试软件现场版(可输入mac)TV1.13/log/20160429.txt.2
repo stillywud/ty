@@ -1,0 +1,18 @@
+记录时间：2016-04-29 14:19:32,335 线程ID:[1] 日志级别：INFO  
+信息描述：*********程序开始*********
+记录时间：2016-04-29 14:23:04,234 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.ArgumentNullException: 值不能为 null。
+参数名: image
+   在 System.Drawing.Graphics.DrawImage(Image image, Int32 x, Int32 y)
+   在 System.Drawing.Graphics.DrawImageUnscaled(Image image, Point point)
+   在 DevComponents.DotNetBar.ScrollBar.ScrollBarCore.Paint(ItemPaintArgs p)
+   在 DevComponents.DotNetBar.Controls.?.?(PaintEventArgs ?)
+   在 DevComponents.DotNetBar.Controls.?.OnPaint(PaintEventArgs e)
+   在 System.Windows.Forms.Control.PaintWithErrorHandling(PaintEventArgs e, Int16 layer)
+   在 System.Windows.Forms.Control.WmPaint(Message& m)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollBar.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)

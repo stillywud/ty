@@ -1,0 +1,24 @@
+记录时间：2017-04-10 08:09:28,554 线程ID:[1] 日志级别：INFO  
+信息描述：*********程序开始*********
+记录时间：2017-04-10 08:09:29,494 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.Net.Sockets.SocketException (0x80004005): 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+   在 System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   在 LF.Communicate.Udp_MulticastAsync.Start() 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\LF.Communicate\Udp_Multicast.cs:行号 213
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_Load(Object sender, EventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 76
+   在 System.EventHandler.Invoke(Object sender, EventArgs e)
+   在 System.Windows.Forms.Form.OnLoad(EventArgs e)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.OnLoad(EventArgs e)
+   在 System.Windows.Forms.Form.OnCreateControl()
+   在 System.Windows.Forms.Control.CreateControl(Boolean fIgnoreVisible)
+   在 System.Windows.Forms.Control.CreateControl()
+   在 System.Windows.Forms.Control.WmShowWindow(Message& m)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.Form.WmShowWindow(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)

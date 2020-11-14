@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>门禁设备 </title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="dist/css/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="dist/css/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="dist/css/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/_all-skins.min.css">
+  <link rel="stylesheet" href="dist/css/css.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b>LT</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Admin</b>LTE</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account: style can be found in dropdown.less -->
+          <li class="user user-menu">
+            <a href="#">
+              <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <span>Alexander Pierce</span>
+            </a>
+          </li>
+          <li class="user user-menu">
+            <a href="#">
+              <span>退出</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <aside class="main-sidebar">
+    <section class="sidebar">
+      <ul class="sidebar-menu" data-widget="tree">
+        <li class="active">
+          <a href="menjinshebei.html">
+            <i class="fa fa-files-o"></i>
+            <span>门禁设备</span>
+          </a>
+        </li>
+        <li>
+          <a href="baimingdan.html">
+            <i class="fa fa-files-o"></i>
+            <span>白名单</span>
+          </a>
+        </li>
+        <li>
+          <a href="fangke.html">
+            <i class="fa fa-files-o"></i>
+            <span>访客</span>
+          </a>
+        </li>
+        <li>
+          <a href="kaimenrizhi.html">
+            <i class="fa fa-files-o"></i>
+            <span>开门日志</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        门禁设备列表
+      </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header">
+              <div class="filter-group">
+                <div class="form-group">
+                  <label class="control-label">门禁位置</label>
+                  <select class="form-control" id="">
+                    <option value="0">全部</option>
+                    <option value="1">科技楼南门</option>
+                    <option value="2">科技楼北门</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label">设备MAC</label>
+                  <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <div class="form-group">
+                  <label class="control-label">蓝牙MAC</label>
+                  <input type="text" class="form-control" placeholder="请输入">
+                </div>
+                <button class="btn btn-primary">查询</button>
+                <button class="btn btn-primary">新增</button>
+              </div>
+            </div>
+            <div>
+              <div class="box-body">
+                <div class="">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>门禁位置</th>
+                        <th>设备MAC</th>
+                        <th>蓝牙MAC</th>
+                        <th>设备IP</th>
+                        <th>端口</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>科技楼1楼北门</td>
+                        <td>0004A39FE049</td>
+                        <td>1111111111111111</td>
+                        <td>192.168.1.100</td>
+                        <td>8888</td>
+                        <td class="operation">
+                          <a href="">开门</a>
+                          <a href="">检测在线</a>
+                          <a href="">参数配置</a>
+                          <a href="">服务启动</a>
+                          <a href="">删除</a>
+                          <a href="">更新</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>科技楼1楼北门</td>
+                        <td>0004A39FE049</td>
+                        <td>1111111111111111</td>
+                        <td>192.168.1.100</td>
+                        <td>8888</td>
+                        <td class="operation">
+                          <a href="">开门</a>
+                          <a href="">检测在线</a>
+                          <a href="">参数配置</a>
+                          <a href="">服务启动</a>
+                          <a href="">删除</a>
+                          <a href="">更新</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>科技楼1楼北门</td>
+                        <td>0004A39FE049</td>
+                        <td>1111111111111111</td>
+                        <td>192.168.1.100</td>
+                        <td>8888</td>
+                        <td class="operation">
+                          <a href="">开门</a>
+                          <a href="">检测在线</a>
+                          <a href="">参数配置</a>
+                          <a href="">服务启动</a>
+                          <a href="">删除</a>
+                          <a href="">更新</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>科技楼1楼北门</td>
+                        <td>0004A39FE049</td>
+                        <td>1111111111111111</td>
+                        <td>192.168.1.100</td>
+                        <td>8888</td>
+                        <td class="operation">
+                          <a href="">开门</a>
+                          <a href="">检测在线</a>
+                          <a href="">参数配置</a>
+                          <a href="">服务启动</a>
+                          <a href="">删除</a>
+                          <a href="">更新</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>科技楼1楼北门</td>
+                        <td>0004A39FE049</td>
+                        <td>1111111111111111</td>
+                        <td>192.168.1.100</td>
+                        <td>8888</td>
+                        <td class="operation">
+                          <a href="">开门</a>
+                          <a href="">检测在线</a>
+                          <a href="">参数配置</a>
+                          <a href="">服务启动</a>
+                          <a href="">删除</a>
+                          <a href="">更新</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="text-center">
+                 <ul class="pagination pagination-sm">
+                  <li class="disabled">
+                    <a href="#">&lt;</a>
+                  </li>
+                  <li class="active">
+                    <a href="#">1</a>
+                  </li>
+                  <li class="">
+                    <a href="#">2</a>
+                  </li>
+                  <li class="">
+                    <a href="#">3</a>
+                  </li>
+                  <li class="">
+                    <a href="#">4</a>
+                  </li>
+                  <li class="">
+                    <a href="#">5</a>
+                  </li>
+                  <li class="">
+                    <a href="#">6</a>
+                  </li>
+                  <li class="next">
+                    <a href="#">&gt;</a>
+                  </li>
+                </ul>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 2.4.0
+    </div>
+    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+    reserved.
+  </footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="dist/js/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="dist/css/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+</body>
+</html>

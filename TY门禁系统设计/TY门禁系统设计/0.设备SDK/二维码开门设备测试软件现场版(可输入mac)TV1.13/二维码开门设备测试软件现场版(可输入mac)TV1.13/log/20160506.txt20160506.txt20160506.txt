@@ -1,0 +1,178 @@
+记录时间：2016-05-06 10:54:24,892 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.IO.IOException: 文件“E:\二维码资料\二维码最新移交资料\有线版二维码AC3500移交20150421\有线版二维码AC3500移交20150418\二维码开门设备测试软件现场版(可输入mac)TV1.13\local.config”正由另一进程使用，因此该进程无法访问此文件。
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy)
+   在 System.IO.FileStream..ctor(String path, FileMode mode)
+   在 CLPriCommon.Utility.SoapDeSerialize[T](String fileName) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\CLPriCommon\Utility.cs:行号 195
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_Load(Object sender, EventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 69
+   在 System.EventHandler.Invoke(Object sender, EventArgs e)
+   在 System.Windows.Forms.Form.OnLoad(EventArgs e)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.OnLoad(EventArgs e)
+   在 System.Windows.Forms.Form.OnCreateControl()
+   在 System.Windows.Forms.Control.CreateControl(Boolean fIgnoreVisible)
+   在 System.Windows.Forms.Control.CreateControl()
+   在 System.Windows.Forms.Control.WmShowWindow(Message& m)
+   在 System.Windows.Forms.Control.WndProc(Message& m)
+   在 System.Windows.Forms.ScrollableControl.WndProc(Message& m)
+   在 System.Windows.Forms.Form.WmShowWindow(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:31,028 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:33,594 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:38,578 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:41,459 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:42,051 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:42,460 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:54:59,747 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:00,307 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:04,663 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:09,042 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:09,282 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:28,013 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:28,515 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)
+记录时间：2016-05-06 10:55:33,438 线程ID:[1] 日志级别：ERROR 
+信息描述：UI线程未处理异常
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 二维码开门设备测试软件_Udp组播_.QRCode_Factory.QRCode_Factory_FormClosing(Object sender, FormClosingEventArgs e) 位置 D:\luofx\项目源码\二维码开门设备测试软件（Udp组播）\二维码开门设备测试软件（Udp组播）-注册永久版\二维码开门设备测试软件（Udp组播）\QRCode_Factory.cs:行号 103
+   在 System.Windows.Forms.Form.OnFormClosing(FormClosingEventArgs e)
+   在 System.Windows.Forms.Form.WmClose(Message& m)
+   在 System.Windows.Forms.Form.WndProc(Message& m)
+   在 DevComponents.DotNetBar.Office2007RibbonForm.WndProc(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.OnMessage(Message& m)
+   在 System.Windows.Forms.Control.ControlNativeWindow.WndProc(Message& m)
+   在 System.Windows.Forms.NativeWindow.Callback(IntPtr hWnd, Int32 msg, IntPtr wparam, IntPtr lparam)

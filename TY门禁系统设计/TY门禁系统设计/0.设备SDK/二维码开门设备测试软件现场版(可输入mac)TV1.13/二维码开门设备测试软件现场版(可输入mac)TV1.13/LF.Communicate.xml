@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LF.Communicate</name>
+    </assembly>
+    <members>
+        <member name="F:LF.Communicate._ErrorLevel.Debug">
+            <summary>
+            调试信息
+            </summary>
+        </member>
+        <member name="F:LF.Communicate._ErrorLevel.Info">
+            <summary>
+            一般信息
+            </summary>
+        </member>
+        <member name="F:LF.Communicate._ErrorLevel.Warn">
+            <summary>
+            警告
+            </summary>
+        </member>
+        <member name="F:LF.Communicate._ErrorLevel.Error">
+            <summary>
+            错误日志
+            </summary>
+        </member>
+        <member name="F:LF.Communicate._ErrorLevel.Fatal">
+            <summary>
+            严重错误
+            </summary>
+        </member>
+        <member name="T:LF.Communicate.ICommunicate">
+            <summary>
+            通信接口
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.ICommunicate.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="sendBuffer"></param>
+            <returns>0:失败，1：成功</returns>
+        </member>
+        <member name="M:LF.Communicate.ICommunicate.Start">
+            <summary>
+             开始
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.ICommunicate.Close">
+            <summary>
+            关闭
+            </summary>
+        </member>
+        <member name="E:LF.Communicate.ICommunicate.ReceivedEvent">
+            <summary>
+            数据接收事件
+            </summary>
+        </member>
+        <member name="T:LF.Communicate.Udp_Multicast">
+            <summary>
+            Udp组播
+            Create by luofx
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_Multicast.m_MultiAddress">
+            <summary>
+            组播IP地址
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_Multicast.m_Port">
+            <summary>
+            端口
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_Multicast.m_Rec_Thread">
+            <summary>
+            数据接收线程
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.Udp_Multicast.#ctor(System.String,System.UInt16)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="multiAddress">组播IP地址</param>
+            <param name="port">组播端口</param>
+        </member>
+        <member name="M:LF.Communicate.Udp_Multicast.Start">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.Udp_Multicast.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="sendBuffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LF.Communicate.Udp_Multicast.Close">
+            <summary>
+            关闭Socket
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.Udp_Multicast.CheckLocalIP(System.String)">
+            <summary>
+            判断接收的数据是否自己发送的
+            </summary>
+            <param name="remoteIP"></param>
+            <returns></returns>
+        </member>
+        <member name="E:LF.Communicate.Udp_Multicast.ReceivedEvent">
+            <summary>
+            数据接收事件
+            </summary>
+        </member>
+        <member name="E:LF.Communicate.Udp_Multicast.ExceptionEvent">
+            <summary>
+            异常等信息回调
+            </summary>
+        </member>
+        <member name="T:LF.Communicate.Udp_MulticastAsync">
+            <summary>
+            Udp组播 异步接收
+            Create by luofx
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_MulticastAsync.m_MultiAddress">
+            <summary>
+            组播IP地址
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_MulticastAsync.m_Port">
+            <summary>
+            端口
+            </summary>
+        </member>
+        <member name="F:LF.Communicate.Udp_MulticastAsync.m_RemoteEndPoint">
+            <summary>
+            发送的远端主机地址
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.Udp_MulticastAsync.#ctor(System.String,System.UInt16)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="multiAddress">组播IP地址</param>
+            <param name="port">组播端口</param>
+        </member>
+        <member name="M:LF.Communicate.Udp_MulticastAsync.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="sendBuffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LF.Communicate.Udp_MulticastAsync.Close">
+            <summary>
+            关闭Socket
+            </summary>
+        </member>
+        <member name="M:LF.Communicate.Udp_MulticastAsync.GetBytes(System.Byte[],System.Int32)">
+            <summary>
+            获取实际长度的数据
+            </summary>
+            <param name="bSource">源数据</param>
+            <param name="length">实际长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:LF.Communicate.Udp_MulticastAsync.CheckLocalIP(System.String)">
+            <summary>
+            判断接收的数据是否自己发送的
+            </summary>
+            <param name="remoteIP"></param>
+            <returns></returns>
+        </member>
+        <member name="E:LF.Communicate.Udp_MulticastAsync.ReceivedEvent">
+            <summary>
+            数据接收事件
+            </summary>
+        </member>
+        <member name="E:LF.Communicate.Udp_MulticastAsync.SendToEvent">
+            <summary>
+            数据发送事件
+            </summary>
+        </member>
+    </members>
+</doc>
