@@ -1,0 +1,10 @@
+需要的jar ，通过pom.xml 文件自己去下载，开门的sdk，也需要放进去
+
+com.reformer.web.listener.mkServletContextListener  启动服务的方法 我这边 是在这里面启动的  在web.xml 里面配置的
+
+
+
+demo 里面，在页面 我只写了两个方法，一个是开门，一个查询在线  
+WEB-INF/views/index.jsp   //这个是页面
+
+com.reformer.web.controller.CommonController  //这个controller

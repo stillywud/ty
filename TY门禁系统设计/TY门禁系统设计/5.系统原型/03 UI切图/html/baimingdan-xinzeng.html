@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 2 | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="dist/css/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="dist/css/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="dist/css/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/_all-skins.min.css">
+  <link rel="stylesheet" href="dist/css/css.css">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+  <div class="wrapper">
+
+    <header class="main-header">
+      <!-- Logo -->
+      <a href="index2.html" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>A</b>LT</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>Admin</b>LTE</span>
+      </a>
+      <!-- Header Navbar: style can be found in header.less -->
+      <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+          <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="user user-menu">
+              <a href="#">
+                <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                <span>Alexander Pierce</span>
+              </a>
+            </li>
+            <li class="user user-menu">
+              <a href="#">
+                <span>退出</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <aside class="main-sidebar">
+      <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+          <li class="active">
+            <a href="menjinshebei.html">
+              <i class="fa fa-files-o"></i>
+              <span>门禁设备</span>
+            </a>
+          </li>
+          <li>
+            <a href="baimingdan.html">
+              <i class="fa fa-files-o"></i>
+              <span>白名单</span>
+            </a>
+          </li>
+          <li>
+            <a href="fangke.html">
+              <i class="fa fa-files-o"></i>
+              <span>访客</span>
+            </a>
+          </li>
+          <li>
+            <a href="kaimenrizhi.html">
+              <i class="fa fa-files-o"></i>
+              <span>开门日志</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          新增白名单
+        </h1>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-body float-box">
+                <div class="left-box">
+                  <form action="" class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label">部门</label>
+                      <div class="col-xs-9">
+                        <select name="" class="form-control" id="">
+                          <option value="">部门1</option>
+                          <option value="">部门2</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label">员工</label>
+                      <div class="col-xs-9">
+                        <input type="text" class="form-control" placeholder="">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-xs-12 text-center">
+                        <button class="btn btn-primary">搜索</button>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="list-box">
+                    <ul class="ul-list">
+                      <li>
+                        <label><input type="checkbox">张三</label>
+                      </li>
+                      <li><label><input type="checkbox">张三1</input></label></li>
+                      <li><label><input type="checkbox">张三2</input></label></li>
+                      <li><label><input type="checkbox">张三3</input></label></li>
+                      <li><label><input type="checkbox">张三4</input></label></li>
+                      <li><label><input type="checkbox">张三5</input></label></li>
+                      <li><label><input type="checkbox">张三6</input></label></li>
+                      <li><label><input type="checkbox">张三7</input></label></li>
+                      <li><label><input type="checkbox">张三8</input></label></li>
+                      <li><label><input type="checkbox">张三9</input></label></li>
+                      <li><label><input type="checkbox">张三10</input></label></li>
+                      <li><label><input type="checkbox">张三11</input></label></li>
+                      <li><label><input type="checkbox">张三12</input></label></li>
+                      <li><label><input type="checkbox">张三13</input></label></li>
+                      <li><label><input type="checkbox">张三14</input></label></li>
+                      <li><label><input type="checkbox">张三15</input></label></li>
+                      <li><label><input type="checkbox">张三16</input></label></li>
+                      <li><label><input type="checkbox">张三17</input></label></li>
+                      <li><label><input type="checkbox">张三18</input></label></li>
+                      <li><label><input type="checkbox">张三19</input></label></li>
+                      <li><label><input type="checkbox">张三20</input></label></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="right-box">
+                  <form action="" class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-xs-2 control-label">选择门禁</label>
+                      <div class="col-xs-10">
+                        <div class="list-box" style="height: 441px;">
+                          <ul class="ul-list">
+                            <li><label><input type="checkbox">门禁1</input></label></li>
+                            <li><label><input type="checkbox">门禁2</input></label></li>
+                            <li><label><input type="checkbox">门禁3</input></label></li>
+                            <li><label><input type="checkbox">门禁4</input></label></li>
+                            <li><label><input type="checkbox">门禁5</input></label></li>
+                            <li><label><input type="checkbox">门禁6</input></label></li>
+                            <li><label><input type="checkbox">门禁7</input></label></li>
+                            <li><label><input type="checkbox">门禁8</input></label></li>
+                            <li><label><input type="checkbox">门禁9</input></label></li>
+                            <li><label><input type="checkbox">门禁10</input></label></li>
+                            <li><label><input type="checkbox">门禁11</input></label></li>
+                            <li><label><input type="checkbox">门禁12</input></label></li>
+                            <li><label><input type="checkbox">门禁13</input></label></li>
+                            <li><label><input type="checkbox">门禁14</input></label></li>
+                            <li><label><input type="checkbox">门禁15</input></label></li>
+                            <li><label><input type="checkbox">门禁16</input></label></li>
+                            <li><label><input type="checkbox">门禁17</input></label></li>
+                            <li><label><input type="checkbox">门禁18</input></label></li>
+                            <li><label><input type="checkbox">门禁19</input></label></li>
+                            <li><label><input type="checkbox">门禁20</input></label></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-xs-2 control-label">邀请权限</label>
+                      <div class="col-xs-10">
+                        <label class="radio-inline">
+                          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 可邀请
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 不可邀请
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-xs-12 text-center">
+                        <button class="btn btn-primary">保存</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 2.4.0
+      </div>
+      <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+      reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Create the tabs -->
+      <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <!-- Home tab content -->
+        <div class="tab-pane" id="control-sidebar-home-tab">
+          <h3 class="control-sidebar-heading">Recent Activity</h3>
+          <ul class="control-sidebar-menu">
+            <li>
+              <a href="javascript:void(0)">
+                <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+
+                <div class="menu-info">
+                  <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+
+                  <p>Will be 23 on April 24th</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <i class="menu-icon fa fa-user bg-yellow"></i>
+
+                <div class="menu-info">
+                  <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+
+                  <p>New phone +1(800)555-1234</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+
+                <div class="menu-info">
+                  <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+
+                  <p>nora@example.com</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <i class="menu-icon fa fa-file-code-o bg-green"></i>
+
+                <div class="menu-info">
+                  <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+
+                  <p>Execution time 5 seconds</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+          <!-- /.control-sidebar-menu -->
+
+          <h3 class="control-sidebar-heading">Tasks Progress</h3>
+          <ul class="control-sidebar-menu">
+            <li>
+              <a href="javascript:void(0)">
+                <h4 class="control-sidebar-subheading">
+                  Custom Template Design
+                  <span class="label label-danger pull-right">70%</span>
+                </h4>
+
+                <div class="progress progress-xxs">
+                  <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <h4 class="control-sidebar-subheading">
+                  Update Resume
+                  <span class="label label-success pull-right">95%</span>
+                </h4>
+
+                <div class="progress progress-xxs">
+                  <div class="progress-bar progress-bar-success" style="width: 95%"></div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <h4 class="control-sidebar-subheading">
+                  Laravel Integration
+                  <span class="label label-warning pull-right">50%</span>
+                </h4>
+
+                <div class="progress progress-xxs">
+                  <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:void(0)">
+                <h4 class="control-sidebar-subheading">
+                  Back End Framework
+                  <span class="label label-primary pull-right">68%</span>
+                </h4>
+
+                <div class="progress progress-xxs">
+                  <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
+                </div>
+              </a>
+            </li>
+          </ul>
+          <!-- /.control-sidebar-menu -->
+
+        </div>
+        <!-- /.tab-pane -->
+        <!-- Stats tab content -->
+        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
+        <!-- /.tab-pane -->
+        <!-- Settings tab content -->
+        <div class="tab-pane" id="control-sidebar-settings-tab">
+          <form method="post">
+            <h3 class="control-sidebar-heading">General Settings</h3>
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Report panel usage
+                <input type="checkbox" class="pull-right" checked>
+              </label>
+
+              <p>
+                Some information about this general settings option
+              </p>
+            </div>
+            <!-- /.form-group -->
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Allow mail redirect
+                <input type="checkbox" class="pull-right" checked>
+              </label>
+
+              <p>
+                Other sets of options are available
+              </p>
+            </div>
+            <!-- /.form-group -->
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Expose author name in posts
+                <input type="checkbox" class="pull-right" checked>
+              </label>
+
+              <p>
+                Allow the user to show his name in blog posts
+              </p>
+            </div>
+            <!-- /.form-group -->
+
+            <h3 class="control-sidebar-heading">Chat Settings</h3>
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Show me as online
+                <input type="checkbox" class="pull-right" checked>
+              </label>
+            </div>
+            <!-- /.form-group -->
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Turn off notifications
+                <input type="checkbox" class="pull-right">
+              </label>
+            </div>
+            <!-- /.form-group -->
+
+            <div class="form-group">
+              <label class="control-sidebar-subheading">
+                Delete chat history
+                <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+              </label>
+            </div>
+            <!-- /.form-group -->
+          </form>
+        </div>
+        <!-- /.tab-pane -->
+      </div>
+    </aside>
+    <!-- /.control-sidebar -->
+  <!-- Add the sidebar's background. This div must be placed
+   immediately after the control sidebar -->
+   <div class="control-sidebar-bg"></div>
+ </div>
+ <!-- ./wrapper -->
+
+ <!-- jQuery 3 -->
+ <script src="dist/js/jquery/dist/jquery.min.js"></script>
+ <!-- Bootstrap 3.3.7 -->
+ <script src="dist/css/bootstrap/dist/js/bootstrap.min.js"></script>
+ <!-- AdminLTE App -->
+ <script src="dist/js/adminlte.min.js"></script>
+ <!-- AdminLTE for demo purposes -->
+ <script src="dist/js/demo.js"></script>
+</body>
+</html>

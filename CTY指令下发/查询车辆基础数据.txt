@@ -1,0 +1,10 @@
+select c.vehiclenumber '机号',e.organizationname '品牌',f.VehicletypeName '型号',a.tmnl_id '终端号', 
+a.Tmnl_SIMNo 'sim',a.Tmnl_IMEI 'imei',a.Tmnl_SendCenterNo '发送中心号',a.Tmnl_RcvCenterNo '接受中心号', 
+b.TmnlIL_Vcl_ID '设备id',b.TmnlIL_InstallTime from link_cty_vcl.cty_vcl.[dbo].[tmnl_info] a 
+inner JOIN link_cty_vcl.cty_vcl.[dbo].[Tmnl_Install_Last]  b on a.tmnl_id =b.TmnlIL_Tmnl_ID  
+left JOIN link_cty_ms.cty_ms.dbo.vehicleinfo c on b.TmnlIL_Vcl_ID = c.vehicleid
+left join link_cty_ms.cty_ms.dbo.Organization_DB d on c.DB =  d.Organizationid
+LEFT JOIN link_cty_ms.cty_ms.dbo.Organization_OEM e on c.oem = e.Organizationid
+left JOIN link_cty_ms.cty_ms.dbo.BasicData_VehicleType f on c.VehicletypeID = f.VehicletypeID
+
+where d.OrganizationCode like '1001D1003D1042%' 

@@ -1,0 +1,9 @@
+服务器：30.77
+
+接口：
+/home/ty/zuhuzhiling/
+页面：
+/usr/local/nginx/html/
+
+访问路径：
+http://192.168.30.77:8082
