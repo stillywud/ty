@@ -1,46 +1,527 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-.assistor {
-  position: relative; /*关键点*/
-  display: block;
-  width: 500px;
-  height: 300px;
-  margin: 100px auto 0 auto;
-  background-color: #ddd;
-}
-.parent {
-  width: 500px;
-  height: 300px;
-  background-color: #888;
-  overflow: auto; /*关键点*/
-}
-.child {
-  position: absolute; /*关键点*/
-  width: 120px;
-  height: 120px;
-  margin: 100px 50px;
-  background-color: #333;
-}
-.placeholder {
-  width: 1000px;
-  height: 1000px;
-}
-    </style>
-</head>
-<body>
-    <div class="assistor">
-      <div class="parent">
-          <div class="child"></div>
-          <div class="placeholder"></div>
+<template>
+  <a-modal
+    title="添加多包"
+    style="top: 20px;"
+    :width="width"
+    :visible="addDialogPack"
+    @ok="handleSubmitpack"
+    @cancel="closeDialog"
+    wrapClassName="plugins-set-thing-modal plugin-modal-common-mt"
+  >
+    <a-form-model ref="packForm"  :model="packForm" :rules="packRules" >
+
+      <div class="checktable-1">
+          <a-form-model-item label="设置状态" prop="setState" class="item-0">
+            <a-select 
+              v-model="packForm.setState"
+              @change="setStateCallback"
+              placeholder="请选择设置状态">
+              <a-select-option 
+                v-for="setState in setStates" 
+                :key="setState.key">
+                {{setState.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="位置序号"  prop="serialNumber">
+            <a-input 
+              placeholder="请输入位置序号"  
+              v-model.trim="packForm.serialNumber"
+              allow-clear/>
+          </a-form-model-item>
+          
+          <a-form-model-item label="事件种类" prop="eventType"  class="item-0">
+            <a-select 
+            dropdownClassName="width215"
+              v-model="packForm.eventType"
+              @change="eventTypecallback">
+              <a-select-option 
+                :title="eventType.value"
+                v-for="eventType in eventTypes"
+                :key="eventType.key">
+                {{eventType.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item label="有无数据ID" prop="isDataId"  class="item-0">
+            <a-select 
+              v-model="packForm.isDataId"
+              @change="isDataIdcallback"
+              placeholder="请选择数据ID">
+              <a-select-option 
+                v-for="isDataId in isDataIds"
+                :key="isDataId.key">
+                {{isDataId.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item label="PGN ID的帧格式" prop="frameFormat"  class="item-0">
+            <a-select 
+              v-model="packForm.frameFormat"
+              placeholder="请选择PGN ID的帧格式">
+              <a-select-option 
+                v-for="frameFormat in frameFormats"
+                :key="frameFormat.key">
+                {{frameFormat.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          
+          <a-form-model-item  class="item-0" label="PGN ID"  prop="pgnId">
+              <a-select 
+              v-model="packForm.pgnId"
+              placeholder="请选择PGN ID">
+              <a-select-option 
+                v-for="pgnId in pgnIds"
+                :key="pgnId.key">
+                {{pgnId.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          
+          
+          <a-form-model-item label="发生条件" prop="happenCondition"  class="item-0">
+            <a-select 
+              dropdownClassName="width290"
+              v-model="packForm.happenCondition"
+              placeholder="请选择发生条件">
+              <a-select-option 
+                :title="happenCondition.value"
+                v-for="happenCondition in happenConditions"
+                :key="happenCondition.key">
+                {{happenCondition.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item label="高字节位置" prop="highByte"  class="item-0">
+            <a-select 
+              v-model="packForm.highByte"
+              placeholder="请选择高字节位置">
+              <a-select-option 
+                v-for="highByte in highBytes"
+                :key="highByte.key">
+                {{highByte.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="参数的长度"  prop="paramLength">
+            <a-select 
+              v-model="packForm.paramLength"
+              placeholder="请选择高字节位置">
+              <a-select-option 
+                v-for="paramLength in paramLengths"
+                :key="paramLength">
+                {{paramLength}}
+              </a-select-option>
+            </a-select>
+            <!-- <a-input 
+              placeholder="请输入参数的长度"  
+              v-model="packForm.paramLength"
+              allow-clear/> -->
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="参数在PGN中所处的起始位置"  prop="startStation">
+            <a-input 
+              placeholder="请输入参数的起始位置"  
+              v-model="packForm.startStation"
+              allow-clear/>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="参数设定值"  prop="paramValue">
+            <a-input 
+              placeholder="请输入参数设定值"  
+              v-model="packForm.paramValue"
+              allow-clear/>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="事件条件满足后需持续时间"  prop="duration">
+            <a-input 
+              placeholder="事件条件满足后需持续时间"  
+              v-model="packForm.duration"
+              allow-clear>
+              <template #suffix>
+                  <span class="suffix-1">(ms)</span>
+              </template>          
+              </a-input>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="参数变化最大时长"  prop="paramChangeDuration">
+            <a-input 
+              placeholder="参数变化最大时长"  
+              v-model="packForm.paramChangeDuration"
+              allow-clear>
+              <template #suffix>
+                  <span class="suffix-1">(ms)</span>
+              </template>          
+              </a-input>
+          </a-form-model-item>
+          
+          <a-form-model-item label="数据ID长度" prop="dataIdLength"  class="item-0">
+            <a-select 
+              v-model="packForm.dataIdLength"
+              placeholder="请选择数据ID长度">
+              <a-select-option 
+                v-for="dataIdLength in dataIdLengths" 
+                :key="dataIdLength.key">
+                {{dataIdLength.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item label="数据ID起始字节" prop="dataIdBegin"  class="item-0">
+            <a-select 
+              v-model="packForm.dataIdBegin"
+              placeholder="请选择数据ID起始字节">
+              <a-select-option 
+                v-for="dataIdBegin in dataIdBegins"
+                :key="dataIdBegin.key">
+                {{dataIdBegin.value}}
+              </a-select-option>
+            </a-select>
+          </a-form-model-item>
+          <a-form-model-item  class="item-0" label="数据ID"  prop="dataId">
+            <a-input 
+              placeholder="请输入数据ID"  
+              v-model="packForm.dataId"
+              allow-clear/>
+          </a-form-model-item>
       </div>
-    </div>
-    <script>
- 
-    </script>
-</body>
-</html>
+      </a-form-model>
+      
+    </a-modal>
+</template>
+<script>
+
+
+let packFormCopy = {
+  frameFormat:1,
+  isDataId:0,
+  pgnId:"18FF254A",
+  paramLength:undefined,
+  highByte:0,
+  happenCondition:0,
+  startStation:0,
+  paramValue:100,
+  duration:10,
+  serialNumber:2,
+  eventType:0,
+  dataIdLength:1,
+  dataIdBegin:0,
+  dataId:'',
+  setState:1,
+}
+
+import {frameFormats,pgnIds,highBytes,setStates, isDataIds, eventTypes,happenConditions,  dataIdLengths, dataIdBegins} from '@/utils/constant'
+export default {
+  name:"moSetThingInfoT",
+  props:[
+      "addDialogPack",
+      "packFormCopy"
+  ],
+  data(){
+      return {
+          width:810,
+          setStates,
+          eventTypes,
+          isDataIds,
+          dataIdBegins,
+          dataIdLengths,
+          happenConditions,
+          frameFormats,
+          highBytes,
+          pgnIds,
+          paramLengths:4,
+          packForm:{
+              ...packFormCopy
+          },
+          packRules:{
+            serialNumber:[
+              {
+                required: true,
+                trigger: 'blur',
+                validator: (rule, value, callback) => {
+                  value = value + ""
+                    if (value === '') {
+                        callback(new Error('该值不允许为空,范围是：[1-100]'))
+                        return ;
+                    }
+                    let timeOutInd = value.indexOf('.')
+                    let timeOutNum = Number(value);
+                    if(timeOutInd === -1){
+                      if(timeOutNum >= 1 && timeOutNum <= 100){
+                        callback()
+                      }else{
+                        callback(new Error('该值范围：[1-100]的整数'))
+                      }
+                    }else{
+                      callback(new Error('该值为大于等于1的整数'))
+                    }
+                }
+              }
+            ],
+            eventType:[
+              {
+                required: false,
+                trigger: "change",
+                message:"请选择事件种类"
+              }
+            ],
+            frameFormat:[{required: true,trigger: "change",message:"请选择PGN ID的帧格式"}],
+            isDataId:[{required: true,trigger: "change",message:"请选择PGN ID的帧格式"}],
+            pgnId:[{required: true,trigger: "change",message:"请选择PGN ID"}],
+
+            paramLength:[{required: false,trigger: "change"}],
+            highByte:[{required: false,trigger: "change",message:"请选择高字节位置"}],
+            happenCondition:[{required: true,trigger: "change",message:"请选择发生条件"}],
+            startStation:[{required: true,trigger: "blur",validator:(rule, value, callback) => {
+                value = value+"";
+                if(["", "undefined"].includes(value)){
+                    if(this.packForm.eventType === 0 || this.packForm.eventType === 1){
+                      callback(new Error('该值范围:0-7的整数'));
+                      return ;
+                    }else{
+                      callback(new Error('该值范围:0-63的整数'));
+                      return;
+                    }
+                  }
+                let pgnCountInd = value.toString().indexOf('.')
+                let valueNum1 = Number(value)
+                if(pgnCountInd === -1){
+                  if(this.packForm.eventType === 0 || this.packForm.eventType === 1){
+                    if (valueNum1 >= 0 && valueNum1 <= 7) {
+                        callback()
+                    }
+                  }else{
+                    if (valueNum1 >= 0 && valueNum1 <= 63) {
+                        callback()
+                    }
+                  }
+                }
+                if(this.packForm.eventType === 0 || this.packForm.eventType === 1){
+                  callback(new Error('该值范围:0-7的整数'));
+                }else{
+                  callback(new Error('该值范围:0-63的整数'));
+                }
+            }}],
+            paramValue:[{required: false,trigger: "blur",message:"请输入参数设定值"}],
+            duration:[{required: false,trigger: "blur",message:"请输入持续时间"}],
+            paramChangeDuration:[{required: false,trigger: "blur",message:"请输入参数变化最大时长"}],
+
+            dataIdLength:[{required: false,trigger: "change",message:"请选择数据ID长度"}],
+            dataIdBegin:[{required: false,trigger: "change",message:"请选择数据ID起始字节"}],
+            dataId:[{required: false,trigger: "blur",message:"请输入数据ID"}],
+          },
+      }
+  },
+  watch:{
+    packFormCopy(o,v){
+    if(o.hasOwnProperty("key")){
+        this.packForm = o
+      }else{
+        this.packForm = packFormCopy;
+      }
+      console.log(o,v,'this.packRules')
+      this.eventTypecallback();
+      this.isDataIdcallback();
+      this.setStateCallback();
+    }
+  },
+  mounted(){
+    this.eventTypecallback();
+    this.isDataIdcallback();
+    this.setStateCallback();
+  },
+  methods:{
+        paramLengthRules(rule, value, callback){
+          value = value+"";
+          let pgnCountInd = value.toString().indexOf('.')
+          let valueNum1 = Number(value)
+          if(pgnCountInd === -1){
+            if(this.packForm.eventType === 0 || this.packForm.eventType === 1){
+              if (valueNum1 >= 1 && valueNum1 <= 4) {
+                  callback()
+              }
+            }else{
+              if (valueNum1 >= 1 && valueNum1 <= 32) {
+                  callback()
+              }
+            }
+          }
+          if(this.packForm.eventType === 0 || this.packForm.eventType === 1){
+            callback(new Error('该值范围:1-4的整数'));
+          }else{
+            callback(new Error('该值范围:1-32的整数'));
+          }
+      },
+      eventTypecallback(){
+        // 选择事件种类
+        let eventType = this.packForm.eventType;
+        console.log(typeof eventType)
+        this.packRules.paramLength[0].required = eventType !==1 ?true : false;
+        this.packRules.paramValue[0].required = eventType !==1 ?true : false;
+        this.packRules.highByte[0].required = eventType !==1 ?true : false;
+        this.packRules.paramLength[0].validator = eventType !==1 ?this.paramLengthRules : null;
+        this.packRules.duration[0].required = eventType === 3 ? false : true;
+        this.packRules.paramChangeDuration[0].required = eventType === 3 ? true : false;
+        
+        if(eventType === 0){
+          this.paramLengths = 4;
+          this.happenConditions = [
+            {key:0,value:"当参数大于“参数设定”时事件发生条件满足"},
+            {key:1,value:"当参数小于“参数设置”时事件发生条件满足"},
+          ];
+        }else if(eventType === 1){
+          this.paramLengths = 4;
+          this.happenConditions = [
+            {key:0,value:"开关量为0时触发"},
+            {key:1,value:"开关量为1时触发"},
+          ];
+        }else if(eventType === 2){
+          this.paramLengths = 32;
+          this.happenConditions = [
+            {key:0,value:"事件要求参数大于“阈值设定”"},
+            {key:1,value:"事件要求参数小于“阈值设定”"},
+            {key:2,value:"事件要求参数等于“阈值设定”"}
+          ];
+        }else if(eventType === 3){
+          this.paramLengths = 32;
+          this.happenConditions = [
+            {key:0,value:"当参数在“参数变化时长”的时间内下降超过“参数变化范围”时报告事件"},
+            {key:1,value:"当参数在“参数变化时长”的时间内上升超过“参数变化范围”时报告事件"},
+          ];
+        }
+
+      },
+      isDataIdcallback(){
+        // 有无数据ID
+        let isDataId = this.packForm.isDataId;
+        this.packRules.dataIdLength[0].required =isDataId === 1 ?  true : false;
+        this.packRules.dataIdBegin[0].required = isDataId === 1 ?  true : false;
+        this.packRules.dataId[0].required = isDataId === 1 ?  true : false;
+      },
+      setStateCallback(){
+        let val = this.packForm.setState;
+        this.packRules.eventType[0].required = val === 1 ? true :false;
+      },
+      handleSubmitpack(){
+        this.$refs.packForm.validate(valid => {
+          console.log(valid,'valid')
+          if (valid) {
+            let arrParams = ["setState","serialNumber","eventType","frameFormat","isDataId","pgnId","highByte","happenCondition","paramLength","startStation","paramValue","paramChangeDuration","duration","dataIdLength","dataIdBegin","dataId"];
+            let arrParamsCopy = [];
+            let type = '';
+            let typeParamsCopy = {};
+            let typeParams = this.filterParams(arrParams);
+            let pgnThreshold = ["frameFormat","isDataId","pgnId","paramLength","highByte","happenCondition","startStation","paramValue","duration","dataIdLength","dataIdBegin","dataId"]
+            typeParams["pgnThreshold"] = this.eachObjParams(pgnThreshold, typeParams);
+            let pgnSwitch = ["frameFormat","isDataId","pgnId","happenCondition","startStation","duration","dataIdLength","dataIdBegin","dataId"]
+            typeParams["pgnSwitch"] = this.eachObjParams(pgnSwitch, typeParams);
+            let pgnCompatThreshold = ["frameFormat","isDataId","pgnId","paramLength","highByte","happenCondition","startStation","paramValue","duration","dataIdLength","dataIdBegin","dataId"]
+            typeParams["pgnCompatThreshold"] = this.eachObjParams(pgnCompatThreshold, typeParams);
+            let pgnCompatSwitch = ["frameFormat","isDataId","pgnId","paramLength","highByte","happenCondition","startStation","paramValue","paramChangeDuration","dataIdLength","dataIdBegin","dataId"]
+            typeParams["pgnCompatSwitch"] = this.eachObjParams(pgnCompatSwitch, typeParams);
+            
+            if(this.packForm.eventType === 0){
+              type="pgnThreshold"
+            }else if(this.packForm.eventType === 1){
+              type="pgnSwitch"
+            }else if(this.packForm.eventType === 2){
+              type="pgnCompatThreshold"
+            }else if(this.packForm.eventType === 3){
+              type="pgnCompatSwitch"
+            }
+            let setStatesText = this.eachArrParams(this.setStates,this.packForm.setState);
+            let isDataIdsText = this.eachArrParams(this.isDataIds,this.packForm.isDataId);
+            let eventTypesText = this.eachArrParams(this.eventTypes,this.packForm.eventType);
+            let happenConditionsText = this.eachArrParams(this.happenConditions,this.packForm.happenCondition);
+            let highBytesText = this.eachArrParams(this.highBytes,this.packForm.highByte);
+            let frameFormatsText = this.eachArrParams(this.frameFormats,this.packForm.frameFormat);
+            let pgnIdsText = this.eachArrParams(this.pgnIds,this.packForm.pgnId);
+            typeParams.type = type;
+            typeParams.text = {setStatesText,isDataIdsText,eventTypesText,happenConditionsText,highBytesText,frameFormatsText,pgnIdsText};
+            if(this.packForm.key){
+                typeParams.key = this.packForm.key;
+            }
+          
+            this.$emit("ontypeParams", typeParams, type );
+            this.closeDialog();
+            }
+        })
+      },
+      filterParams(arr){
+        let obj = {};
+        arr.forEach((item) => {
+          obj[item] = this.packForm[item] === undefined || this.packForm[item] === '' ? 0 : this.packForm[item]
+        })
+        return obj;
+      },
+      eachObjParams(arr,obj){
+        let newObj = {}
+        arr.forEach((item)=>{
+          newObj[item] = obj[item]
+        })
+        return newObj;
+      },
+      eachArrParams(arr, type){
+        let text = '';
+        arr.forEach((item)=>{
+          if(item.key === type){
+              text = item.value;
+          }
+        })
+        return text;
+      },
+      closeDialog(){
+          this.$emit("update:addDialogPack", false);
+          this.$refs.packForm.resetFields();
+          
+          console.log(this.packForm,'co')
+      }
+  }
+}
+</script>
+<style lang="scss">
+
+.plugins-set-thing-modal{
+  .checktable-1{
+      display:flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .item-0{
+        
+        display: flex;
+        &:nth-child(2n+1){
+          flex-basis: 40%;
+          padding-right: 15px;
+          .ant-form-item-label{
+              width: 130px;
+          }
+        }
+        &:nth-child(2n+2){
+          .ant-form-item-label{
+              width: 220px;
+          }
+          
+        } 
+        .ant-form-item-control-wrapper{
+            width: 195px;
+          }
+      }
+      .item-8{
+        .ant-form-item-label{
+            display: flex;
+            align-items: baseline;
+        }
+
+        .ant-form-item-label{
+            padding-right: 8px;
+            label{
+                white-space: break-spaces;
+                line-height: 1;
+                display: inline-block;
+                padding-top: 8px;
+                &::after{
+                    margin: 0 0 0 2px;
+                }
+            }
+        }
+        
+    }
+  }
+}
+</style>
