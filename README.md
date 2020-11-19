@@ -17,6 +17,7 @@ http://192.168.30.204:8088/gpsweb/#/index
 anfeidong  123
 
 
+https://192.168.9.171/svn/KJ/DataQueryTool/WEB/trunk/ty-jeecg-boot-v1.1.1.1/ant-design-jeecg-vue  admin    tykj123  http://192.168.30.197:98/
 
 ant design vue 
 
