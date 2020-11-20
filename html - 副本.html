@@ -1,186 +1,244 @@
 <template>
   <a-config-provider :locale="zh_CN">
     <div id="app">
-      <a-select
-        allow-clear
-        show-search
-        placeholder="Select a person"
-        style="width: 200px"
-        @focus="handleFocus"
-        @blur="handleBlur"
-        @change="handleChange"
-        v-model="sdfg"
-      >
-        <a-select-option v-for="it in list" :key="it.name">{{it.value}}</a-select-option>
-      </a-select>
-      <a-form-model
-        ref="dynamicValidateForm"
-        :model="setForm"
-        :rules="rules"
-      >
-      <a-form-model-item prop="dynamicValidateForm.name" ref="name" :autoLink="false">
-      <a-input v-model="other" />
-      <span>hahha</span>
-      <div>
-        <a-input
-          v-model="setForm.dynamicValidateForm.name"
-        />
-      </div>
-    </a-form-model-item>
-      <!-- <div 
-      v-for="(domain, index) in setForm.dynamicValidateForm.domains"
-      :key="domain.key">
-            <a-form-model-item
-      
-              label="机械1"
-              :prop="'dynamicValidateForm.domains.' + index + '.cityid1'"
-              :rules="{
-                required: true,
-                message: 'domain can not be null',
-                trigger: 'change',
-              }"
-            >
-              <a-input
-                v-model="domain.cityid1"
-                placeholder="please input domain"
-                style="width: 60%; margin-right: 8px"
-              />
-            </a-form-model-item>
-            <a-form-model-item
-      
-              label="机械2"
-              :prop="'dynamicValidateForm.domains.' + index + '.cityid2'"
-              :rules="{
-                required: true,
-                message: 'domain can not be null',
-                trigger: 'change',
-              }"
-            >
-              <a-input
-                v-model="domain.cityid2"
-                placeholder="please input domain"
-                style="width: 60%; margin-right: 8px"
-              />
-            </a-form-model-item>
-      </div> -->
-
-    <a-form-model-item >
-      <a-button type="dashed" style="width: 60%" @click="addDomain">
-        Add field
-      </a-button>
-    </a-form-model-item>
-    <a-form-model-item >
-      <a-button type="primary" html-type="submit" @click="submitForm('dynamicValidateForm')">
-        Submit
-      </a-button>
-      <a-button style="margin-left: 10px" @click="resetForm('dynamicValidateForm')">
-        Reset
-      </a-button>
-    </a-form-model-item>
-  </a-form-model>
+        <div class="leri-box">
+          <a-row :gutter="16" type="flex">
+            <a-col :sm="24" :md="5">
+              <a-card class="jm-leri-left-card-box" :bordered="false">
+                <div class="leri-left-btn"><a-button type="primary">确认</a-button></div>
+                <a-checkbox-group
+                    v-model="userList"
+                    name="checkboxgroup"
+                    :options="userNameList"
+                  />
+              </a-card>
+            </a-col>
+            <a-col :sm="24" :md="19">
+              <a-card class="jm-leri-right-card-box" :bordered="false">
+                <div class='demo-app'>
+                  <FullCalendar
+                    class='demo-app-calendar'
+                    ref="fullCalendar"
+                    defaultView="dayGridMonth"
+                    :locale="esLocale"
+                    :header="{
+                      left: 'prev,next today',
+                      center: 'title',
+                      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    }"
+                    :height="660"
+                    :buttonText="{
+                        today:    '今天',
+                        month:    '月',
+                        week:     '周',
+                        day:      '日',
+                        prev:'上月',
+                        next:'下月'
+                      }"
+                    :plugins="calendarPlugins"
+                    :weekends="calendarWeekends"
+                    :eventLimit="true"
+                    :events="calendarEvents"
+                    
+                    @dateClick="handleDateClick"
+                    @eventClick="handleEventClick"
+                    />
+                </div>
+              </a-card>
+            </a-col>
+          </a-row>
+        </div>
     </div>
   </a-config-provider>
 </template>
 
 <script>
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
-// import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'  :events="calendarEvents" :eventSources="eventSources"
 import {setStates, eventTypes, frameFormats, isDataIds,dataIdLengths,dataIdBegins, pgnIds,
 paramLengths,startStations,highBytes,beginCounts,scopes,values,distributes} from '@/constp.js';
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import esLocale from '@fullcalendar/core/locales/zh-cn';
 export default {
+  components: {
+    FullCalendar // make the <FullCalendar> tag available
+  },
   data() {
     return {
       zh_CN,
       other:'',
-      sdfg:undefined,
-      list:[
-        {name:1,value:"测试1"},
-        {name:2,value:"测试2"},
-        {name:3,value:"测试3"},
-        {name:4,value:"测试4"},
-        {name:5,value:"测试5"},
+      userNameList: [],
+
+      userList:[],
+      esLocale,
+      calendarPlugins: [ // plugins must be defined in the JS
+        dayGridPlugin,
+        timeGridPlugin,
+        interactionPlugin // needed for dateClick
       ],
-      setForm:{
-        dynamicValidateForm: {
-          name:'',
-            domains: [],
-          },
-      },
-      rules:{
-        "dynamicValidateForm.name":[{required:true}]
-      }
+      calendarWeekends: true,
+      calendarEvents: [ // put the array in the `events` property
+        {
+          title  : 'event1',
+          start  : '2020-11-21',
+          color: 'blue',     // an option!
+          textColor: 'yellow' // an option!
+        },
+        {
+          title  : 'event2',
+          start  : '2020-11-05',
+          end    : '2020-11-27',
+           color: 'red',     // an option!
+          textColor: 'yellow' // an option!
+        },
+        {
+          title  : 'event3',
+          start  : '2020-11-24T12:30:00',
+        },
+        {
+          title  : 'event2',
+          start  : '2020-12-05',
+          end    : '2020-12-27',
+           color: '#ccc',     // an option!
+          textColor: 'yellow' // an option!
+        },
+      ],
+      eventSources:[
+
+    // your event source
+    {
+      events: [ // put the array in the `events` property
+        {
+          title  : 'event1',
+          start  : '2020-11-21',
+          color: 'blue',     // an option!
+          textColor: 'yellow' // an option!
+        },
+        {
+          title  : 'event2',
+          start  : '2020-11-05',
+          end    : '2020-11-27',
+           color: 'red',     // an option!
+          textColor: 'yellow' // an option!
+        },
+        {
+          title  : 'event3',
+          start  : '2020-11-24T12:30:00',
+        },
+        {
+          title  : 'event2',
+          start  : '2020-12-05',
+          end    : '2020-12-27',
+           color: '#ccc',     // an option!
+          textColor: 'yellow' // an option!
+        },
+      ],
+      color: 'black',     // an option!
+      textColor: 'yellow' // an option!
+    }
+
+    // any other event sources...
+
+  ]
       
     };
   },
+  created(){
+    setTimeout(()=>{
+      this.userNameList = [
+        {value:1,label:"用户1"},
+        {value:2,label:"用户2"},
+        {value:3,label:"用户3"},
+        {value:4,label:"用户4"},
+        {value:5,label:"用户5"},
+        {value:6,label:"用户6"},
+        {value:7,label:"用户7"},
+        {value:8,label:"用户8"},
+        {value:9,label:"用户9"},
+        {value:10,label:"用户10"},
+        {value:11,label:"用户11"},
+        {value:12,label:"用户12"},
+        {value:13,label:"用户13"},
+        {value:14,label:"用户14"},
+      ]
+    },3000)
+  },
   methods: {
-    handleChange(v){console.log(v,this.sdfg,'handleChange')},
-    handleFocus(v){console.log(v,'handleFocus')},
-    handleBlur(v){console.log(v,'handleBlur')},
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert('submit!');
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+    toggleWeekends() {
+      this.calendarWeekends = !this.calendarWeekends // update a property
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    gotoPast() {
+      let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
+      calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
     },
-    removeDomain(item) {
-      let index = this.setForm.dynamicValidateForm.domains.indexOf(item);
-      if (index !== -1) {
-        this.setForm.dynamicValidateForm.domains.splice(index, 1);
+    handleDateClick(arg) {
+      if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+        this.calendarEvents.push({ // add new event data
+          title: 'New Event',
+          start: arg.date,
+          allDay: arg.allDay
+        })
       }
     },
-    addDomain() {
-      this.setForm.dynamicValidateForm.domains.push({
-        cityid1: '',
-        cityid2: '',
-        key: Date.now(),
-      });
+    handleEventClick(info){
+      console.log(info,'info')
     },
+    onChange(){
+      console.log(this.value)
+    }
   },
 };
 </script>
 
-<style>
+<style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background: #ccc;
+  padding: 20px;
+}
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+.demo-app {
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
 }
-.s1{
-  width: 1000px;
-  border: 1px solid #000;
-  height: 700px;
-  overflow: scroll;
+.demo-app-top {
+  margin: 0 0 3em;
 }
-.s2{
-  width: 1000px;
-  height: 50px;
-  background: red;
-  font-size: 16px;
+.demo-app-calendar {
+  margin: 0 auto;
 }
-.dynamic-delete-button {
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-  font-size: 24px;
-  color: #999;
-  transition: all 0.3s;
-}
-.dynamic-delete-button:hover {
-  color: #777;
-}
-.dynamic-delete-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
+.leri-box{
+  .jm-leri-left-card-box{
+    height: 660px;
+    margin-right: 20px;
+    background: #fff;
+    .leri-left-btn{
+        margin: 0 0 10px;
+        overflow: hidden;
+        button{
+           float: right;
+        }
+    }
+    .ant-checkbox-group{
+      text-align: left;
+      display:block;
+
+    }
+    .ant-checkbox-group-item{
+      display: block;
+      margin-bottom: 16px;
+    }
+  }
+  .jm-leri-right-card-box{
+    height: 660px;
+    border: 1px solid #ccc;
+    background: #fff;
+    
+  }
 }
 </style>
