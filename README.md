@@ -21,6 +21,9 @@ https://192.168.9.171/svn/KJ/DataQueryTool/WEB/trunk/ty-jeecg-boot-v1.1.1.1/ant-
 
 ant design vue 
 
+tykj:TY@KJ2016
+
+
 ## select
 
 同时设置了 v-model placeholder的时候 placeholder无效 需要把 v-model赋值为undefined（null,""无效）
