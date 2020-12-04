@@ -122,6 +122,8 @@
         // 进行绘制
         if (drawingManager._isOpen && drawingManager.getDrawingMode() === drawingType) {
             drawingManager.close();
+
+            
         } else {
             drawingManager.setDrawingMode(drawingType);
             drawingManager.open();
