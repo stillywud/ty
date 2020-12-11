@@ -1,0 +1,239 @@
+{
+	"code": 200,
+	"message": "请求成功",
+	"success": true,
+	"result": {
+		"id": "1314110297346370000",
+		"category_code": "PC200-8M0",
+		"template_version": "JSON模板版本号",
+		"start_time": "2020-10-13 10:06:50",
+		"longitude": "36.23222254",
+		"latitude": "136.23222284",
+		"data": {
+			"base_info": {
+				"title": "基本信息",
+				"elements": [
+					{
+						"id": 1,
+						"type": "text",
+						"title": "品牌编码",
+						"name": "brand_code",
+						"value": "小松"
+					},
+					{
+						"id": 2,
+						"type": "text",
+						"title": "吨级编码",
+						"name": "tonner_code",
+						"value": "50t"
+					},
+					{
+						"id": 3,
+						"type": "text",
+						"title": "机种编码",
+						"name": "machine_code",
+						"value": "挖掘机"
+					},
+					{
+						"id": 4,
+						"type": "text",
+						"title": "机型编码",
+						"name": "model_code",
+						"value": "PC200"
+					},
+					{
+						"id": 5,
+						"type": "text",
+						"title": "机号",
+						"name": "machine_no",
+						"value": "001"
+					}
+				]
+			},
+			"check_group": [
+				{
+					"group_id": 1,
+					"group_name": "发动机部分",
+					"components": [
+						{
+							"component_id": 1,
+							"component_name": "发动机",
+							"elements": [
+								{
+									"id": 1,
+									"type": "radio",
+									"options": [
+										{
+											"id": 1,
+											"name": "正常"
+										},
+										{
+											"id": 2,
+											"name": "漏油"
+										},
+										{
+											"id": 3,
+											"name": "性能底下"
+										}
+									],
+									"value": 2
+								},
+								{
+									"id": 2,
+									"type": "singleimage",
+									"value": {
+										"thumbnail": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+										"original": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+									}
+								},
+								{
+									"id": 3,
+									"type": "singlevideo",
+									"value": "https://www.w3school.com.cn/i/movie.ogg"
+								}
+							]
+						},
+						{
+							"component_id": 2,
+							"component_name": "大臂提升",
+							"elements": [
+								{
+									"id": 1,
+									"type": "checkbox",
+									"options": [
+										{
+											"id": 1,
+											"name": "速度慢"
+										},
+										{
+											"id": 2,
+											"name": "有震动"
+										}
+									],
+									"value": [1, 2]
+								},
+								{
+									"id": 2,
+									"type": "timer",
+									"name": "提升时间",
+									"value": "6.6"
+								}
+							]
+						},
+						{
+							"component_id": 3,
+							"component_name": "溢流压力",
+							"elements": [
+								{
+									"id": 1,
+									"type": "radio",
+									"options": [
+										{
+											"id": 1,
+											"name": "正常"
+										},
+										{
+											"id": 2,
+											"name": "不正常"
+										}
+									],
+									"value": 2
+								},
+								{
+									"id": 2,
+									"type": "checkbox",
+									"options": [
+										{
+											"id": 1,
+											"name": "速度慢"
+										},
+										{
+											"id": 2,
+											"name": "有震动"
+										}
+									],
+									"value": [1, 2]
+								},
+								{
+									"id": 3,
+									"type": "singleimage",
+									"value": {
+										"thumbnail": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+										"original": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+									}
+								},
+								{
+									"id": 4,
+									"type": "multipleimage",
+									"value": [
+										{
+											"thumbnail": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+											"original": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+										},
+										{
+											"thumbnail": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+											"original": "http://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+										}
+									]
+								},
+								{
+									"id": 5,
+									"type": "singlevideo",
+									"value": "https://www.w3school.com.cn/i/movie.ogg"
+								},
+								{
+									"id": 6,
+									"type": "multiplevideo",
+									"value": [
+										"https://www.w3school.com.cn/i/movie.ogg",
+										"https://www.w3school.com.cn/i/movie.ogg"
+									]
+								},
+								{
+									"id": 7,
+									"type": "timer",
+									"name": "提升时间",
+									"value": "6.6"
+								},
+								{
+									"id": 8,
+									"type": "yyyy-MM-dd HH:mm",
+									"name": "预计维修时间",
+									"value": "2020-10-09 15:55"
+								},
+								{
+									"id": 9,
+									"type": "yyyy-MM-dd",
+									"name": "检查日期",
+									"value": "2020-10-09"
+								},
+								{
+									"id": 10,
+									"type": "number",
+									"name": "故障代码",
+									"value": "10086"
+								},
+								{
+									"id": 11,
+									"type": "text",
+									"name": "故障原因",
+									"value": "通信故障"
+								}
+							]
+						}
+					]
+				},
+				{
+					"group_id": 2,
+					"group_name": "车箱部分",
+					"components": []
+				},
+				{
+					"group_id": 3,
+					"group_name": "底盘部分",
+					"components": []
+				}
+			]
+		}
+	}
+}
