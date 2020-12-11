@@ -28,3 +28,6 @@ tykj:TY@KJ2016
 
 同时设置了 v-model placeholder的时候 placeholder无效 需要把 v-model赋值为undefined（null,""无效）
 
+
+vuedraggable 制作流程
+
