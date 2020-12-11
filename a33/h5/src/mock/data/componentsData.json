@@ -1,0 +1,217 @@
+{
+	"code": 200,
+	"message": "请求成功",
+	"success": true,
+	"result": {
+		"category_code": "PC200-8M0",
+		"template_version": "JSON模板版本号",
+		"data": {
+			"base_info": {
+				"title": "基本信息",
+				"elements": [
+					{
+						"id": 1,
+						"type": "text",
+						"title": "品牌编码",
+						"name": "brand_code",
+						"value": ""
+					},
+					{
+						"id": 2,
+						"type": "text",
+						"title": "吨级编码",
+						"name": "tonner_code",
+						"value": ""
+					},
+					{
+						"id": 3,
+						"type": "text",
+						"title": "机种编码",
+						"name": "machine_code",
+						"value": ""
+					},
+					{
+						"id": 4,
+						"type": "text",
+						"title": "机型编码",
+						"name": "model_code",
+						"value": ""
+					},
+					{
+						"id": 5,
+						"type": "text",
+						"title": "机号",
+						"name": "machine_no",
+						"value": ""
+					}
+				]
+			},
+			"check_group": [
+				{
+					"group_id": 1,
+					"group_name": "发动机部分",
+					"components": [
+						{
+							"component_id": 1,
+							"component_name": "发动机",
+							"elements": [
+								{
+									"id": 1,
+									"type": "radio",
+									"options": [
+										{
+											"id": 1,
+											"name": "正常"
+										},
+										{
+											"id": 2,
+											"name": "漏油"
+										},
+										{
+											"id": 3,
+											"name": "性能底下"
+										}
+									],
+									"value": 1
+								},
+								{
+									"id": 2,
+									"type": "singleimage",
+									"value": ""
+								},
+								{
+									"id": 3,
+									"type": "singlevideo",
+									"value": ""
+								}
+							]
+						},
+						{
+							"component_id": 2,
+							"component_name": "大臂提升",
+							"elements": [
+								{
+									"id": 1,
+									"type": "checkbox",
+									"options": [
+										{
+											"id": 1,
+											"name": "速度慢"
+										},
+										{
+											"id": 2,
+											"name": "有震动"
+										}
+									],
+									"value": []
+								},
+								{
+									"id": 2,
+									"type": "timer",
+									"name": "提升时间",
+									"value": ""
+								}
+							]
+						},
+						{
+							"component_id": 3,
+							"component_name": "溢流压力",
+							"elements": [
+								{
+									"id": 1,
+									"type": "radio",
+									"options": [
+										{
+											"id": 1,
+											"name": "正常"
+										},
+										{
+											"id": 2,
+											"name": "不正常"
+										}
+									],
+									"value": 1
+								},
+								{
+									"id": 2,
+									"type": "checkbox",
+									"options": [
+										{
+											"id": 1,
+											"name": "速度慢"
+										},
+										{
+											"id": 2,
+											"name": "有震动"
+										}
+									],
+									"value": []
+								},
+								{
+									"id": 3,
+									"type": "singleimage",
+									"value": ""
+								},
+								{
+									"id": 4,
+									"type": "multipleimage",
+									"value": []
+								},
+								{
+									"id": 5,
+									"type": "singlevideo",
+									"value": ""
+								},
+								{
+									"id": 6,
+									"type": "multiplevideo",
+									"value": []
+								},
+								{
+									"id": 7,
+									"type": "timer",
+									"name": "提升时间",
+									"value": ""
+								},
+								{
+									"id": 8,
+									"type": "yyyy-MM-dd HH:mm",
+									"name": "预计维修时间",
+									"value": ""
+								},
+								{
+									"id": 9,
+									"type": "yyyy-MM-dd",
+									"name": "检查日期",
+									"value": ""
+								},
+								{
+									"id": 10,
+									"type": "number",
+									"name": "故障代码",
+									"value": ""
+								},
+								{
+									"id": 11,
+									"type": "text",
+									"name": "故障原因",
+									"value": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"group_id": 2,
+					"group_name": "车箱部分",
+					"components": []
+				},
+				{
+					"group_id": 3,
+					"group_name": "底盘部分",
+					"components": []
+				}
+			]
+		}
+	}
+}
