@@ -1,10 +1,10 @@
 <template>
     <div class="widget-form-container">
         <div v-if="data.list.length == 0" class="form-empty">从左侧拖拽或点击来添加字段</div>
-        <a-form-model>
+        <a-form-model layout="horizontal" :labelCol="{ span: 4 }" :wrapperCol="{ span: 14 }">
         <draggable class="" 
             v-model="data.list" 
-            v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.widget-view'}"
+            v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.widget-view-li'}"
             @end="handleMoveEnd"
             @add="handleWidgetAdd"
         >
@@ -23,7 +23,7 @@
                             <draggable
                                 v-model="col.list"
                                 :no-transition-on-drag="true"
-                                v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.widget-view'}"
+                                v-bind="{group:'people', ghostClass: 'ghost',animation: 200, handle: '.widget-view-li'}"
                                 @end="handleMoveEnd"
                                 @add="handleWidgetColAdd($event, element, colIndex)"
                             >
@@ -222,15 +222,8 @@ export default {
     bottom: 0;
     width: 100%;
     margin: auto;
-    .widget-view {
-        padding: 5px 10px 18px;
-        margin: 0;
+    .widget-view-li{
         position: relative;
-        border-left: 5px solid transparent;
-        &.active {
-            border-left: 5px solid #409eff;
-            background: #b3d8ff;
-        }
         &::after {
             content: "";
             position: absolute;
@@ -240,6 +233,16 @@ export default {
             top: 0;
             display: block;
             z-index: 1001;
+        }
+    }
+    .widget-view {
+        padding: 18px 10px 18px;
+        margin: 0;
+        position: relative;
+        border-left: 5px solid transparent;
+        &.active {
+            border-left: 5px solid #409eff;
+            background: #b3d8ff;
         }
     }
     .widget-form-list {

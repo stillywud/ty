@@ -1,22 +1,25 @@
 <template>
-    <a-form-item 
-        class="widget-view"
-        v-if="element && element.key" 
-        :class="{active: selectWidget.key == element.key, 'is_req': element.options.required}"
-        :label="element.name"
-        @click.native.stop="handleSelectWidget(index)"
-    >
-        <template v-if="element.type == 'input'">
-            <a-input 
-                v-model="element.options.defaultValue"
-                :style="{width: element.options.width}"
-                :placeholder="element.options.placeholder"
-                :disabled="element.options.disabled"
-            ></a-input>
-        </template>
-        <a-button title="复制" type="primary" shape="circle" class="widget-action-clone" icon="copy" @click="handleWidgetClone(index)" v-if="selectWidget.key == element.key"/>
-        <a-button title="删除" type="danger" shape="circle" class="widget-action-delete" icon="delete" @click="handleWidgetDelete(index)" v-if="selectWidget.key == element.key"/>
-    </a-form-item>
+    <div class="widget-view-li"  @click.stop="handleSelectWidget(index)">
+        <a-form-item 
+            class="widget-view"
+            v-if="element && element.key" 
+            :class="{active: selectWidget.key == element.key, 'is_req': element.options.required}"
+            :label="element.name"
+            
+        >
+            <template v-if="element.type == 'input'">
+                <a-input 
+                    v-model="element.options.defaultValue"
+                    :style="{width: element.options.width}"
+                    :placeholder="element.options.placeholder"
+                    :disabled="element.options.disabled"
+                ></a-input>
+            </template>
+            <a-button title="复制" type="primary" shape="circle" class="widget-action-clone" icon="copy" @click="handleWidgetClone(index)" v-if="selectWidget.key == element.key"/>
+            <a-button title="删除" type="danger" shape="circle" class="widget-action-delete" icon="delete" @click="handleWidgetDelete(index)" v-if="selectWidget.key == element.key"/>
+        </a-form-item>
+    </div>
+    
 </template>
 <script>
 export default {

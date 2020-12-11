@@ -32,7 +32,7 @@
                                     </draggable>
                                 </template>
 
-                                <template v-if="layoutFields.length">
+                                <!-- <template v-if="layoutFields.length">
                                     <div class="widget-cate">{{$t('fm.components.layout.title')}}</div>
                                     <draggable tag="ul" :list="layoutComponents" 
                                     v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
@@ -48,7 +48,7 @@
                                         </a>
                                     </li>
                                     </draggable>
-                                </template>
+                                </template> -->
                             </div>
                         </a-layout-sider>
                         <a-layout-content>
@@ -73,11 +73,11 @@
                             <a-layout>
                                 <a-layout-header height="45px" style="background:#fff">
                                     <div class="config-tab" :class="{active: configTab=='widget'}" @click="handleConfigSelect('widget')">字段属性</div>
-                                    <div class="config-tab" :class="{active: configTab=='form'}" @click="handleConfigSelect('form')">表单属性</div>
+                                    <!-- <div class="config-tab" :class="{active: configTab=='form'}" @click="handleConfigSelect('form')">表单属性</div> -->
                                 </a-layout-header>
                                 <a-layout-content class="config-content">
                                     <widget-config v-show="configTab=='widget'" :data="widgetFormSelect"></widget-config>
-                                    <form-config v-show="configTab=='form'" :data="widgetForm.config"></form-config>
+                                    <!-- <form-config v-show="configTab=='form'" :data="widgetForm.config"></form-config> -->
                                 </a-layout-content>
                             </a-layout>
                         </a-layout-sider>
@@ -99,19 +99,19 @@ export default {
     data(){
         return{
             basicComponents,
-            layoutComponents,
+            // layoutComponents,
             visible:true,
             basicFields:['input','textarea'],
-            layoutFields:['grid'],
-                  resetJson: false,
-      widgetForm: {
-        list: [],
-        config: {
-          labelWidth: 100,
-          labelPosition: 'right',
-          size: 'small'
-        },
-      },
+            // layoutFields:['grid'],
+            resetJson: false,
+            widgetForm: {
+                list: [],
+                config: {
+                    labelWidth: 100,
+                    labelPosition: 'right',
+                    size: 'small'
+                },
+            },
       configTab: 'widget',
       widgetFormSelect: null,
       previewVisible: false,
