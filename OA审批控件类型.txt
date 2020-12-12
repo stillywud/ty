@@ -1,0 +1,34 @@
+基础控件类型
+radio: 单选
+checkbox：多选
+singleimage：单张图片
+multipleimage：多张图片
+singlevideo：单个视频
+multiplevideo：多个视频
+timer：计时器
+yyyy-MM-dd HH:mm：日期时间选择
+yyyy-MM-dd：日期选择
+text：文本输入
+number：数字输入
+uploadfile: 附件
+combobox: 下拉列表
+textarea: 多行文本
+
+
+布局控件
+card: 面板
+tabs: 标签页
+
+
+高级控件
+ref_approval: 关联单据
+ref_form: 关联表单
+
+
+
+
+
+
+
+
+

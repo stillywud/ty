@@ -1,0 +1,172 @@
+{
+    "name":"租车申请单",
+    "groupId":"1336576371851444225",
+    "approvalDesc": null,
+    "designFormJson":[
+		{
+			"id":"uuid",
+			"type":"radio",
+			"name":"标题",
+			"required":0,
+			"options":[
+				"正常",
+				"不正常"
+			],
+			"value": null
+		},
+		{
+			"id":"uuid",
+			"type":"checkbox",
+			"name":"标题",
+			"required":0,
+			"options":[
+				"速度慢",
+				"有震动"
+			],
+			"value":[]
+		},
+		{
+			"id":"uuid",
+			"type":"singleimage",
+			"name":"标题",
+			"required":0,
+			"max_size": null,
+			"value":{
+			}
+		},
+		{
+			"id":"uuid",
+			"type":"multipleimage",
+			"name":"标题",
+			"required":0,
+			"max_size": null,
+			"max_count": null,
+			"value":[
+			]
+		},
+		{
+			"id":"uuid",
+			"type":"singlevideo",
+			"name":"标题",
+			"required":0,
+			"max_size": null,
+			"value": null
+		},
+		{
+			"id":"uuid",
+			"type":"multiplevideo",
+			"name":"标题",
+			"required":0,
+			"max_size": null,
+			"max_count": null,
+			"value":[]
+		},
+		{
+			"id":"uuid",
+			"type":"timer",
+			"name":"标题",
+			"required":0,
+			"value": null
+		},
+		{
+			"id":"uuid",
+			"type":"yyyy-MM-dd HH:mm",
+			"name":"标题",
+			"required":0,
+			"value": ""
+		},
+		{
+			"id":"uuid",
+			"type":"yyyy-MM-dd",
+			"name":"标题",
+			"required":0,
+			"value":""
+		},
+		{
+			"id":"uuid",
+			"type":"number",
+			"name":"标题",
+			"title":"",
+			"min":"",
+			"max":"",
+			"required":0,
+			"value": null
+		},
+		{
+			"id":"uuid",
+			"type":"text",
+			"name":"标题",
+			"title":"",
+			"required":0,
+			"regexp":"",
+			"value":""
+		},
+		{
+			"id":"uuid",
+			"type":"card",
+			"name":"标题",
+			"children":[
+			
+			]
+		},
+		{
+			"id":"uuid",
+			"type":"tabs",
+			"tabs":[
+				{
+					"id":"uuid",
+					"name":"标题",
+					"children":[
+					]
+				}
+			]
+		},
+		{
+			"id":"uuid",
+			"type":"uploadfile",
+			"name":"标题",
+			"file_type":"",
+			"max_size":"",
+			"max_count":"",
+			"required":0,
+			"value":[]
+		},
+		{
+			"id":"uuid",
+			"type":"combobox",
+			"name":"标题",
+			"required":0,
+			"items":["item1","item2","item3"],
+			"value": null
+		},
+		{
+			"id":"uuid",
+			"type":"textarea",
+			"name":"标题",
+			"title":"",
+			"required":0,
+			"value":""
+		},
+		{
+			"id":"uuid",
+			"type":"ref_form",
+			"name":"标题",
+			"value": ["表单编码1","表单编码2"]
+			"required":0
+		}
+	],
+    "designFlowJson":[
+		{
+			"approval_people_type":1,
+			"approval_type":1,
+			"max_count": null,
+			"executor_node":[]
+		},
+		{
+			"approval_people_type":1,
+			"approval_type":2,
+			"max_count": null,
+			"executor_node":[]
+		}
+	]
+}
