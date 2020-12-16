@@ -1,83 +1,59 @@
 <template>
-    <div class="mtt-tpl-making">
-        <!-- <van-row>
-            <van-col span="8">span: 8</van-col>
-            <van-col span="8">span: 8</van-col>
-            <van-col span="8">span: 8</van-col>
-        </van-row>
-        <van-field  v-model="value" label="" placeholder="请输入用户名" />
-        <mtt-upload 
-            :title="title"
-            :disabled="disabled"
-            :accept="accept"
-        /> -->
-        <!-- <mt-input 
+<div>
+    <ul>
+        <li v-for="(it,index) in list" :key="it">{{it.split('@@')[1]}}-----<a-icon @click="del(index)" type="right-circle" /></li>
+    </ul>
+    <a-button type="primary" @click="showModal(list)">
+      Open Modal with async logic
+    </a-button>
+    <ind2 ref="ind2" @emitlist="emitlist"/>
+  </div>
 
-        /> -->
-        <van-form @submit="onSubmit">
-            <mt-preview
-                v-for="(it, index) in list"
-                :key="index"
-                :elementData="it"
-            />
-            <div style="margin: 16px;">
-                <van-button round block type="info" native-type="submit">
-                提交
-                </van-button>
-            </div>
-        </van-form>
-
-        <div @click="sdf">111</div>
-    </div>
 </template>
 <script>
-import MttUpload from './com/upload.vue'
-import MtInput from './com/MtInput.vue'
-import MtPreview from './com/MtPreview.vue'
+import axios from 'axios'
+import ind2 from './index2_1.vue'
 export default {
-    data(){
-        return{
-            value:'',
-            list:[
-                {type:'input',name:"请示主题",typeType:"text",required:false,pattern:'/\d{6}/',options:{defaultValue:undefined,maxlength:2}},
-                {type:'input',name:"错误信息",typeType:"textarea",required:true,pattern:'/\d{6}/',options:{defaultValue:undefined}}
-            ]
-        }
-    },
-    components:{
-        MttUpload,
-        MtInput,
-        MtPreview
-    },
+  data() {
+    return {
+      list:[],
+
+      columns:[
+          {
+                title: 'HelpDetailID',
+                dataIndex: 'HelpDetailID',
+            },
+            {
+                title: 'RealName',
+                dataIndex: 'RealName',
+            },
+            {
+                title: 'Status',
+                dataIndex: 'Status',
+            },
+      ],
+      selectedRowKeys: [], // Check here to configure the default column
+    };
+  },
+  components:{
+      ind2
+  },
     mounted(){
-        
+        // this.init(1)
     },
-    methods:{
-       sdf(){
-            console.log(this.list)
+    methods: {
+        showModal(o){
+            this.$refs.ind2.show(o)
         },
-        onSubmit(){
-            console.log(this.list,1)
+        emitlist(o){
+            this.list = o;
+        },
+        del(o){
+            this.list = this.list.filter((it,index) => {
+                return index !== o
+            })
         }
-    }
-}
+
+    },
+};
 </script>
-<style lang="scss">
-.mtt-tpl-making{
-    background: #fff;
-    min-height: 100vh;
-    font-size: 14px;
-    .mtt-tpl-upload{
-        margin-bottom: 16px;
-    }
-    .mtt-tpl-block__title{
-        margin: 0;
-        padding: 32px 16px 16px;
-        color: rgba(69, 90, 100, 0.6);
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 16px;
-    }
-}
-    
-</style>
