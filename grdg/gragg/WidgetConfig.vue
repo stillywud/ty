@@ -169,8 +169,13 @@ export default {
         ref_form_JSON(str){
             try{
                 if(str){
-                    let strJSON = JSON.parse(str);
-                    return strJSON
+                    if(typeof str === 'string'){
+                        let strJSON = JSON.parse(str);
+                        return strJSON
+                    }else{
+                        return str
+                    }
+                    
                 }
             }catch(e){
                 console.log(e)
@@ -181,7 +186,11 @@ export default {
             
         },
         ref_form_start(o){
-            this.$refs.RefFormStart.show(o)
+            let arr = [];
+            o.forEach(item => {
+                arr.push(`${item.desformCode}@@${item.formType}`)
+            })
+            this.$refs.RefFormStart.show(arr)
         },
         ref_form_del(nindex){
             this.data.value = this.data.value.filter((item, index) => {

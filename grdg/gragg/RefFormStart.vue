@@ -18,7 +18,7 @@
             <a-form-model-item>
                 <a-space>
                     <a-button type="primary" @click="souBtn">搜索</a-button>
-                    <!-- <a-button type="primary" @click="resetBtn">重置</a-button> -->
+                    <a-button type="primary" @click="resetBtn">重置</a-button>
                 </a-space>
             </a-form-model-item>
         </a-form-model>
@@ -26,12 +26,13 @@
             style="margin:20px"
             ref="table"
             bordered
-            :row-key="record => `${record}`"
+            :row-key="record => `${record.desformCode}@@${record.formType}`"
             :columns="columns"
             :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
             :dataSource="dataSource"
-            :pagination="ipagination"
+            :pagination="false"
             :loading="tableLoading"
+            :scroll="{ y: 400 }"
             @change="handleTableChange"
         >
             <span slot="formType" slot-scope="text, column">
@@ -64,6 +65,7 @@ export default {
             },
             dataSource:[],
             selectedRowKeys:[],
+            selectArr:[],
             cachelit:{},
             ipagination:{
                 showSizeChanger:true,
@@ -71,7 +73,7 @@ export default {
                 showLessItems:true,
                 pageSizeOptions:["10", "20", "50"],
                 pageNo:1,
-                pageSize:10
+                pageSize:9999
             },
         }
     },
@@ -82,15 +84,27 @@ export default {
         },
         handleCancel(){
             this.visible = false;
-            this.resetBtn();
+            this.$emit("ref_form_list", this.selectArr);
+            this.resetal();
+        },
+        filterParentData(){
+            this.dataSource.forEach(item => {
+                this.selectedRowKeys.forEach(it => {
+                    if(it === `${item.desformCode}@@${item.formType}`){
+                        this.selectArr.push(item);
+                    }
+                })
+            })
         },
         handleOk(){
-            this.$emit("ref_form_list", this.selectedRowKeys);
+            this.filterParentData(this.selectedRowKeys);
+            this.$emit("ref_form_list", this.selectArr);
             this.resetal();
         },
         resetal(){
             this.visible = false;
-            this.selectedRowKeys = []
+            this.selectedRowKeys = [];
+            this.selectArr = [];
             const pager = { ...this.ipagination };
             pager.current = 1;
             this.ipagination = pager;
@@ -98,15 +112,12 @@ export default {
         show(o){
             this.visible = true;
             this.tableLoading = true;
-            this.$nextTick(()=>{
-                if(Array.isArray(o) && o.length > 0){
-                    this.selectedRowKeys = o;
-                }
-            })
             this.initTable({pageNo:1,pageSize:this.ipagination.pageSize},o);
         },
         resetBtn(){
+            this.tableLoading = true;
             this.$refs.formInline.resetFields();
+            this.initTable({pageNo:1,pageSize:this.ipagination.pageSize});
         },
         souBtn(){
             this.initTable({pageNo:1,pageSize:this.ipagination.pageSize,...this.formInline});
@@ -137,6 +148,11 @@ export default {
                 if(success){
                     let {records, total, current} = result;
                     this.dataSource = records;
+                    if(Array.isArray(o) && o.length > 0){
+                        this.selectArr = []
+                        this.selectedRowKeys = o;
+                        this.filterParentData();
+                    }
                     this.ipagination = this.fnPage({total,pageNo:current,pageSize:params.pageSize})//pagination
                     
                 }else{
