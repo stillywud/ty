@@ -359,6 +359,15 @@
         @inputchange="inputchange"
       />
     </template>
+    <template v-if="widget.type == 'tels'"><!--身份证组件-->
+      <ty-tels
+        :value="dataModel"
+        :style="{width: _width}"
+        :disabled="widget.options.disabled"
+        :placeholder="widget.options.placeholder"
+        :element="widget"
+      />
+    </template>
 
       <!-- update-end--Author:mx Date:20210101 for：新增ty自定义组件 -->
 
@@ -391,6 +400,7 @@ import JSelect from '@/components/jeecg/JSelect'
 import JRadioGroup from '@/components/jeecg/JRadioGroup'
 
 import TIdInput from './ty/TIdInput.vue'
+import TyTels from './ty/TyTels.vue'
 
 export default {
   name: 'GenerateFormItem',
@@ -406,7 +416,8 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
-    ,TIdInput
+    ,TIdInput,
+    TyTels
   },
   data () {
     return {
