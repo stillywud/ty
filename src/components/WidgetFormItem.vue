@@ -37,6 +37,12 @@
   ></j-tabs>
   <!-- update-end--Author:sunjianlei Date:20190808 for：布局组件封装进 formItem 组件中 -->
 
+  <ty-date-range
+      v-else-if="element.type === 'daterange'"
+      mode="daterange"
+      :element="element"
+  />
+
   <!--  update-begin--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
   <el-form-item class="widget-view"
       v-else-if="element && element.key"
@@ -339,7 +345,7 @@ import JAreaLinkage from './jeecg/JAreaLinkage'
 
 import TIdInput from './ty/TIdInput.vue'
 import TyTels from './ty/TyTels.vue'
-
+import TyDateRange from './ty/TyDateRange.vue'
 
 export default {
   name: 'WidgetFormItem',
@@ -353,7 +359,8 @@ export default {
     JSelectUser, JSelectDepart, JButton, JTableDict, JText, JDivider, JFileUpload, JAreaLinkage
     // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------
     ,TIdInput,
-    TyTels
+    TyTels,
+    TyDateRange
   },
   data () {
     return {
