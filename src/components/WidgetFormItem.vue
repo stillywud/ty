@@ -295,6 +295,13 @@
               :placeholder="element.options.placeholder"
             />
           </template>
+          <template v-if="element.type == 'tels'"><!--身份证组件-->
+            <ty-tels
+              :style="{width: _width}"
+              :disabled="element.options.disabled"
+              :placeholder="element.options.placeholder"
+            />
+          </template>
 
         <!-- update-end--Author:mx Date:20210101 for：新增ty自定义组件 -->
 
@@ -331,6 +338,7 @@ import JFileUpload from './jeecg/JFileUpload'
 import JAreaLinkage from './jeecg/JAreaLinkage'
 
 import TIdInput from './ty/TIdInput.vue'
+import TyTels from './ty/TyTels.vue'
 
 
 export default {
@@ -344,7 +352,8 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButton, JTableDict, JText, JDivider, JFileUpload, JAreaLinkage
     // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------
-    ,TIdInput
+    ,TIdInput,
+    TyTels
   },
   data () {
     return {
