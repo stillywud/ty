@@ -47,6 +47,35 @@
         </div>
       </el-form-item>
 
+      <template v-if="data.type ==='daterange'">
+        <el-form-item label="开始时间标题" >
+          <el-input v-model="data.options.startName"></el-input>
+        </el-form-item>
+        <el-form-item label="结束时间标题">
+          <el-input v-model="data.options.endName"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间占位符" >
+          <el-input v-model="data.options.startPlaceholder"></el-input>
+        </el-form-item>
+        <el-form-item label="结束时间占位符">
+          <el-input v-model="data.options.endPlaceholder"></el-input>
+        </el-form-item>
+        <el-form-item label="日期类型">
+          <el-select v-model="data.options.formatType" placeholder="请选择">
+            <el-option label="年-月-日" :value="1"></el-option>
+            <el-option label="年-月-日 时:分:秒" :value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="自动计算时长">
+          <el-switch v-model="data.options.durationType" ></el-switch>
+        </el-form-item>
+        <el-form-item label="时长标题">
+          <el-input v-model="data.options.durationName"></el-input>
+        </el-form-item>
+      </template>
+
+      
+
       <el-form-item label="占位内容" v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
@@ -896,7 +925,8 @@ export default {
         required: null,
         pattern: null,
         range: null,
-        length: null
+        length: null,
+        value1:''
       },
 
       // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------

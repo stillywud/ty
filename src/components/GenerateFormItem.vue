@@ -52,6 +52,17 @@
   />
   <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件 -->
 
+  <ty-date-range
+      v-else-if="widget.type === 'daterange'"
+      mode="daterange"
+      :element="widget"
+      :config="config"
+      :models.sync="dataModels"
+      :rules="rules"
+      :readOnly="readOnly"
+      :class="className"
+  />
+
   <el-form-item v-else :id="widget.key" :label="formItemLabel" :prop="widget.model" :style="formItemStyle">{{widget}}
     <template v-if="widget.type == 'input'">
       <el-input-number
@@ -401,6 +412,7 @@ import JRadioGroup from '@/components/jeecg/JRadioGroup'
 
 import TIdInput from './ty/TIdInput.vue'
 import TyTels from './ty/TyTels.vue'
+import TyDateRange from './ty/TyDateRange.vue'
 
 export default {
   name: 'GenerateFormItem',
@@ -417,7 +429,8 @@ export default {
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
     ,TIdInput,
-    TyTels
+    TyTels,
+    TyDateRange
   },
   data () {
     return {
