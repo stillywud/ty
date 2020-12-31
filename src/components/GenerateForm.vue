@@ -28,14 +28,13 @@
           </el-form-item>
         </template>
 
-        <template v-else>{{rules}}---{{models}}--{{data}}
+        <template v-else>
           <generate-form-item
               ref="formItem"
               :key="item.key"
               :data="data"
               :config="data.config"
               :models.sync="models"
-              :model="item.model"
               :rules="rules"
               :widget="item"
               :remote="remote"
@@ -316,7 +315,6 @@ export default {
     device: {
       immediate: true,
       handler() {
-        console.log(2222)
         const cssExpandId = '__view-css-expand'
         let { css: userCss, url: { css: userCssUrl } } = this.getExpand()
 

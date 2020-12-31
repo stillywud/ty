@@ -1,15 +1,16 @@
 <template>
   <div v-if="show">
     <el-form label-position="top" size="small">
-      <!-- update-start--Author:mx Date:20210101 for：身份证新增提示信息 -->
       <div 
-        class="postcard-elAlart"
-        v-if="data.type === 'postcard'">
+        class="secIdCard-elAlart"
+        v-if="data.type === 'secIdCard'">
         <i class="el-icon-warning"></i>将自动检验身份证号码的正确性
       </div>
-      <!-- update-end--Author:mx Date:20210101 for：身份证新增提示信息 -->
-
-
+      <div 
+        class="secIdCard-elAlart"
+        v-if="data.type === 'tels'">
+        <i class="el-icon-warning"></i>将自动检验号码的正确性,可在手机上直接点击拨打
+      </div>
       <!-- update-begin--Author:sunjianlei Date:20190708 for：修改标题的展示逻辑 -->
       <el-form-item label="标题" v-if=" !data.hideLabel">
         <el-input v-model="data.name"></el-input>
@@ -74,8 +75,6 @@
         </el-form-item>
       </template>
 
-      
-
       <el-form-item label="占位内容" v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
@@ -87,6 +86,21 @@
       </el-form-item>
       <el-form-item label="显示输入框" v-if="Object.keys(data.options).indexOf('showInput')>=0">
         <el-switch v-model="data.options.showInput" ></el-switch>
+      </el-form-item>
+      <!-- 金额是否开启大写-->
+      <el-form-item v-if="data.type==='amountWords'">
+        <template #label>
+          <span>显示大写<span style="font-size:12px;padding-left:5px">(输入自然数后自动显示大写)</span></span>
+        </template>
+        <el-switch v-model="data.options.capitaled" />
+      </el-form-item>
+      <!--电话开启固话手机--->
+      <el-form-item label="类型" v-if="data.type==='tels'">
+        <el-radio-group v-model="data.options.telType">
+          <el-radio :label="1">手机和固话</el-radio>
+          <el-radio :label="2">仅手机</el-radio>
+          <el-radio :label="3">仅固话</el-radio>
+        </el-radio-group>
       </el-form-item>
       <!-- update-begin--Author:sunjianlei Date:20190611 for：修改计数器默认值 -->
       <el-form-item label="控制按钮" v-if="Object.keys(data.options).indexOf('controls')>=0">
@@ -661,13 +675,11 @@
           </el-radio-group>
         </el-form-item>
         <h3>子Tab属性</h3>
-        <template v-for="(pane,i) of data.panes" >
-          <div :key="i" v-if="pane.name === data.options.activeName">
-            <el-form-item label="Tab标题">
-              <el-input placeholder="Tab标题" v-model="pane.label"/>
-            </el-form-item>
-          </div>
-        </template>
+        <div v-for="(pane,i) of data.panes" :key="i" v-if="pane.name === data.options.activeName">
+          <el-form-item label="Tab标题">
+            <el-input placeholder="Tab标题" v-model="pane.label"/>
+          </el-form-item>
+        </div>
       </template>
       <!-- update-end--Author:sunjianlei Date:20190621 for：新增Tabs属性 -->
 
@@ -781,7 +793,7 @@
         <el-form-item label="自定义返回字段">
           <el-select v-model="data.options.customReturnField" style="width: 100%">
             <template v-for="option of customReturnFieldOptions[data.type]">
-              <el-option :value="option.value" :label="option.label" :key="option.label"/>
+              <el-option :value="option.value" :label="option.label"/>
             </template>
           </el-select>
         </el-form-item>
@@ -801,6 +813,8 @@
           </el-row>
         </el-form-item>
       </template>
+
+
 
       <el-form-item label="CSS类名" v-if="Object.keys(data).indexOf('className')>=0">
         <el-input v-model="data.className"/>
@@ -925,8 +939,7 @@ export default {
         required: null,
         pattern: null,
         range: null,
-        length: null,
-        value1:''
+        length: null
       },
 
       // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
@@ -1050,6 +1063,7 @@ export default {
       return false
     },
     packageInput(model, name, defaultValue, required = false) {
+      console.log('packageInput')
       return {
         type: 'input',
         name: name,
@@ -1066,7 +1080,7 @@ export default {
         model: model,
         rules: [
           { type: 'string', message: name + '格式不正确' },
-          { required: required, message: name + '必须填写1' }
+          { required: required, message: name + '必须填写' }
         ],
         isSubItem: true
       }
@@ -1132,7 +1146,6 @@ export default {
           this.data.rules.push(this.validator[key])
         }
       })
-      console.log(this.data)
     },
     handleSelectMuliple (value) {
       if (value) {
@@ -1280,7 +1293,7 @@ export default {
     },
     'data.options.required': function(val) {
       if (val) {
-        this.validator.required = {required: true, message: `${this.data.name}必须填写2`}
+        this.validator.required = {required: true, message: `${this.data.name}必须填写`}
       } else {
         this.validator.required = null
       }
@@ -1359,7 +1372,7 @@ export default {
       padding: 0 8px;
     }
   }
-  .postcard-elAlart{
+  .secIdCard-elAlart{
     background:rgb(198, 226, 255);
     border: 1px solid rgb(121, 187, 255);
     padding: 10px;
@@ -1370,6 +1383,5 @@ export default {
       margin-right: 5px;
     }
   }
-
 </style>
 <!--update-end--Author:sunjianlei Date:20190529 for：新增子表操作事件 ---------------------->

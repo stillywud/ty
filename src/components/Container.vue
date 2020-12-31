@@ -78,23 +78,21 @@
             </draggable>
             <!-- update-end--Author:sunjianlei Date:20190606 for：新增JEECG组件 -->
 
-            <!-- update-begin--Author:mx Date:20210101 for：扩展组件 -->
-            <div class="widget-cate">扩展</div>
+            <div class="widget-cate">TY 字段</div>
             <draggable tag="ul" :list="tyComponents"
-              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
-              @end="handleMoveEnd"
-              @start="handleMoveStart"
-              :move="handleMove"
+                       v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
+                       @end="handleMoveEnd"
+                       @start="handleMoveStart"
+                       :move="handleMove"
             >
 
-              <li class="form-edit-widget-label data-grid" v-for="(item, index) in tyComponents" :key="index" :data-type="item.type">
+              <li class="form-edit-widget-label" v-for="(item, index) in tyComponents" :key="index" :data-type="item.type">
                 <a>
                   <i class="icon iconfont" :class="item.icon"></i>
                   <span>{{item.name}}</span>
                 </a>
               </li>
             </draggable>
-            <!-- update-start--Author:mx Date:20210101 for：扩展组件 -->
 
           </div>
 
@@ -144,7 +142,7 @@
           :center="false"
           :dialogOptions="(generateWidgetForm.config||{}).dialogOptions"
           switchFullscreen
-        >{{generateWidgetForm}}=={{widgetModels}}=={{generateUserInfo}}
+        >
           <generate-form insite="true" v-if="previewVisible" :data="generateWidgetForm" :userInfo="generateUserInfo" :value="widgetModels" :remote="remoteFuncs" ref="generateForm" :readOnly="readOnly" action="preview">
 
             <template v-slot:blank="scope">
@@ -213,7 +211,7 @@ import { recursiveAllWidget, defaultDialogOptions, updateOldVersionJSON, cloneOb
 // update-end--Author:sunjianlei Date:20190722 for：新增import ------------
 
 
-// update-begin--Author:sunjianlei Date:20190606-20210101 for：新增JEECG组件 ------------
+// update-begin--Author:sunjianlei Date:20190606 for：新增JEECG组件 ------------
 import {basicComponents, layoutComponents, advanceComponents, jeecgComponents, tyComponents} from './componentsConfig.js'
 // update-end--Author:sunjianlei Date:20190606 for：新增JEECG组件 --------------
 import {loadJs, loadCss} from '../util/index.js'
@@ -293,8 +291,8 @@ export default {
       advanceComponents,
       // update-begin--Author:sunjianlei Date:20190606 for：新增JEECG组件 ------------
       jeecgComponents,
-      tyComponents,
       // update-end--Author:sunjianlei Date:20190606 for：新增JEECG组件 ------------
+      tyComponents,
 
       resetJson: false,
       widgetForm: {

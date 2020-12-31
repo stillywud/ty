@@ -51,7 +51,6 @@
       @dialogChange="handleDialogChange"
   />
   <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件 -->
-
   <ty-date-range
       v-else-if="widget.type === 'daterange'"
       mode="daterange"
@@ -62,8 +61,7 @@
       :readOnly="readOnly"
       :class="className"
   />
-
-  <el-form-item v-else :id="widget.key" :label="formItemLabel" :prop="widget.model" :style="formItemStyle">{{widget}}
+  <el-form-item v-else :id="widget.key" :label="formItemLabel" :prop="widget.model" :style="formItemStyle">
     <template v-if="widget.type == 'input'">
       <el-input-number
           v-if="widget.options.dataType == 'number' || widget.options.dataType == 'integer' || widget.options.dataType == 'float'"
@@ -360,27 +358,53 @@
     </template>
     <!-- update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 -->
 
-    <!-- update-start--Author:mx Date:20210101 for：新增ty自定义组件 -->
-    <template v-if="widget.type == 'postcard'"><!--身份证组件-->
-      <t-id-input
+    <template v-if="widget.type === 'secIdCard'">
+      <ty-sec-id-card
         :value="dataModel"
-        :style="{width: _width}"
-        :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
-        @inputchange="inputchange"
+        :style="{width: _width}"
+        :maxlength="18"
+        :disabled="widget.options.disabled"
+        :class="className"
+        :element="widget"
+        :rules="rules"
+        @onValTransfer="onValTransfer"
       />
     </template>
-    <template v-if="widget.type == 'tels'"><!--身份证组件-->
+    <template v-if="widget.type == 'amountWords'">
+        <ty-amount-words
+          :value="dataModel"
+          :style="{width: _width}"
+          :disabled="widget.options.disabled"
+          :placeholder="widget.options.placeholder"
+          :capitaled="widget.options.capitaled"
+          :element="widget"
+          :rules="rules"
+          @onValTransfer="onValTransfer"
+        />
+      </template>
+      <template v-if="widget.type == 'tels'">
       <ty-tels
         :value="dataModel"
         :style="{width: _width}"
         :disabled="widget.options.disabled"
         :placeholder="widget.options.placeholder"
         :element="widget"
+        :rules="rules"
+        @onValTransfer="onValTransfer"
       />
     </template>
-
-      <!-- update-end--Author:mx Date:20210101 for：新增ty自定义组件 -->
+    <!-- <template>
+      <ty-date-range
+        v-if="widget.type === 'daterange'"
+        :element="widget"
+        :config="config"
+        :models.sync="dataModels"
+        :rules="rules"
+        :readOnly="readOnly"
+        :class="className"
+    />
+    </template> -->
 
   </el-form-item>
 </template>
@@ -410,14 +434,16 @@ import moment from 'moment'
 import JSelect from '@/components/jeecg/JSelect'
 import JRadioGroup from '@/components/jeecg/JRadioGroup'
 
-import TIdInput from './ty/TIdInput.vue'
+// 金额
+import TyAmountWords from './ty/TyAmountWords' 
 import TyTels from './ty/TyTels.vue'
+import TySecIdCard from './ty/TySecIdCard.vue'
+// 日期
 import TyDateRange from './ty/TyDateRange.vue'
-
 export default {
   name: 'GenerateFormItem',
   mixins: [GenerateFormItemMixins],
-  props: ['config', 'widget', 'models','model', 'rules', 'remote', 'readOnly', 'className'],
+  props: ['config', 'widget', 'models', 'rules', 'remote', 'readOnly', 'className'],
   components: {
     JSelect,
     JRadioGroup,
@@ -428,8 +454,9 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
-    ,TIdInput,
+    ,TyAmountWords,
     TyTels,
+    TySecIdCard,
     TyDateRange
   },
   data () {
@@ -516,127 +543,7 @@ export default {
 
   },
   methods: {
-    idCardUpdate(_str) {
-      var idCard18;
-      var regIDCard15 = /^(\d){15}$/;
-      if (regIDCard15.test(_str)) {
-        var nTemp = 0;
-        var ArrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8,
-          4, 2);
-        var ArrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4', '3',
-          '2');
-        _str = _str.substr(0, 6) + '1' + '9' + _str.substr(6, _str.length - 6);
-        for (var i = 0; i < _str.length; i++) {
-          nTemp += parseInt(_str.substr(i, 1)) * ArrInt[i];
-        }
-        _str += ArrCh[nTemp % 11];
-        idCard18 = _str;
-      } else {
-        idCard18 = "#";
-      }
-      return idCard18;
-    },
-    validatePass2(rule, value, callback) {
-      let iSum = 0;
-      let sId = value;
-      let aCity = {
-          11: "北京",
-          12: "天津",
-          13: "河北",
-          14: "山西",
-          15: "内蒙",
-          21: "辽宁",
-          22: "吉林",
-          23: "黑龙",
-          31: "上海",
-          32: "江苏",
-          33: "浙江",
-          34: "安徽",
-          35: "福建",
-          36: "江西",
-          37: "山东",
-          41: "河南",
-          42: "湖北",
-          43: "湖南",
-          44: "广东",
-          45: "广西",
-          46: "海南",
-          50: "重庆",
-          51: "四川",
-          52: "贵州",
-          53: "云南",
-          54: "西藏",
-          61: "陕西",
-          62: "甘肃",
-          63: "青海",
-          64: "宁夏",
-          65: "新疆",
-          71: "台湾",
-          81: "香港",
-          82: "澳门",
-          83: "台湾",
-          91: "国外"
-      };
-      // if (value.length == 15){sId = this.idCardUpdate(value);}else{ sId = value;}
-      if (!/^\d{17}(\d|x)$/i.test(sId)) {
-          // return false;
-          callback('身份证格式不正确')
-      }
-      sId = sId.replace(/x$/i, "a");
-      //非法地区
-      if (aCity[parseInt(sId.substr(0, 2))] == null) {
-          // return false;
-          callback('身份证格式不正确-非法地区')
-      }
-      let sBirthday = sId.substr(6, 4) + "-" + Number(sId.substr(10, 2)) +
-          "-" + Number(sId.substr(12, 2));
-      let d = new Date(sBirthday.replace(/-/g, "/"));
-      //非法生日
-      if (sBirthday != (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d
-              .getDate())) {
-          // return false;
-          callback('身份证格式不正确-非法生日')
-      }
-      for (let i = 17; i >= 0; i--) {
-          iSum += (Math.pow(2, i) % 11) * parseInt(sId.charAt(17 - i), 11);
-      }
-      if (iSum % 11 != 1) {
-          // return false;
-          callback('身份证格式不正确')
-      }
-      // return true;
-      callback()
-    },
-    filterIn(arr){
-      let ba = false
-      for(let it of arr){
-        if(it.status === 1){
-          ba = true
-          break;
-        }
-      }
-      return ba
-    },
-    inputchange(e){
-      // this.$nextTick(()=>{
-      //   console.log(this.$parent.$parent.$refs.)
-      // })
-      
-      if(e){
-          if(!this.filterIn(this.rules[this.widget.model])){
-            console.log(1)
-            this.rules[this.widget.model].push({ validator: this.validatePass2, trigger: ['blur','change'],status:1 }) 
-          }
-      }else{
-        if(!this.widget.options.required){
-          this.rules[this.widget.model].pop();
-          this.$parent.$parent.$refs.generateForm.clearValidate(this.widget.model)
-        }
-      }
-      console.log(this.rules,this.models,this.widget,this.model,'rules')
 
-      this.dataModel = e;
-    },
     // update-begin--Author:sunjianlei Date:20190705 for：新增自定义事件 -----------
     /** 处理PopupCgreport组件事件 */
     handlePopupCgreportOk(values) {
@@ -656,12 +563,15 @@ export default {
     },
     // update-end--Author:sunjianlei Date:20190705 for：新增自定义事件 -----------
 
+    // 新增ty组件传值
+    onValTransfer(e){
+      this.dataModel = e;
+    }
   },
   watch: {
     dataModel: {
       deep: true,
       handler (val) {
-        console.log(val,'val')
         this.models[this.widget.model] = val
         this.$emit('update:models', {
           ...this.models,

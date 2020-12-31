@@ -1,9 +1,13 @@
 <template>
-    <div>{{element}}
+    <div 
+        class="widget-view"
+        :class="{active: selectWidget.key == element.key}"
+        :data-type="element.type"
+        @click.stop="handleSelectWidget(index)"
+    >{{data}}222
         <el-form-item
             :label="element.options.startName"
             :required="element.options.required"
-            prop="value1"
             >
             <el-date-picker
             v-model="value1"
@@ -13,7 +17,6 @@
         <el-form-item
             :label="element.options.endName"
             :required="element.options.required"
-            prop="value2"
             >
             <el-date-picker
             v-model="value2"
@@ -29,13 +32,34 @@
             :readonly="true"
             :placeholder="`请输入${element.options.durationName}`" />
         </el-form-item>
+        <!-- 操作按钮 -->
+        <template v-if="mode === 'daterange' && selectWidget.key == element.key">
+        <el-button
+            title="删除"
+            style="bottom: -20px;"
+            class="widget-action-delete"
+            type="danger" circle plain
+            @click.stop="handleWidgetDelete(index)"
+        >
+            <i class="iconfont icon-trash"></i>
+        </el-button>
+        <el-button
+            title="复制"
+            style="bottom: -20px;"
+            class="widget-action-clone"
+            type="primary" circle plain
+            @click.stop="handleWidgetClone(index)"
+        >
+            <i class="iconfont icon-clone"></i>
+        </el-button>
+        </template>
     </div>
 </template>
 <script>
-// import { ElementAction, WidgetDraggable } from '../../mixins/CommonMixins'
+import { ElementAction, WidgetDraggable } from '../../mixins/CommonMixins'
 export default {
     data:"TyDateRange",
-    // mixins: [ElementAction, WidgetDraggable],
+    mixins: [ElementAction, WidgetDraggable],
     data(){
         return {
             value1:'',
@@ -47,9 +71,7 @@ export default {
         this.value1 = this.element.options.defaultValue[0];
         this.value2 = this.element.options.defaultValue[1];
         if(this.element.options.required){
-            console.log(this.rules,this.index)
-            this.rules[`value1`] = [{required:true,message:'请选择结束时间'}]
-            this.rules[`value2`] = [{required:true,message:'请选择结束时间'}]
+            console.log(this.rules)
             // this.rules = [{required:true,message:'请选择开始时间'},{required:true,message:'请选择结束时间'}]
         }
     },

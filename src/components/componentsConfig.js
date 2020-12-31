@@ -630,43 +630,7 @@ export const jeecgComponents = [
 // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------------------
 ]
 
-// update-start--Author:mx Date:20210101 for：新增自定义组件 --------------------
 export const tyComponents = [
-  {
-    type: 'postcard',
-    name: '身份证',
-    className: 'form-postcard',
-    icon: 'icon-input',
-    hideTitle: false,
-    options: {
-      width: '100%',
-      defaultValue: '',
-      required: false,
-      placeholder: '',
-      readonly: false,
-      disabled: false,
-      hidden: false,
-    },
-    remoteAPI: { url: '', executed: false },
-  },
-  {
-    type: 'tels',
-    name: '电话',
-    className: 'form-tels',
-    icon: 'icon-popup',
-    hideTitle: false,
-    options: {
-      width: '100%',
-      defaultValue: '',
-      required: false,
-      telType:1,
-      placeholder: '',
-      readonly: false,
-      disabled: false,
-      hidden: false,
-    },
-    remoteAPI: { url: '', executed: false },
-  },
   {
     type: 'daterange',
     name: '日期区间',
@@ -675,7 +639,7 @@ export const tyComponents = [
     hideLabel:true,
     hideTitle: false,
     options: {
-      defaultValue: '',
+      defaultValue: ['','',''],
       disabled: false,
       startPlaceholder: '请选择',
       startName:'开始时间',
@@ -691,5 +655,60 @@ export const tyComponents = [
     },
     // remoteAPI: { url: '', executed: false },
   },
+  // {
+  //   type: 'secIdCard',
+  //   name: '身份证',
+  //   className: 'form-secIdCard',
+  //   icon: 'icon-input',
+  //   hideTitle: false,
+  //   options: {
+  //     width: '100%',
+  //     defaultValue: '',
+  //     required: false,
+  //     placeholder: '',
+  //     readonly: false,
+  //     disabled: false,
+  //     fillRuleCode: '',
+  //     hidden: false,
+  //   },
+  //   // remoteAPI: { url: '', executed: false },
+  // },
+  // {
+  //   type: 'amountWords',
+  //   name: '金额',
+  //   className: 'form-amountWords',
+  //   icon: 'icon-number',
+  //   hideTitle: false,
+  //   options: {
+  //     width: '100%',
+  //     defaultValue: '',
+  //     capitaled:false,// 是否开启大写
+  //     required: false,
+  //     placeholder: '',
+  //     readonly: false,
+  //     disabled: false,
+  //     fillRuleCode: '',
+  //     hidden: false,
+  //   },
+  //   // remoteAPI: { url: '', executed: false },
+  // },
+  // {
+  //   type: 'tels',
+  //   name: '电话',
+  //   className: 'form-tableTel',
+  //   icon: 'icon-table',
+  //   hideTitle: false,
+  //   options: {
+  //     width: '100%',
+  //     defaultValue: '',
+  //     required: false,
+  //     placeholder: '',
+  //     telType:2, // 1手机固话 2手机 3固话
+  //     readonly: false,
+  //     disabled: false,
+  //     fillRuleCode: '',
+  //     hidden: false,
+  //   },
+  //   // remoteAPI: { url: '', executed: false },
+  // },
 ]
-// update-end--Author:mx Date:20210101 for：新增自定义组件 --------------------
