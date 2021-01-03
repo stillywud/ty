@@ -1292,15 +1292,17 @@ export default {
       // update-end--Author:sunjianlei Date:20200420 for：解决这里会清空时间选择器默认值的问题 --------------------
     },
     'data.options.required': function(val) {
-      if (val) {
-        this.validator.required = {required: true, message: `${this.data.name}必须填写`}
-      } else {
-        this.validator.required = null
-      }
+      if(this.data.type !== 'daterange'){
+        if (val) {
+          this.validator.required = {required: true, message: `${this.data.name}必须填写`}
+        } else {
+          this.validator.required = null
+        }
 
-      this.$nextTick(() => {
-        this.generateRule()
-      })
+        this.$nextTick(() => {
+          this.generateRule()
+        })
+      }
     },
     'data.options.dataType': function (val) {
       if (!this.show) {

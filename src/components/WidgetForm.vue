@@ -1,6 +1,8 @@
 <template>
   <div class="widget-form-container" :class="{'mobile': isMobile}">
-    <el-form :size="data.config.size" :label-position="data.config.labelPosition" :label-width="data.config.labelWidth + 'px'">
+    <el-form :size="data.config.size" 
+    :label-position="data.config.labelPosition" 
+    :label-width="data.config.labelWidth + 'px'">
 
       <draggable class="widget-form-list"
 

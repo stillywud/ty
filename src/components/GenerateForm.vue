@@ -15,7 +15,9 @@
         ref="generateForm"
         id="printContent"
         :size="data.config.size"
-        :model="models" :rules="rules" :label-position="isMobile ? 'top' : data.config.labelPosition" :label-width="data.config.labelWidth + 'px'"
+        :model="models" :rules="rules" 
+        :label-position="isMobile ? 'top' : data.config.labelPosition" 
+        :label-width="data.config.labelWidth + 'px'"
         @data-begin="()=>'此处为临时解决一进入表单就触发校验的问题'"
         @validate="handleFormValidate"
         @data-end="()=>'此处为临时解决一进入表单就触发校验的问题'"
@@ -35,7 +37,7 @@
               :data="data"
               :config="data.config"
               :models.sync="models"
-              :rules="rules"
+              :rules.sync="rules"
               :widget="item"
               :remote="remote"
               :readOnly="readOnly"
@@ -143,7 +145,7 @@ export default {
           }
           this.$set(this.models, item.model, modelValue)
         }
-
+        
         let rulesMaps = item.rules.map(item => {
           if (item.pattern) {
             return { ...item, pattern: new RegExp(item.pattern) }
@@ -157,11 +159,20 @@ export default {
             return { ...item }
           }
         }).filter(item => item != null)
-        if (this.rules[item.model]) {
-          this.rules[item.model] = [...this.rules[item.model], ...rulesMaps]
-        } else {
-          this.rules[item.model] = [...rulesMaps]
+        console.log(this.models,'thi888')
+        // 增加日期区间
+        if(item.type === 'daterange'){
+          this.$set(this.models, item.startModel, '')
+          this.$set(this.models, item.endModel, '')
+          this.$set(this.models, item.durationModel, '')
         }
+        // }else{
+          if (this.rules[item.model]) {
+            this.rules[item.model] = [...this.rules[item.model], ...rulesMaps]
+          } else {
+            this.rules[item.model] = [...rulesMaps]
+          }
+        // }
       })
       // 批量执行填值规则
       window['fillRuleCodesMap'] = fillRuleCodesMap
@@ -350,7 +361,7 @@ export default {
         // update-begin--Author:sunjianlei Date:20200302 for： 重新渲染 {{ }} 变量 -----------
         this.handlerWatchData()
         // update-end--Author:sunjianlei Date:20200302 for： 重新渲染 {{ }} 变量 -----------
-
+        console.log(val,'gendata')
         this.generateModel(val.list)
       }
     },

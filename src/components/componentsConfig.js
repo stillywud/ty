@@ -639,7 +639,7 @@ export const tyComponents = [
     hideLabel:true,
     hideTitle: false,
     options: {
-      defaultValue: ['','',''],
+      defaultValue: '',
       disabled: false,
       startPlaceholder: '请选择',
       startName:'开始时间',

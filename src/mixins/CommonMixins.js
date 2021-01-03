@@ -95,6 +95,13 @@ export const WidgetDraggable = {
         })
       }
       newObject.isSubItem = false
+      console.log(newObject.model,'newObject.model')
+      // 日期区间 daterange
+      if(newObject.type === 'daterange'){
+        newObject.startModel = `start_${newObject.model}`
+        newObject.endModel = `end_${newObject.model}`
+        newObject.durationModel = `dur_${newObject.model}`
+      }
 
       // Tabs 随机 TabName
       if (newObject.type === ctypes.tabs) {

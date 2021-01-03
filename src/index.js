@@ -50,7 +50,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 handleEnquireScreen(store)
-
+// moment.suppressDeprecationWarnings = true;
 export default {
   store,
   moment,

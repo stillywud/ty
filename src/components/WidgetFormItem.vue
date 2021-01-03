@@ -36,14 +36,7 @@
       :data="data"
   ></j-tabs>
   <!-- update-end--Author:sunjianlei Date:20190808 for：布局组件封装进 formItem 组件中 -->
-  <ty-date-range
-      v-else-if="element.type === 'daterange'"
-      mode="daterange"
-      :element="element"
-      :index="index"
-      :select.sync="selectWidget"
-      :data="data"
-  />
+
   <!--  update-begin--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
   <el-form-item class="widget-view"
       v-else-if="element && element.key"
@@ -52,13 +45,12 @@
       :data-type="element.type"
       @click.native.stop="handleSelectWidget(index)"
     > 
-      <!-- <template v-if="element.type === 'daterange'">
+      <template v-if="element.type === 'daterange'">
         <ty-date-range
-          mode="daterange"
           :element="element"
           :index="index"
       />
-      </template> -->
+      </template>
       <template v-if="element.type == 'tels'">
         <ty-tels
           :style="{width: _width}"

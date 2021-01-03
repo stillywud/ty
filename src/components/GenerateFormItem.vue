@@ -51,17 +51,20 @@
       @dialogChange="handleDialogChange"
   />
   <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件 -->
-  <ty-date-range
-      v-else-if="widget.type === 'daterange'"
-      mode="daterange"
+  <div v-else-if="widget.type === 'daterange'">{{dataModels}}999{{models}}99{{dateRangeModel}}
+    <ty-date-range
       :element="widget"
       :config="config"
       :models.sync="dataModels"
-      :rules="rules"
+      :dateRangeModel.sync="dateRangeModel"
+      :rules.sync="dataRules"
       :readOnly="readOnly"
       :class="className"
   />
-  <el-form-item v-else :id="widget.key" :label="formItemLabel" :prop="widget.model" :style="formItemStyle">
+  </div>
+  
+  <el-form-item v-else :id="widget.key" :label="formItemLabel" 
+  :prop="widget.model" :style="formItemStyle">
     <template v-if="widget.type == 'input'">
       <el-input-number
           v-if="widget.options.dataType == 'number' || widget.options.dataType == 'integer' || widget.options.dataType == 'float'"
@@ -463,7 +466,9 @@ export default {
     return {
       ctypes,
       dataModel: this.models[this.widget.model],
-      dataModels: this.models
+      dataModels: this.models,
+      dataRules:this.rules,
+      dateRangeModel:''
     }
   },
   computed: {
@@ -572,6 +577,7 @@ export default {
     dataModel: {
       deep: true,
       handler (val) {
+        console.log(val,'datamodel')
         this.models[this.widget.model] = val
         this.$emit('update:models', {
           ...this.models,
@@ -579,24 +585,50 @@ export default {
         })
       }
     },
+    dateRangeModel: {
+      deep: true,
+      handler (val) {
+        console.log(val,'datamodel')
+        this.$emit('update:models', {
+          ...this.models,
+          ...val
+        })
+      }
+    },
     dataModels: {
       deep: true,
       handler(val) {
+
+        console.log(val,'models')
         this.$emit('update:models', val)
+        
+      }
+    },
+    dataRules:{
+      deep: true,
+      handler(val) {
+        console.log(val,'rulesrules')
+        this.$emit('update:rules', val)
       }
     },
     models: {
       immediate: true,
       deep: true,
       handler(val) {
+        console.log(val,'modelsss')
         // update-begin--Author:sunjianlei Date:20191211 for：特殊类型特殊处理
         let model = val[this.widget.model]
         if (this.widget.type === 'date' && model) {
           let format = this.widget.options.format
           format = format.replace(/yyyy/g, 'YYYY')
           format = format.replace(/dd/g, 'DD')
-          model = moment(model).format(format)
+          // 修复bug---maxiong 20210101
+          // model = moment(model).format(format)
+          Array.isArray(model) ? model.forEach(function(item,index){
+            return model[index] = moment(item).format(format)
+          }) : model = moment(model).format(format)
         }
+        console.log(val,model,'model')
         this.dataModel = model
         // update-end--Author:sunjianlei Date:20191211 for：特殊类型特殊处理
         this.dataModels = val

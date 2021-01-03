@@ -255,6 +255,13 @@ export function cloneElement(element) {
     const key = randomKey()
     item.key = key
     item.model = item.type + '_' + key
+    if(item.type==='daterange'){
+      console.log(item,'item')
+      item.startModel = `start_${item.model}`
+      item.endModel = `end_${item.model}`
+    }
+    
+  
     // 初始化权限控制字段
     item.jeecg_auth = { enabled: false, title: null, field: null }
   })
