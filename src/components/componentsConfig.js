@@ -26,6 +26,7 @@ export const basicComponents = [
       disabled: false,
       fillRuleCode: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -44,6 +45,7 @@ export const basicComponents = [
       placeholder: '',
       readonly: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -66,6 +68,7 @@ export const basicComponents = [
       controlsPosition: 'right',
       // update-end--Author:sunjianlei Date:20190611 for：修改计数器默认值 --------------------
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -90,6 +93,7 @@ export const basicComponents = [
           value: '选项3',
         }
       ],
+      behaviorLinkage:[],
       required: false,
       width: '',
       remote: false,
@@ -101,6 +105,7 @@ export const basicComponents = [
       remoteFunc: '',
       disabled: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -136,6 +141,7 @@ export const basicComponents = [
       remoteFunc: '',
       disabled: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -160,6 +166,7 @@ export const basicComponents = [
       required: false,
       width: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -187,6 +194,7 @@ export const basicComponents = [
       width: '',
       // update-end--Author:sunjianlei Date:20190710 for：扩展日期选择器 --------------------
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -203,6 +211,7 @@ export const basicComponents = [
       allowHalf: false,
       required: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -217,6 +226,7 @@ export const basicComponents = [
       showAlpha: false,
       required: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -253,6 +263,7 @@ export const basicComponents = [
       },
       remoteFunc: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -269,6 +280,7 @@ export const basicComponents = [
       activeValue: '',
       inactiveValue: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -288,6 +300,7 @@ export const basicComponents = [
       range: false,
       width: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   }
 ]
@@ -324,6 +337,7 @@ export const advanceComponents = [
       length: 9,
       multiple: true,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   },
   // update-begin--Author:sunjianlei Date:20190731 for：新增文件上传组件 --------------------
@@ -343,6 +357,7 @@ export const advanceComponents = [
       buttonText: '点击上传文件',
       tokenFunc: 'funcGetToken',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
   },
 // update-end--Author:sunjianlei Date:20190731 for：新增文件上传组件 --------------------
@@ -381,6 +396,7 @@ export const advanceComponents = [
       },
       remoteFunc: '',
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -402,6 +418,7 @@ export const advanceComponents = [
       circle: false,
       disabled: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     event: {
       click: "console.log('hello,world!')"
@@ -426,6 +443,7 @@ export const advanceComponents = [
       fontUnderline: false,
       fontLineThrough: false,
       hidden: false,
+      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },

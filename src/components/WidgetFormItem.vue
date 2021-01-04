@@ -39,8 +39,8 @@
 
   <!--  update-begin--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
   <el-form-item class="widget-view"
+      :class="[element.options.cellLinkage ?'cellLinkage--9tg5O':'', formItemClass]"
       v-else-if="element && element.key"
-      :class="formItemClass"
       :label="formItemLabel"
       :data-type="element.type"
       @click.native.stop="handleSelectWidget(index)"

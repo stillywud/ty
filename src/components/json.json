@@ -1,0 +1,333 @@
+{
+	"commentDescription": "",
+	"commentHiddenForProposer": "",
+	"commentRequired": "",
+	"description": "",
+	"icon": "collection",
+	"items": [{
+		"componentName": "TextField",
+		"props": {
+			"placeholder": "请输入",
+			"label": "请示主题",
+			"id": "TextField-K2AD4O5B",
+			"required": true
+		}
+	}, {
+		"componentName": "TextareaField",
+		"props": {
+			"label": "请示内容",
+			"placeholder": "请输入",
+			"id": "TextareaField_1VL9FMJWJSBK0",
+			"required": true
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "设备机型",
+			"placeholder": "请输入",
+			"id": "TextField_1EOUB9ZK7DUO0",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "设备机号",
+			"placeholder": "请输入",
+			"id": "TextField_1GT6FYXIAXUO0",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "地区",
+			"placeholder": "请输入",
+			"id": "TextField_W6HMJSIN4MO0",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "项目名称",
+			"placeholder": "请输入",
+			"id": "TextField_2SL4LYHSXG80",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "项目所属公司",
+			"placeholder": "请输入",
+			"id": "TextField_E0SJ6212VA80",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "DDSelectField",
+		"props": {
+			"options": [{
+				"value": "天远租赁公司",
+				"key": "option_0"
+			}, {
+				"value": "项目方",
+				"key": "option_1"
+			}],
+			"label": "费用承担方",
+			"placeholder": "请选择",
+			"id": "DDSelectField_MPIWN2L1PZK0",
+			"required": true,
+			"spread": false,
+			"ratio": 50,
+			"behaviorLinkage": []
+		}
+	}, {
+		"componentName": "DDDateRangeField",
+		"props": {
+			"duration": true,
+			"unit": "小时",
+			"format": "yyyy-MM-dd HH:mm",
+			"bizAlias": "",
+			"label": ["替班开始时间", "替班结束时间"],
+			"placeholder": "请选择",
+			"id": "DDDateRangeField_JYR2QMVE0V40",
+			"durationLabel": "时长",
+			"required": true
+		}
+	}, {
+		"componentName": "MoneyField",
+		"props": {
+			"notUpper": "0",
+			"label": "替班费用（元）",
+			"placeholder": "请输入金额",
+			"id": "MoneyField_1QL72115T4XS0",
+			"required": true
+		}
+	}, {
+		"componentName": "TextField",
+		"props": {
+			"label": "姓名",
+			"placeholder": "请输入",
+			"id": "TextField_H91CN0M5WFS0",
+			"required": true,
+			"ratio": 50
+		}
+	}, {
+		"componentName": "PhoneField",
+		"props": {
+			"mode": "phone_tel",
+			"bizAlias": "",
+			"label": "电话",
+			"placeholder": "请输入",
+			"id": "PhoneField_1Z8FH04GXEYO0",
+			"required": true
+		}
+	}, {
+		"componentName": "RecipientAccountField",
+		"props": {
+			"label": "收款账户",
+			"placeholder": "请选择",
+			"id": "RecipientAccountField_FVDU2VXXUCG0",
+			"required": true
+		}
+	}, {
+		"componentName": "DepartmentField",
+		"props": {
+			"multiple": false,
+			"label": "部门",
+			"placeholder": "请选择",
+			"id": "DepartmentField_769YZER48D40",
+			"required": false
+		}
+	}, {
+		"componentName": "DDSelectField",
+		"props": {
+			"options": [{
+				"value": "选项1",
+				"key": "option_0"
+			}, {
+				"value": "选项2",
+				"key": "option_1"
+			}, {
+				"value": "选项3",
+				"key": "option_2"
+			}],
+			"bizAlias": "",
+			"label": "单选框",
+			"placeholder": "请选择",
+			"id": "DDSelectField_1C1ZHE5PEC000",
+			"required": false,
+			"spread": false,
+			"ratio": 50,
+			"behaviorLinkage": [{
+				"value": "option_0",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "TextareaField_SCZU9SN4M5S0"
+				}]
+			}, {
+				"value": "option_1",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "TextField_E0SJ6212VA80"
+				}]
+			}, {
+				"value": "option_2",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "DDSelectField_MPIWN2L1PZK0"
+				}]
+			}]
+		}
+	}, {
+		"componentName": "TextareaField",
+		"props": {
+			"label": "备注",
+			"placeholder": "请输入",
+			"id": "TextareaField_SCZU9SN4M5S0",
+			"required": false
+		}
+	}, {
+		"componentName": "DDSelectField",
+		"props": {
+			"options": [{
+				"value": "选项1",
+				"key": "option_0"
+			}, {
+				"value": "选项2",
+				"key": "option_1"
+			}, {
+				"value": "选项3",
+				"key": "option_2"
+			}],
+			"bizAlias": "",
+			"label": "单选框",
+			"placeholder": "请选择",
+			"id": "DDSelectField_1EEP0FBJ2O5C0",
+			"required": false,
+			"spread": false,
+			"ratio": 50,
+			"behaviorLinkage": [{
+				"value": "option_0",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "TextField-K2AD4O5B"
+				}, {
+					"behavior": "NORMAL",
+					"fieldId": "DDSelectField_1C1ZHE5PEC000"
+				}]
+			}, {
+				"value": "option_1",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "TextareaField_1VL9FMJWJSBK0"
+				}]
+			}, {
+				"value": "option_2",
+				"targets": [{
+					"behavior": "NORMAL",
+					"fieldId": "TextField_1EOUB9ZK7DUO0"
+				}]
+			}]
+		}
+	}, {
+		"componentName": "DDHolidayField",
+		"props": {
+			"submitValidator": {
+				"unit": "day",
+				"expression": "",
+				"enable": false
+			},
+			"format": "yyyy-MM-dd",
+			"bizAlias": "",
+			"label": ["开始时间", "结束时间"],
+			"pushToCalendar": "1",
+			"durationLabel": "时长",
+			"required": true,
+			"push": {
+				"attendanceRule": "1",
+				"pushSwitch": "1",
+				"pushTag": "请假"
+			},
+			"duration": true,
+			"unit": "",
+			"options": [{
+				"unit": "day",
+				"name": "事假",
+				"leaveCode": "6ac5d89b-1ec4-47eb-9008-baa11b2c9293",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "病假",
+				"leaveCode": "f5329874-933a-4a28-b84a-3a2270bae516",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "年假",
+				"leaveCode": "201aebeb-74e1-439c-a32a-5ad40101f7c5",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "调休",
+				"leaveCode": "0c3af959-69a3-4cd4-b6a7-d3d83f01e989",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "婚假",
+				"leaveCode": "306e6774-60bc-4f0f-950a-d81cb6557f5d",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "产假",
+				"leaveCode": "42f4efcf-7dfc-4adf-9c9f-92746b94e807",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "陪产假",
+				"leaveCode": "b305c268-87f3-465f-b1ff-4c62b8229c4d",
+				"displayUnit": "按天请假"
+			}, {
+				"unit": "day",
+				"name": "路途假",
+				"leaveCode": "9b3fd393-eb0d-434c-a81e-043ea2182e76",
+				"displayUnit": "按天请假"
+			}],
+			"placeholder": "请选择",
+			"id": "DDHolidayField_1ETJDJ9CL2800",
+			"attendTypeLabel": "请假类型"
+		}
+	}],
+	"title": "替班机手费用申请"
+}
+
+t.getLinkedForm = function(e) {
+	var t = [];
+	return function e(n) {
+		n && 0 !== n.length && n.forEach((function(n) {
+			var o = function(e) {
+				return {
+					id: (e.props || {}).id || e.id,
+					componentName: e.componentName || e.getComponentName && e.getComponentName() || "",
+					props: e.props || {},
+					children: e.children || e.tableContainer && e.tableContainer.getItems() || []
+				}
+			}(n);
+			(0,
+			r.default)(o, "props.behaviorLinkage", []).map((function(e) {
+				e.targets.map((function(n) {
+					var r = new a.default;
+					r.append((o.props.id || o.id) + "|" + e.value),
+					r.append(n.fieldId),
+					t.push(r)
+				}
+				))
+			}
+			)),
+			"TableField" === o.componentName && o.children && o.children.length > 0 && e(o.children)
+		}
+		))
+	}(e),
+	t
+}

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show">{{list}}
     <el-form label-position="top" size="small">
       <div 
         class="secIdCard-elAlart"
@@ -292,6 +292,11 @@
             <el-button type="text" @click="handleAddOption">添加选项</el-button>
             <el-divider direction="vertical"/>
             <el-button type="text" @click="handleRemoveDefaultValue">清空默认值</el-button>
+            <template v-if="data.type==='radio'">
+              <el-divider direction="vertical"/>
+              <el-button type="text" @click="handleBehaviorLinkage">选项关联<span v-if="dvValue[`${data.model}_dvValueBo`]">(已设置)</span></el-button>
+            </template>
+            
           </div>
         </template>
 
@@ -902,6 +907,61 @@
       <!-- update-end--Author:sunjianlei Date:20190906 for：新增权限控制 -->
 
     </el-form>
+    <!--//选项关联 -->
+    <el-dialog
+
+      title="单选框-选项关联"
+      :visible.sync="dvLinkage"
+      append-to-body
+      destroy-on-close
+      custom-class="linkDialog--1pgLy"
+      width="700px"
+      @closed="dvLinkageClosed">
+      <div class="linkModal--1pgLy">
+        {{data}}--{{dvValue}}--{{data.model}}
+        <div class="description--1CkVL">根据选择的选项，显示其他控件。当前控件和上级选项不能被关联显示。</div>
+        <el-table
+          :data="dvTableData"
+          :header-cell-style="{background:'#f5f7fa'}"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="value"
+            label="当前选项为"
+            width="150">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{ scope.row.value }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="targets"
+            label="显示以下控件">
+            <template slot-scope="scope">{{scope.row.targets}}
+              <el-select
+                style="width:100%"
+                v-model="scope.row.targets"
+                multiple
+                size="medium"
+                @change="dvChange"
+                @remove-tag="dvRemoveTag"
+                placeholder="请选择文章标签">
+                <el-option
+                  v-for="item in dvOptions"
+                  :key="item.fieldId"
+                  :label="item.label"
+                  :disabled="item.disabled"
+                  :value="item.fieldId">
+                </el-option>
+              </el-select>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dvLinkage = false">取 消</el-button>
+        <el-button type="primary" @click="handleSureBtn('dv')">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -952,7 +1012,34 @@ export default {
       fs: {btn: false}
       // update-end--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
 
-
+      ,dvLinkage:false,
+      dvTableData:[{
+				"value": "option_0",
+				"targets": [{
+          "behavior": "NORMAL",
+          "name":"ww1",
+					"fieldId": "textarea_1609753889931_528773"
+				}]
+			}, {
+				"value": "option_1",
+				"targets": [{
+          "behavior": "NORMAL",
+          "name":"ww2",
+					"fieldId": "textarea_1609753889931_528773"
+				}]
+			}, {
+				"value": "option_2",
+				"targets": [{
+          "behavior": "NORMAL",
+          "name":"ww3",
+					"fieldId": "textarea_1609753889931_528773"
+				}]
+			}],
+      // dvDataValue:[],
+      dvValue:{
+      },
+      cacheDvValue:{},
+      dvOptions:[]
     }
   },
   computed: {
@@ -990,6 +1077,7 @@ export default {
     // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
     this.loadDictList()
     // update-end--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
+    this.radioLinkInit()
   },
   methods: {
 
@@ -1212,6 +1300,78 @@ export default {
       }
     },
     // update-end--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
+    radioLinkInit(){
+      console.log(this.data)
+    },
+    handleBehaviorLinkage(){
+      // radio关联选项
+      
+      // let dvTableData = [];
+      let dvOptions = []
+      // this.data.options.options.forEach(item => {
+      //   let obj = {...item}
+      //   obj.name = item.value;
+      //   dvTableData.push(obj)
+      // })
+      // this.dvTableData = dvTableData;
+      // console.log(this.dvTableData)
+      this.list.forEach(item => {
+        if(item.data !=='tabs' && item.data !=='card' && item.data !== 'divider' && item.data !== 'editor'){
+          let obj = {};
+          obj.value = item.model
+          obj.label = item.name
+          obj.fieldId = item.model
+          if(item.model === this.data.model){
+            obj.disabled = true;
+          }
+          dvOptions.push(obj)
+        }
+      })
+     
+      this.dvOptions = dvOptions;
+       console.log(this.list,this.dvOptions)
+      // let arr;
+      // if(!this.cacheDvValue[this.data.model]){
+      //   arr = []
+      // }
+      // let isEmptyArr = [].concat(...this.cacheDvValue[this.data.model])
+      // if(isEmptyArr.length === 0){
+      //   this.$set(this.dvValue,this.data.model,[])
+      // }else{
+      //   this.$set(this.dvValue,this.data.model,)
+      // }
+      
+      this.dvLinkage = true;
+      // this.$emit('onBehaviorLinkage',this.data)
+    },
+    dvChange(v){
+      console.log(v,2,this.dvValue,this.cacheDvValue)
+    },
+    dvRemoveTag(v){
+      console.log(v,1,this.dvValue,this.cacheDvValue)
+    },
+    dvLinkageClosed(){
+      console.log(222,this.dvValue,this.cacheDvValue)
+    },
+    handleSureBtn(n){
+      this.dvLinkage = false
+      let dvValueBo = false;
+      if(n === 'dv'){
+        this.cacheDvValue = Object.assign({},this.dvValue);
+        for(let arri of this.dvValue[this.data.model]){
+          if(arri.length >0){
+            dvValueBo = true;
+            break;
+          }
+        }
+        if(dvValueBo){
+          this.dvValue[`${this.data.model}_dvValueBo`] = true
+        }else{
+          this.dvValue[`${this.data.model}_dvValueBo`] = false
+        }
+         console.log(333)
+      }
+    },
 
     // update-begin--Author:sunjianlei Date:20190724 for：修复子表绑定值不正确的问题 --
     querySubTable(code) {
@@ -1329,6 +1489,9 @@ export default {
       }
 
       this.generateRule()
+    },
+    dvValue(a,b){
+      console.log(a,b)
     }
   }
 }
@@ -1383,6 +1546,28 @@ export default {
     .el-icon-warning{
       color: rgb(121, 187, 255);
       margin-right: 5px;
+    }
+  }
+
+</style>
+<style lang="scss">
+  .linkDialog--1pgLy{
+    .el-dialog__header{
+      border-bottom: 1px solid #DCDFE6;
+    }
+        
+  }
+  .linkModal--1pgLy{
+    .description--1CkVL{
+      margin-bottom: 10px;
+    }
+    .el-select__tags,
+    .el-select__input{
+      width: 100%!important;
+      max-width: 100%!important;
+    }
+    .cellLinkage--9tg5O{
+      opacity: .6;
     }
   }
 </style>
