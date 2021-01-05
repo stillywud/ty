@@ -922,17 +922,17 @@
       <div class="linkModal--1pgLy">
         <div class="description--1CkVL">根据选择的选项，显示其他控件。当前控件和上级选项不能被关联显示。</div>
         <el-table
-          :data="dvTableData"
+          :data="data.options.behaviorLinkage"
           row-key="key"
           :header-cell-style="{background:'#f5f7fa'}"
           border
           style="width: 100%">
           <el-table-column
-            prop="label"
+            prop="value"
             label="当选项为"
             width="150">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.label }}</span>
+              <span style="margin-left: 10px">{{ scope.row.value }}</span>
             </template>
           </el-table-column>
           <el-table-column
