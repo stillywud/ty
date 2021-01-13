@@ -77,7 +77,6 @@ export const WidgetDraggable = {
 
     handleDraggableAdd(list, $event) {
       const { newIndex } = $event
-
       //为拖拽到容器的元素添加唯一 key
       const key = _utils.randomKey()
 
@@ -95,13 +94,6 @@ export const WidgetDraggable = {
         })
       }
       newObject.isSubItem = false
-      console.log(newObject.model,'newObject.model')
-      // 日期区间 daterange
-      if(newObject.type === 'daterange'){
-        newObject.startModel = `start_${newObject.model}`
-        newObject.endModel = `end_${newObject.model}`
-        newObject.durationModel = `dur_${newObject.model}`
-      }
 
       // Tabs 随机 TabName
       if (newObject.type === ctypes.tabs) {
@@ -128,6 +120,10 @@ export const WidgetDraggable = {
 
         this.$nextTick(() => {
           this.data.list.splice(index, 1)
+          let list = this.data.list;
+          if(list.length === 0){
+            this.$store.commit('SET_EDITLIABLE',0)
+          }
         })
       }
 

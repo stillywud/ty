@@ -3,7 +3,7 @@ import store from '@/store/'
 import { putAction } from '@/api/manage'
 import { ctypes } from '../components/componentsConfig'
 import { TOGGLE_DEBUG_DEVICE, DEVICE_TYPE } from '@/store/mutation-types'
-
+import {uniq} from 'lodash-es'
 export function randomKey() {
   return (Date.now() + '_' + randomNumber(6))
 }
@@ -255,13 +255,6 @@ export function cloneElement(element) {
     const key = randomKey()
     item.key = key
     item.model = item.type + '_' + key
-    if(item.type==='daterange'){
-      console.log(item,'item')
-      item.startModel = `start_${item.model}`
-      item.endModel = `end_${item.model}`
-    }
-    
-  
     // 初始化权限控制字段
     item.jeecg_auth = { enabled: false, title: null, field: null }
   })
@@ -427,5 +420,36 @@ export function alwaysResolve(promise) {
     } else {
       reject('alwaysResolve: 传入的参数不是一个Promise对象或返回Promise对象的方法')
     }
+  })
+}
+/**
+ * 初始化关联选项
+*/
+export function initAssoOptions(json){
+  let arr = [];
+  json.list.forEach(item=>{
+    if(item.type === 'radio'){
+      let behaviorLinkage = item.behaviorLinkage;
+      if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+        behaviorLinkage.forEach(it => {
+          let targets = it.targets;
+          if(Array.isArray(targets) && targets.length > 0){
+            targets.forEach(li => {
+              arr.push(li);
+            })
+          }
+        })
+      }
+    }
+  });
+  let uniqArr = uniq(arr);
+  // this.list
+  json.list = json.list.map(item=>{
+    let obj = {...item};
+    if(uniqArr.includes(obj.model)){
+      console.log(obj)
+      obj.assoStatus = 1
+    }
+    return obj;
   })
 }

@@ -1,16 +1,6 @@
 <template>
-  <div v-if="show">{{list}}
+  <div v-if="show">
     <el-form label-position="top" size="small">
-      <div 
-        class="secIdCard-elAlart"
-        v-if="data.type === 'secIdCard'">
-        <i class="el-icon-warning"></i>将自动检验身份证号码的正确性
-      </div>
-      <div 
-        class="secIdCard-elAlart"
-        v-if="data.type === 'tels'">
-        <i class="el-icon-warning"></i>将自动检验号码的正确性,可在手机上直接点击拨打
-      </div>
       <!-- update-begin--Author:sunjianlei Date:20190708 for：修改标题的展示逻辑 -->
       <el-form-item label="标题" v-if=" !data.hideLabel">
         <el-input v-model="data.name"></el-input>
@@ -48,7 +38,7 @@
         </div>
       </el-form-item>
 
-      <template v-if="data.type ==='daterange'">
+      <template v-if="data.type ==='daterange'"><!--日期范围配置-->
         <el-form-item label="开始时间标题" >
           <el-input v-model="data.options.startName"></el-input>
         </el-form-item>
@@ -75,6 +65,12 @@
         </el-form-item>
       </template>
 
+      <template v-if="data.type ==='mlist'"><!--移动端模版列表页 card配置-->
+        <el-form-item label="card模块字段" >
+          <el-input v-model="data.options.cardFeild" placeholder="多个字段请使用逗号按顺序隔开"></el-input>
+        </el-form-item>
+      </template>
+
       <el-form-item label="占位内容" v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
@@ -86,21 +82,6 @@
       </el-form-item>
       <el-form-item label="显示输入框" v-if="Object.keys(data.options).indexOf('showInput')>=0">
         <el-switch v-model="data.options.showInput" ></el-switch>
-      </el-form-item>
-      <!-- 金额是否开启大写-->
-      <el-form-item v-if="data.type==='amountWords'">
-        <template #label>
-          <span>显示大写<span style="font-size:12px;padding-left:5px">(输入自然数后自动显示大写)</span></span>
-        </template>
-        <el-switch v-model="data.options.capitaled" />
-      </el-form-item>
-      <!--电话开启固话手机--->
-      <el-form-item label="类型" v-if="data.type==='tels'">
-        <el-radio-group v-model="data.options.telType">
-          <el-radio :label="1">手机和固话</el-radio>
-          <el-radio :label="2">仅手机</el-radio>
-          <el-radio :label="3">仅固话</el-radio>
-        </el-radio-group>
       </el-form-item>
       <!-- update-begin--Author:sunjianlei Date:20190611 for：修改计数器默认值 -->
       <el-form-item label="控制按钮" v-if="Object.keys(data.options).indexOf('controls')>=0">
@@ -185,6 +166,8 @@
               <span>默认值</span>
               <el-divider direction="vertical"/>
               <el-button type="text" @click="handleOptionsClearDefaultValue">清空</el-button>
+              <el-divider direction="vertical"/>
+              <el-button type="text" @click="handleBehaviorLinkage(2)">选项关联<span v-if="dvValue[`${data.model}_dvValueBo_2`]">(已设置)</span></el-button>
             </div>
             <!-- radio 默认值-->
             <template v-if="data.type === 'radio'">
@@ -294,9 +277,8 @@
             <el-button type="text" @click="handleRemoveDefaultValue">清空默认值</el-button>
             <template v-if="data.type==='radio'">
               <el-divider direction="vertical"/>
-              <el-button type="text" @click="handleBehaviorLinkage">选项关联<span v-if="dvValue[`${data.model}_dvValueBo`]">(已设置)</span></el-button>
+              <el-button type="text" @click="handleBehaviorLinkage(1)">选项关联<span v-if="dvValue[`${data.model}_dvValueBo_1`]">(已设置)</span></el-button>
             </template>
-            
           </div>
         </template>
 
@@ -819,15 +801,13 @@
         </el-form-item>
       </template>
 
-
-
       <el-form-item label="CSS类名" v-if="Object.keys(data).indexOf('className')>=0">
         <el-input v-model="data.className"/>
       </el-form-item>
       <!-- update-end--Author:sunjianlei Date:20190705 for：新增其他通用属性 -->
 
       <!-- update-begin--Author:sunjianlei Date:20190531 for：新增设计子表属性 -->
-      <template v-if="data.type != 'grid' && data.type != 'sub-table-design' && data.type != 'buttons' && data.type != ctypes.card && data.type != ctypes.tabs && data.type!=ctypes.text && data.type!=ctypes.divider">
+      <template v-if="data.type != 'grid' && data.type != 'mlist' && data.type != 'sub-table-design' && data.type != 'buttons' && data.type != ctypes.card && data.type != ctypes.tabs && data.type!=ctypes.text && data.type!=ctypes.divider">
         <!-- update-end--Author:sunjianlei Date:20190531 for：新增设计子表属性 -->
 
         <el-form-item label="数据绑定Key">
@@ -883,7 +863,7 @@
       <!-- update-end--Author:sunjianlei Date:20200110 for：新增远程取值API配置 -->
 
       <!-- update-begin--Author:sunjianlei Date:20190906 for：新增权限控制 -->
-      <el-form-item v-if="data.jeecg_auth" :label="'权限控制' + (data.isSubItem ? '（子表）' : '')">
+      <el-form-item v-if="data.jeecg_auth && data.type !== 'mlist'" :label="'权限控制' + (data.isSubItem ? '（子表）' : '')">
         <el-checkbox
             v-model="data.jeecg_auth.enabled"
             @change="v=>handleAuthChange(v,data)"
@@ -907,7 +887,7 @@
       <!-- update-end--Author:sunjianlei Date:20190906 for：新增权限控制 -->
 
     </el-form>
-    <!--//选项关联 -->
+        <!--//选项关联 -->
     <el-dialog
 
       title="单选框-选项关联"
@@ -928,11 +908,11 @@
           border
           style="width: 100%">
           <el-table-column
-            prop="label"
+            prop="value"
             label="当选项为"
             width="150">
             <template slot-scope="scope">
-              <span style="margin-left: 10px">{{ scope.row.label }}</span>
+              <span style="margin-left: 10px">{{ scope.row.value }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -944,9 +924,7 @@
                 v-model="scope.row.targets"
                 multiple
                 size="medium"
-                @change="dvChange"
-                @remove-tag="dvRemoveTag"
-                placeholder="请选择文章标签">
+                placeholder="请选择标签">
                 <el-option
                   v-for="item in dvOptions"
                   :key="item.fieldId"
@@ -1013,14 +991,12 @@ export default {
       subTableOptions: [{value: "当前Online表单没有子表", disabled: true}, {label: '点击重新选择Online表单', value: "__reselect-cgform__"}],
       fs: {btn: false}
       // update-end--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
-
       ,dvLinkage:false,
       dvTableData:[],
-      // dvDataValue:[],
-      dvValue:{
-      },
+      dvValue:{},
       cacheDvValue:{},
       dvOptions:[]
+
     }
   },
   computed: {
@@ -1058,7 +1034,6 @@ export default {
     // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
     this.loadDictList()
     // update-end--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
-    this.radioLinkInit()
   },
   methods: {
 
@@ -1132,7 +1107,6 @@ export default {
       return false
     },
     packageInput(model, name, defaultValue, required = false) {
-      console.log('packageInput')
       return {
         type: 'input',
         name: name,
@@ -1212,6 +1186,7 @@ export default {
       this.data.rules = []
       Object.keys(this.validator).forEach(key => {
         if (this.validator[key]) {
+          console.log(this.validator[key],key,'this.validator[key]')
           this.data.rules.push(this.validator[key])
         }
       })
@@ -1236,13 +1211,19 @@ export default {
 
     // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
     loadDictList() {
-      // pageSize: 9999 是临时的查询所有数据的解决方案
-      _api.getDictList({
-        pageNo: 1,
-        pageSize: 9999
-      }).then(res => {
-        this.dictOptions = packageOptions(res.result.records, 'dictName,dictCode', 'dictCode')
-      })
+      // pageSize: 9999 是临时的查询所有数据的解决方案---开启模拟数据
+      // _api.getDictList({
+      //   pageNo: 1,
+      //   pageSize: 9999
+      // }).then(res => {
+      //   this.dictOptions = packageOptions(res.result.records, 'dictName,dictCode', 'dictCode')
+      // })
+      // 模拟数据
+      let records = [
+        {dictName:"物资类型",dictCode:"wz_cc_type",id:1},
+      ]
+      
+      this.dictOptions = packageOptions(records, 'dictName,dictCode', 'dictCode')
     },
     loadCgformFieldList(headId) {
       _api.getOnlineFormFieldList({
@@ -1263,12 +1244,22 @@ export default {
 
     // update-begin--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
     handleOptionsDictChange(value) {
-      // 通过 code 查询字典 item
-      _api.getDictItems({
-        code: value
-      }).then(dictOptions => {
-        this.$set(this.data, 'dictOptions', dictOptions)
+      // 通过 code 查询字典 item---模拟数据
+      // _api.getDictItems({
+      //   code: value
+      // }).then(dictOptions => {
+      //   this.$set(this.data, 'dictOptions', dictOptions)
+      // })
+      let dictOptions = [
+        {text:'衣服', title:'衣服', value:'yifu'},
+        {text:'袜子', title:'袜子', value:'wazi'}
+      ]
+      dictOptions = dictOptions.map(item=>{
+        let obj = {...item};
+        obj.label = item.text;
+        return obj;
       })
+      this.$set(this.data, 'dictOptions', dictOptions)
       this.$set(this.data.options, 'dictCode', value)
       this.handleRemoveDefaultValue()
     },
@@ -1281,112 +1272,6 @@ export default {
       }
     },
     // update-end--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
-    radioLinkInit(){
-      console.log(this.data)
-    },
-    handleBehaviorLinkage(){
-      // radio关联选项
-      // 表头
-      let dvTableData = [];
-      dvTableData = this.data.options.options.map((item,index) => {
-        return {
-          key: index,
-          label: item.value
-        }
-      })
-      this.dvTableData = dvTableData;
-      console.log(this.dvTableData)
-      // this.data.options.options.forEach(item => {
-      //   let obj = {...item}
-      //   obj.value = item.value;
-      //   obj.targets = [];
-      //   dvTableData.push(obj)
-      // })
-      
-      // let dvTableData = [];
-      // let dvOptions = []
-      // this.data.options.options.forEach(item => {
-      //   let obj = {...item}
-      //   obj.value = item.value;
-      //   obj.targets = [];
-      //   dvTableData.push(obj)
-      // })
-      // dvTableData.forEach(item => {
-      //   this.data.options.behaviorLinkage.forEach(it=>{
-      //     if(item.value === it.value){
-      //       item.targets = it.targets
-      //     }
-      //   })
-      // })
-      // console.log(dvTableData)
-      // // this.dvTableData = dvTableData;
-      // this.data.options.behaviorLinkage = dvTableData
-      // this.list.forEach(item => {
-      //   if(item.data !=='tabs' && item.data !=='card' && item.data !== 'divider' && item.data !== 'editor'){
-      //     let obj = {};
-      //     obj.value = item.model
-      //     obj.label = item.name
-      //     obj.fieldId = item.model
-      //     if(item.model === this.data.model){
-      //       obj.disabled = true;
-      //     }
-      //     dvOptions.push(obj)
-      //   }
-      // })
-     
-      // this.dvOptions = dvOptions;
-      //  console.log(this.list,this.dvOptions)
-      // // let arr;
-      // // if(!this.cacheDvValue[this.data.model]){
-      // //   arr = []
-      // // }
-      // // let isEmptyArr = [].concat(...this.cacheDvValue[this.data.model])
-      // // if(isEmptyArr.length === 0){
-      // //   this.$set(this.dvValue,this.data.model,[])
-      // // }else{
-      // //   this.$set(this.dvValue,this.data.model,)
-      // // }
-      
-      this.dvLinkage = true;
-      // this.$emit('onBehaviorLinkage',this.data)
-    },
-    dvChange(v){
-      console.log(v,2,this.data.options.behaviorLinkage)
-    },
-    dvRemoveTag(v){
-      console.log(v,1,this.data.options.behaviorLinkage)
-    },
-    dvLinkageClosed(){
-      console.log(222,this.data.options.behaviorLinkage)
-    },
-    handleSureBtn(n){
-      // 点击确定修改状态
-      let dvValueBo = false;
-      for(let arri of this.data.options.behaviorLinkage){
-        if(arri.targets.length >0){
-          dvValueBo = true;
-          break;
-        }
-      }
-      if(dvValueBo){
-        this.dvValue[`${this.data.model}_dvValueBo`] = true
-      }else{
-        this.dvValue[`${this.data.model}_dvValueBo`] = false
-      }
-      // linkhidden
-      // 修改css状态
-      /*
-        1.多个单选框引入同一个组件 怎么办-
-      */
-      // this.data.options.behaviorLinkage.forEach(item => {
-      //   if(item.targets.length>0){
-      //     this.list.forEach(it => {
-
-      //     })
-      //   }
-      // })
-      this.dvLinkage = false
-    },
 
     // update-begin--Author:sunjianlei Date:20190724 for：修复子表绑定值不正确的问题 --
     querySubTable(code) {
@@ -1402,7 +1287,103 @@ export default {
       }
     },
     // update-end--Author:sunjianlei Date:20190724 for：修复子表绑定值不正确的问题 --
-
+    fllinkage(){
+      // 选中的组件添加（删除）一个class类
+      let arr = [];
+      this.list.forEach(item=>{
+        if(item.type === 'radio'){
+          let behaviorLinkage = item.behaviorLinkage;
+          if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+            behaviorLinkage.forEach(it => {
+              let targets = it.targets;
+              if(Array.isArray(targets) && targets.length > 0){
+                targets.forEach(li => {
+                  arr.push(li);
+                })
+              }
+            })
+          }
+        }
+      })
+      
+      this.list.map(item=>{
+        let items = {...item}
+        if(items.model !== this.data.model){
+          if(arr.includes(items.model)){
+            items.options.cellLinkage = true
+          }else{
+            items.options.cellLinkage = false
+          }
+        }
+        return items
+      })
+    },
+    handleBehaviorLinkage(n){
+      // n 1 静态数据  2 字典表
+      // radio关联选项
+      
+      let dvTableData = [];
+      let dvOptions = [];
+      let optionsData = [];
+      if(n === 1){
+        optionsData = this.data.options.options
+      }else if(n === 2){
+        optionsData = this.data.dictOptions
+      }
+      optionsData.forEach(item => {
+        let obj = {...item}
+        obj.value = item.value;
+        obj.targets = [];
+        dvTableData.push(obj)
+      })
+      dvTableData.forEach(item => {
+        this.data.behaviorLinkage.forEach(it=>{
+          if(item.value === it.value){
+            item.targets = it.targets
+          }
+        })
+      })
+      this.dvTableData = dvTableData;
+      this.list.forEach(item => {
+        if(item.data !=='tabs' && item.data !=='card' && item.data !== 'divider' && item.data !== 'editor'){
+          let obj = {};
+          obj.value = item.model
+          obj.label = item.name
+          obj.fieldId = item.model
+          if(item.model === this.data.model){
+            obj.disabled = true;
+          }
+          dvOptions.push(obj)
+        }
+      })
+     
+      this.dvOptions = dvOptions;
+      this.dvLinkage = true;
+    },
+    dvLinkageClosed(){
+    },
+    handleSureBtn(n){
+      // 点击确定修改状态
+      let dvValueBo = false;
+      for(let arri of this.dvTableData){
+        if(arri.targets.length >0){
+          dvValueBo = true;
+          break;
+        }
+      }
+      let nb = this.data.options.remote === false ? 1 : this.data.options.remote === 'dict' ? 2:3
+        console.log(dvValueBo,`${this.data.model}_dvValueBo_${nb}`)
+      if(dvValueBo){
+        this.dvValue[`${this.data.model}_dvValueBo_${nb}`] = true;
+        this.data.behaviorLinkage = this.dvTableData
+      }else{
+        this.dvValue[`${this.data.model}_dvValueBo_${nb}`] = false
+        this.data.behaviorLinkage = []
+      }
+      
+      this.fllinkage();
+      this.dvLinkage = false
+    },
   },
   watch: {
 
@@ -1467,9 +1448,13 @@ export default {
       // update-end--Author:sunjianlei Date:20200420 for：解决这里会清空时间选择器默认值的问题 --------------------
     },
     'data.options.required': function(val) {
-      if(this.data.type !== 'daterange'){
         if (val) {
-          this.validator.required = {required: true, message: `${this.data.name}必须填写`}
+          if(this.data.type!=='daterange'){
+            this.validator.required = {required: true, message: `${this.data.name}必须填写`}
+          }else{
+            this.validator.required = {required: true, message: `请选择${this.data.options.startName}或${this.data.options.endName}`}
+          }
+          
         } else {
           this.validator.required = null
         }
@@ -1477,7 +1462,7 @@ export default {
         this.$nextTick(() => {
           this.generateRule()
         })
-      }
+      
     },
     'data.options.dataType': function (val) {
       if (!this.show) {
@@ -1505,9 +1490,52 @@ export default {
 
       this.generateRule()
     },
-    dvValue(a,b){
-      console.log(a,b)
+    'data.options.remote':function(val){
+      if(this.data.type === 'radio'){
+        console.log(val,'radio')
+        let arr = [];
+        this.list.forEach(item=>{
+          if(item.type === 'radio'){
+            let behaviorLinkage = item.behaviorLinkage;
+            if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+              behaviorLinkage.forEach(it => {
+                let targets = it.targets;
+                if(Array.isArray(targets) && targets.length > 0){
+                  targets.forEach(li => {
+                    arr.push(li);
+                  })
+                }
+              })
+            }
+          }
+        })
+        
+        this.list.map(item=>{
+          let items = {...item}
+          if(items.model !== this.data.model){
+            if(arr.includes(items.model)){
+              items.options.cellLinkage = false
+            }
+          }
+          return items
+        })
+        this.dvValue[`${this.data.model}_dvValueBo_1`] = false
+        this.dvValue[`${this.data.model}_dvValueBo_2`] = false
+        this.data.behaviorLinkage = []
+      }
     }
+    // 'data.options.defaultValue':function(val){
+    //   if(this.data.type === 'radio'){
+    //     let arr = [];
+    //     let behaviorLinkage = this.data.options.behaviorLinkage;
+    //     if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+    //         let targets = behaviorLinkage[0].targets;
+    //         if(Array.isArray(targets) && targets.length > 0){
+    //           this.data.assoStatus = 2;
+    //         }
+    //     }
+    //   }
+    // }
   }
 }
 </script>
@@ -1552,19 +1580,9 @@ export default {
       padding: 0 8px;
     }
   }
-  .secIdCard-elAlart{
-    background:rgb(198, 226, 255);
-    border: 1px solid rgb(121, 187, 255);
-    padding: 10px;
-    border-radius: 4px;
-    color: #606266;
-    .el-icon-warning{
-      color: rgb(121, 187, 255);
-      margin-right: 5px;
-    }
-  }
 
 </style>
+<!--update-end--Author:sunjianlei Date:20190529 for：新增子表操作事件 ---------------------->
 <style lang="scss">
   .linkDialog--1pgLy{
     .el-dialog__header{
@@ -1586,4 +1604,3 @@ export default {
     }
   }
 </style>
-<!--update-end--Author:sunjianlei Date:20190529 for：新增子表操作事件 ---------------------->

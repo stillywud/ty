@@ -78,6 +78,8 @@ export const basicComponents = [
     className: 'form-radio',
     icon: 'icon-radio-active',
     hideTitle: false,
+    behaviorLinkage:[],
+      cellLinkage:false,
     options: {
       inline: true,
       defaultValue: '',
@@ -93,7 +95,7 @@ export const basicComponents = [
           value: '选项3',
         }
       ],
-      behaviorLinkage:[],
+      
       required: false,
       width: '',
       remote: false,
@@ -105,7 +107,6 @@ export const basicComponents = [
       remoteFunc: '',
       disabled: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -302,7 +303,43 @@ export const basicComponents = [
       hidden: false,
       cellLinkage:false,// 是否被关联
     },
-  }
+  },
+  {
+    type: 'daterange',
+    name: '日期区间',
+    className: 'form-daterange',
+    icon: 'icon-date',
+    hideLabel:true,
+    hideTitle: false,
+    options: {
+      defaultValue: [],
+      disabled: false,
+      startPlaceholder: '请选择',
+      startName:'开始时间',
+      endPlaceholder: '请选择',
+      endName:'结束时间',
+      durationType:true,// 是否展示时长
+      durationName:'时长',
+      durationPlaceholder:'',
+      format: 'YYYY-mm-DD',
+      formatType:1,// 1YYYY-mm-DD 2YYYY-mm-DD HH:ii:ss
+      required: false,
+      hidden: false,
+      cellLinkage:false,// 是否被关联
+    },
+    // remoteAPI: { url: '', executed: false },
+  },
+  {
+    type: 'mlist',
+    name: '移动端列表页',
+    className: 'form-mlist',
+    icon: 'icon-date',
+    hideLabel:true,
+    options:{
+      cardFeild:'',
+
+    }
+  },
 ]
 
 export const advanceComponents = [
@@ -337,7 +374,6 @@ export const advanceComponents = [
       length: 9,
       multiple: true,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
   },
   // update-begin--Author:sunjianlei Date:20190731 for：新增文件上传组件 --------------------
@@ -357,7 +393,6 @@ export const advanceComponents = [
       buttonText: '点击上传文件',
       tokenFunc: 'funcGetToken',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
   },
 // update-end--Author:sunjianlei Date:20190731 for：新增文件上传组件 --------------------
@@ -396,7 +431,6 @@ export const advanceComponents = [
       },
       remoteFunc: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -418,7 +452,6 @@ export const advanceComponents = [
       circle: false,
       disabled: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     event: {
       click: "console.log('hello,world!')"
@@ -443,7 +476,6 @@ export const advanceComponents = [
       fontUnderline: false,
       fontLineThrough: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -646,87 +678,4 @@ export const jeecgComponents = [
     remoteAPI: { url: '', executed: false },
   }
 // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------------------
-]
-
-export const tyComponents = [
-  {
-    type: 'daterange',
-    name: '日期区间',
-    className: 'form-daterange',
-    icon: 'icon-date',
-    hideLabel:true,
-    hideTitle: false,
-    options: {
-      defaultValue: '',
-      disabled: false,
-      startPlaceholder: '请选择',
-      startName:'开始时间',
-      endPlaceholder: '请选择',
-      endName:'结束时间',
-      durationType:true,
-      durationName:'时长',
-      durationPlaceholder:'',
-      format: 'YYYY-mm-DD',
-      formatType:1,// 1YYYY-mm-DD 2YYYY-mm-DD HH:ii:ss
-      required: false,
-      hidden: false,
-    },
-    // remoteAPI: { url: '', executed: false },
-  },
-  {
-    type: 'mlisttpl',
-    name: '列表页模板',
-    className: 'form-secIdCard',
-    icon: 'icon-input',
-    hideTitle: false,
-    options: {
-      width: '100%',
-      defaultValue: '',
-      required: false,
-      placeholder: '',
-      readonly: false,
-      disabled: false,
-      fillRuleCode: '',
-      hidden: false,
-    },
-    // remoteAPI: { url: '', executed: false },
-  },
-  // {
-  //   type: 'amountWords',
-  //   name: '金额',
-  //   className: 'form-amountWords',
-  //   icon: 'icon-number',
-  //   hideTitle: false,
-  //   options: {
-  //     width: '100%',
-  //     defaultValue: '',
-  //     capitaled:false,// 是否开启大写
-  //     required: false,
-  //     placeholder: '',
-  //     readonly: false,
-  //     disabled: false,
-  //     fillRuleCode: '',
-  //     hidden: false,
-  //   },
-  //   // remoteAPI: { url: '', executed: false },
-  // },
-  // {
-  //   type: 'tels',
-  //   name: '电话',
-  //   className: 'form-tableTel',
-  //   icon: 'icon-table',
-  //   hideTitle: false,
-  //   options: {
-  //     width: '100%',
-  //     defaultValue: '',
-  //     required: false,
-  //     placeholder: '',
-  //     telType:2, // 1手机固话 2手机 3固话
-  //     readonly: false,
-  //     disabled: false,
-  //     fillRuleCode: '',
-  //     hidden: false,
-  //   },
-  //   // remoteAPI: { url: '', executed: false },
-  // },
 ]

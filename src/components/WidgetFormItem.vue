@@ -35,43 +35,30 @@
       :index="index"
       :data="data"
   ></j-tabs>
+
+  <ty-m-list
+      v-else-if="element.type === 'mlist'"
+      mode="design"
+      :element="element"
+      :select.sync="selectWidget"
+      :index="index"
+      :data="data"
+  />
   <!-- update-end--Author:sunjianlei Date:20190808 for：布局组件封装进 formItem 组件中 -->
 
   <!--  update-begin--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
   <el-form-item class="widget-view"
-      :class="[element.options.cellLinkage ?'cellLinkage--9tg5O':'', formItemClass]"
       v-else-if="element && element.key"
+      :class="[element.options.cellLinkage ?'cellLinkage--9tg5O':'', formItemClass]"
       :label="formItemLabel"
       :data-type="element.type"
       @click.native.stop="handleSelectWidget(index)"
-    > 
-      <template v-if="element.type === 'daterange'">
+    >
+    <template v-if="element.type === 'daterange'">
         <ty-date-range
           :element="element"
           :index="index"
       />
-      </template>
-      <template v-if="element.type == 'tels'">
-        <ty-tels
-          :style="{width: _width}"
-          :disabled="element.options.disabled"
-          :placeholder="element.options.placeholder"
-        />
-      </template>
-      <template v-if="element.type == 'amountWords'">
-        <ty-amount-words
-          :style="{width: _width}"
-          :disabled="element.options.disabled"
-          :placeholder="element.options.placeholder"
-          :capitaled="element.options.capitaled"
-        />
-      </template>
-      <template v-if="element.type == 'secIdCard'">
-        <ty-sec-id-card
-          :style="{width: _width}"
-          :disabled="element.options.disabled"
-          :placeholder="element.options.placeholder"
-        />
       </template>
     <!--  update-end--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
         <template v-if="element.type == 'input'">
@@ -120,6 +107,7 @@
             </el-radio>
           </el-radio-group>
           <div v-show="selectOptions==null" class="j-p-tip">仅在预览时可用</div>
+          <div v-if="handleBhlfil(element.behaviorLinkage)>0" class="leftCornerMark--3_a15"></div>
         </template>
 
         <template v-if="element.type == 'checkbox'">
@@ -345,15 +333,10 @@ import JText from './jeecg/JText'
 import JDivider from './jeecg/JDivider'
 import JFileUpload from './jeecg/JFileUpload'
 import JAreaLinkage from './jeecg/JAreaLinkage'
-
-// 金额
-import TyAmountWords from './ty/TyAmountWords' 
-// 电话
-import TyTels from './ty/TyTels.vue'
-// 身份证
-import TySecIdCard from './ty/TySecIdCard' 
 // 日期
 import TyDateRange from './ty/TyDateRange.vue'
+import TyMList from './ty/TyMList.vue'
+
 export default {
   name: 'WidgetFormItem',
   mixins: [WidgetDraggable, WidgetFormItemMixins],
@@ -365,10 +348,8 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButton, JTableDict, JText, JDivider, JFileUpload, JAreaLinkage
     // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------
-    ,TyAmountWords,
-    TyTels,
-    TySecIdCard,
-    TyDateRange
+    ,TyDateRange,
+    TyMList
   },
   data () {
     return {
@@ -409,6 +390,15 @@ export default {
       // update-end--Author:sunjianlei Date:20190722 for：新增数据字典的处理 ----------------
   },
   methods: {
+    handleBhlfil(arr){
+      // 过滤当前选择
+      let i = arr.filter((function(e) {
+            return e.targets && e.targets.length > 0
+        }
+      ));
+      let len  = i.length
+      return len
+    }
     // handleSelectWidget (index) {
     //   this.selectWidget = this.data.list[index]
     // },
@@ -449,10 +439,27 @@ export default {
 
 <!-- update-begin--Author:sunjianlei Date:20190613 for：匹配按钮组件 -->
 <style lang="scss">
-   .widget-view.is-j-button {
-     padding-top: 10px !important;
-     padding-bottom: 10px !important;
+   .widget-view{
+     &.is-j-button {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+      }
+      &.cellLinkage--9tg5O {
+          opacity: 0.6;
+      }
+      .leftCornerMark--3_a15 {
+        position: absolute;
+        top: -47px;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-top: 16px solid #409EFF;
+        border-right: 16px solid transparent;
+        z-index: 10;
+        opacity: 1 !important;
+      }
    }
+
 </style>
 <style lang="scss" scoped>
 </style>

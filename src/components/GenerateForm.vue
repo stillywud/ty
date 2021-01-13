@@ -11,11 +11,13 @@
           :circle="true"
       />
     </div>
+    {{models}}--{{rules}}
     <el-form
         ref="generateForm"
         id="printContent"
         :size="data.config.size"
-        :model="models" :rules="rules" 
+        :model="models" 
+        :rules="rules" 
         :label-position="isMobile ? 'top' : data.config.labelPosition" 
         :label-width="data.config.labelWidth + 'px'"
         @data-begin="()=>'此处为临时解决一进入表单就触发校验的问题'"
@@ -44,6 +46,7 @@
               :className="getClassName(item)"
               @popupCgreportOk="handlePopupCgreportOk"
               @dialogChange="handleDialogChange"
+              @inpAsso="inpAsso"
           ></generate-form-item>
         </template>
 
@@ -64,7 +67,7 @@ import { changeTheme } from '@/util/theme'
 import { executeRuleByCodeBatch } from '@/util/utils'
 import { execRemoteAPI } from '@/api/execRemoteAPI'
 // update-end--Author:sunjianlei Date:20190808 for：新增自定义 import
-
+import {omit, cloneDeep, uniq, pullAll} from 'lodash-es'
 export default {
   name: 'jm-generate-form',
   mixins: [GenerateFormMixins, JsExpandMixins],
@@ -112,67 +115,67 @@ export default {
       })
     }
     // update-end--Author:sunjianlei Date:20190620 for：新增全局的JS、CSS增强代码 ------------
+    this.data.list.forEach(item=>{
+      if(item.type === 'radio' && item.options.defaultValue){
+        let behaviorLinkage = item.behaviorLinkage;
+        this.inpAsso({val:item.options.defaultValue,behaviorLinkage})
+      }
+    })
   },
   methods: {
     generateModel(genList) {
-
+        console.log(genList,'genList')
       // update-begin--Author:sunjianlei Date:20190815 for：递归创建model，为了适应嵌套布局 ------------
       let fillRuleCodesMap = {}
       let remoteAPIList = []
       this.rules = {}
       _utils.recursiveAllWidget(genList, (item, parent) => {
-        // 如果组件应用了填值规则，就记录出来批量执行
-        if (item.options.fillRuleCode) {
-          let map = fillRuleCodesMap[item.options.fillRuleCode] || []
-          map.push(item.model)
-          fillRuleCodesMap[item.options.fillRuleCode] = map
-        }
-        // 如果组件应用了远程取值接口，就记录下来批量执行
-        if (item.remoteAPI && item.remoteAPI.url && item.remoteAPI.executed === false) {
-          remoteAPIList.push(item)
-        }
+        console.log(item,this.models,'itemitem')
+        if(item.assoStatus !==1){
+          // 如果组件应用了填值规则，就记录出来批量执行
+          if (item.options.fillRuleCode) {
+            let map = fillRuleCodesMap[item.options.fillRuleCode] || []
+            map.push(item.model)
+            fillRuleCodesMap[item.options.fillRuleCode] = map
+          }
+          // 如果组件应用了远程取值接口，就记录下来批量执行
+          if (item.remoteAPI && item.remoteAPI.url && item.remoteAPI.executed === false) {
+            remoteAPIList.push(item)
+          }
 
-        if (this.models[item.model] == null) {
-          let modelValue = this.models[item.model]
-          if (this.value && Object.keys(this.value).indexOf(item.model) >= 0) {
-            modelValue = this.value[item.model]
-          } else {
-            if (item.type === 'blank') {
-              modelValue = item.options.defaultType === 'String' ? '' : (item.options.defaultType === 'Object' ? {} : [])
+          if (this.models[item.model] == null) {
+            let modelValue = this.models[item.model]
+            if (this.value && Object.keys(this.value).indexOf(item.model) >= 0) {
+              modelValue = this.value[item.model]
             } else {
-              modelValue = item.options.defaultValue
+              if (item.type === 'blank') {
+                modelValue = item.options.defaultType === 'String' ? '' : (item.options.defaultType === 'Object' ? {} : [])
+              } else {
+                modelValue = item.options.defaultValue
+              }
             }
+            this.$set(this.models, item.model, modelValue)
           }
-          this.$set(this.models, item.model, modelValue)
-        }
-        
-        let rulesMaps = item.rules.map(item => {
-          if (item.pattern) {
-            return { ...item, pattern: new RegExp(item.pattern) }
-          } else if (item.type === 'number' || item.type === 'float') {
-            return null
-          } else if (item.type === 'phone') {
-            return { ...item, type: null, pattern: /^1[3456789]\d{9}$/ }
-          } else if (item.type === 'identity') {
-            return { ...item, type: null, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }
-          } else {
-            return { ...item }
-          }
-        }).filter(item => item != null)
-        console.log(this.models,'thi888')
-        // 增加日期区间
-        if(item.type === 'daterange'){
-          this.$set(this.models, item.startModel, '')
-          this.$set(this.models, item.endModel, '')
-          this.$set(this.models, item.durationModel, '')
-        }
-        // }else{
+          
+          let rulesMaps = item.rules.map(item => {
+            if (item.pattern) {
+              return { ...item, pattern: new RegExp(item.pattern) }
+            } else if (item.type === 'number' || item.type === 'float') {
+              return null
+            } else if (item.type === 'phone') {
+              return { ...item, type: null, pattern: /^1[3456789]\d{9}$/ }
+            } else if (item.type === 'identity') {
+              return { ...item, type: null, pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }
+            } else {
+              return { ...item }
+            }
+          }).filter(item => item != null)
           if (this.rules[item.model]) {
             this.rules[item.model] = [...this.rules[item.model], ...rulesMaps]
           } else {
             this.rules[item.model] = [...rulesMaps]
           }
-        // }
+        }
       })
       // 批量执行填值规则
       window['fillRuleCodesMap'] = fillRuleCodesMap
@@ -319,7 +322,57 @@ export default {
       return []
     },
     // update-end--Author:sunjianlei Date:20190704 for：新增自定义方法 -----------
+    inpAsso(val){
+      this.$nextTick(()=>{
+        // 多个关联同一个组建有问题
+        let val1 = val.val;
+        let val2 = val.behaviorLinkage;
+        let model = val.model;
+        let targets = [];
+        let targets1 = [];
 
+        // 当前要展示的组件；当前radio要隐藏的组件
+        val2.forEach(item=>{
+          if(item.value === val1){
+            targets = item.targets // 我要展示组件
+          }else if(item.targets){
+            targets1 = targets1.concat(...item.targets) // 我要屏蔽组件
+          }
+        });
+
+        let b1PullAll = pullAll(targets1,targets); // 当前那些组件需要隐藏
+        let a1 = []
+        // 拿到除去当前选中radio展示组件
+        
+          
+        this.data.list.forEach(item=>{
+          // assostatus
+          if(item.type === 'radio'){
+            if(item.model !== model){
+              item.behaviorLinkage.forEach(it=>{
+                if(it.value === this.models[item.model]){
+                  a1.push(...it.targets)
+                }
+              })
+            }
+          }
+        })
+        let b2PullAll = pullAll(b1PullAll,a1); // 
+        this.data.list = this.data.list.map(item =>{
+          let obj = {...item}
+          if(b2PullAll.includes(item.model)){
+            obj.assoStatus = 1;
+          }
+          if(targets.includes(item.model)){
+            obj.assoStatus = 2;
+          }
+          return obj;
+        })
+        let s = cloneDeep(this.models)
+        this.models = s;
+      })
+      
+    }
   },
   watch: {
     // update-begin--Author:sunjianlei Date:20200207 for：设备变化处理 -----------
@@ -354,6 +407,7 @@ export default {
       deep: true,
       immediate: true,
       handler(val) {
+        console.log(22,val)
         // update-begin--Author:sunjianlei Date:20191031 for：旧版本兼容 -----------
         updateOldVersionJSON(val)
         // update-end--Author:sunjianlei Date:20191031 for：旧版本兼容 -----------
@@ -361,13 +415,16 @@ export default {
         // update-begin--Author:sunjianlei Date:20200302 for： 重新渲染 {{ }} 变量 -----------
         this.handlerWatchData()
         // update-end--Author:sunjianlei Date:20200302 for： 重新渲染 {{ }} 变量 -----------
-        console.log(val,'gendata')
+
         this.generateModel(val.list)
+
+       
       }
     },
     value: {
       deep: true,
       handler(val) {
+        conosle.log(val,this.models,'this.modelsthis.models')
         this.models = {...this.models, ...val}
       }
     }

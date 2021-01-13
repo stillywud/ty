@@ -1,58 +1,83 @@
 <template>
-    <div>{{element}}-0-{{rules}}--1--{{models}}
+    <div>
         <el-form-item
-            :label="element.options.startName"
             :required="element.options.required"
-            :prop="element.startModel"
+            :prop="element.model"
+            class="ty-date-range-box"
             >
-            <el-date-picker
-            v-model="startModel"
-            @input="inputA"
-            :disabled="element.options.disabled"
-            :type="`${element.options.formatType === 1 ? 'date' : 'datetime'}`"
-            :placeholder="element.options.startPlaceholder"/>
-        </el-form-item>
-        <el-form-item
-            :label="element.options.endName"
-            :required="element.options.required"
-            :prop="element.endModel"
-            >
-            <el-date-picker
-            v-model="endModel"
-            @input="inputB"
-            :disabled="element.options.disabled"
-            :type="`${element.options.formatType === 1 ? 'date' : 'datetime'}`"
-            :placeholder="element.options.endPlaceholder" />
-        </el-form-item>
-        <el-form-item
-            class="durationRequest"
-            v-if="element.options.durationType"
-            :label="`${element.options.durationName}(${element.options.formatType === 1 ? '天' : '小时'})`"
-            >
-            <el-input 
-            v-model="durationModel"
-            :readonly="true"
-            :placeholder="`请输入${element.options.durationName}`" />
+            <div class="el-el-form-item">
+                <label class="el-el-form-item__label">{{element.options.startName}}</label>
+                <div class="el-el-form-item__content">
+                    <el-date-picker
+                        v-model="startModel"
+                        style="width:100%"
+                        @change="inputA"
+                        :disabled="element.options.disabled"
+                        :type="`${element.options.formatType === 1 ? 'date' : 'datetime'}`"
+                        :placeholder="element.options.startPlaceholder"/>
+                </div>
+            </div>
+            <div class="el-el-form-item">
+                <label class="el-el-form-item__label">{{element.options.endName}}</label>
+                <div class="el-el-form-item__content">
+                    <el-date-picker
+                        style="width:100%"
+                        v-model="endModel"
+                        @change="inputB"
+                        :disabled="element.options.disabled"
+                        :type="`${element.options.formatType === 1 ? 'date' : 'datetime'}`"
+                        :placeholder="element.options.endPlaceholder" />
+                </div>
+            </div>
+            <div class="el-el-form-item">
+                <label class="el-el-form-item__label">{{`${element.options.durationName}(${element.options.formatType === 1 ? '天' : '小时'})`}}</label>
+                <div class="el-el-form-item__content">
+                    <el-input 
+                        v-model="durationModel"
+                        @input="inputC"
+                        :placeholder="`请输入${element.options.required ? '(必填)':''}`" />
+                </div>
+            </div>
         </el-form-item>
     </div>
 </template>
 <script>
-// import { ElementAction, WidgetDraggable } from '../../mixins/CommonMixins'
 import { DeviceMixins } from '@/mixins/vuexMixins'
 import {omit} from 'lodash-es'
 export default {
     name:"TyDateRange",
-    // mixins: [ElementAction, WidgetDraggable],
     mixins: [DeviceMixins],
     data(){
         return {
-            startModel: this.models ? this.models[this.element.startModel] : '',
-            endModel: this.models ? this.models[this.element.endModel] : '',
+            startModel: this.models ? this.models[this.element.model][0] : '',
+            endModel: this.models ? this.models[this.element.model][1] : '',
+            durationModel: this.models ? this.models[this.element.model][2] : '',
         }
     },
     props:['mode', 'config', 'data', 'index', 'element', 'select', 'remote', 'models', 'rules'],
-    computed:{
-        durationModel(){
+    mounted(){
+        console.log(this.rules,this.models,'this.modelsmodels')
+        if(this.models){
+            console.log(this.rules,this.rules[this.element.model],'this.rules')
+            if(this.element.options.required && this.rules[this.element.model].length === 1){
+                this.rules[this.element.model].push({validator: this.validateDateRange, trigger: ['change','blur']})
+            }
+        }
+    },
+    methods:{
+        validateDateRange(rule, value, callback){
+            let val = [].concat(value);
+            if(!val[0] || !val[1]){
+                callback(`请选择${this.element.options.startName}或${this.element.options.endName}`)
+            }else if(new Date(val[0]).getTime() - new Date(val[1]).getTime() > 0){
+                callback(`${this.element.options.startName}不能大于${this.element.options.endName}`)
+            }else if(!val[2] && val[2] !==0){
+                callback(`${this.element.options.durationName}不能为空`)
+            }else{
+                callback()
+            } 
+        },
+        autoThree(){
             if(this.startModel && this.endModel){
                 let formatType = this.element.options.formatType;
                 let num = new Date(this.endModel).getTime() - new Date(this.startModel).getTime();
@@ -60,75 +85,63 @@ export default {
                     if(formatType === 1){
                         num = Math.floor(num / 1000/60);
                         num = Math.floor(num / 60 / 24)+1;
-                        return num;
+                        this.durationModel = num;
                     }else{
                         num = Math.floor(num / 1000/60);
                         num = parseFloat((num / 60).toFixed(1), 10)
-                        return num
+                        this.durationModel = num
+                        if(num > 168){
+                            setTimeout(()=>{
+                                this.$alert('所选时间已超过168小时(7天)', {
+                                    confirmButtonText: '确定',
+                                });
+                            },20)
+                        }
                     }
                 }else if(num <=0){
-                    return 0
+                    this.durationModel = 0
                 }
+                this.models[this.element.model][2] = this.durationModel
             }
-            return ''
-        }
-    },
-    methods:{
+        },
         inputA(e){
-            console.log(e,1)
-            // this.models[this.element.startModel] = e;
-            let obj = {}
-            obj[this.element.startModel] = e
-            this.$emit("update:dateRangeModel",obj)
+            this.models[this.element.model][0] = e ? e:'';
+            this.autoThree();
         },
         inputB(e){
-            console.log(e,2)
-            let obj = {}
-            obj[this.element.endModel] = e
-            this.$emit("update:dateRangeModel",obj)
+            this.models[this.element.model][1] = e ? e:'';
+            this.autoThree();
+        },
+        inputC(e){
+            this.models[this.element.model][2] = e ? e:''
         }
     },
     watch:{
-        'element.options.required':{
-            // deep:true,
-            immediate:true,
-            handler(val){
-                console.log(val,this.rules,'element.options.required')
-                if(this.rules){
-                    let copyRules = this.rules;
-                    if(val){
-                        copyRules[this.element.startModel] = [{required:true,message:"请选择开始时间"}]
-                        copyRules[this.element.endModel] = [{required:true,message:"请选择结束时间"}]
-                    }else{
-                        copyRules = omit(copyRules,[`${this.element.startModel}`,`${this.element.endModel}`])
-                    }
-                    console.log(copyRules)
-                    this.$emit("update:rules",copyRules)
-                }
-                
-            }
-        },
-        durationModel(a,b){
-            console.log(a,b,'value3')
-            let obj = {}
-            obj[this.element.durationModel] = a
-            this.$emit('update:dateRangeModel',obj)
-            // this.$set(this.element.options.defaultValue, 2, a)
-            if(this.element.options.formatType === 2){
-                if(a > 168){
-                    this.$nextTick(()=>{
-                        this.$alert('所选时间已超过168小时', {
-                            confirmButtonText: '确定',
-                        });
-                    })
-                    
-                }
-            }
-        }
     }
 }
 </script>
 <style lang="scss">
+.ty-date-range-box{
+    &.is-required{
+        .el-el-form-item__label{
+            &::before{
+                content: "*";
+                color: #f56c6c;
+                margin-right: 4px;
+            }
+        }
+        .el-el-form-item__content{
+            .el-input__inner,
+            .el-input__inner:focus,
+            .el-textarea__inner,
+            .el-textarea__inner:focus,
+            input.invalid,
+            input.invalid:focus{
+                border-color: #dcdfe6!important;
+            }
+        }
+    }
+}
 .durationRequest{
     .el-form-item__label{
         &::before{

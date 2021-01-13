@@ -50,21 +50,24 @@
       @popupCgreportOk="handlePopupCgreportOk"
       @dialogChange="handleDialogChange"
   />
-  <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件 -->
-  <div v-else-if="widget.type === 'daterange'">{{dataModels}}999{{models}}99{{dateRangeModel}}
-    <ty-date-range
-      :element="widget"
-      :config="config"
-      :models.sync="dataModels"
-      :dateRangeModel.sync="dateRangeModel"
-      :rules.sync="dataRules"
-      :readOnly="readOnly"
-      :class="className"
-  />
-  </div>
-  
-  <el-form-item v-else :id="widget.key" :label="formItemLabel" 
-  :prop="widget.model" :style="formItemStyle">
+  <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件  :rules.sync="dataRules"-->
+    <div v-else-if="widget.type === 'daterange' && widget.assoStatus !==1">
+      <ty-date-range
+          :element="widget"
+          :config="config"
+          :models.sync="dataModels"
+          :rules.sync="rules"
+          :readOnly="readOnly"
+          :class="className"
+      />
+    </div>
+
+  <el-form-item 
+    v-else-if="widget.assoStatus !==1"
+    :id="widget.key" 
+    :label="formItemLabel" 
+    :prop="widget.model" 
+    :style="formItemStyle">
     <template v-if="widget.type == 'input'">
       <el-input-number
           v-if="widget.options.dataType == 'number' || widget.options.dataType == 'integer' || widget.options.dataType == 'float'"
@@ -126,6 +129,7 @@
           :options="_options"
           :readOnly="readOnly"
           :class="className"
+          @inpAsso="inpAsso"
       />
     </template>
 
@@ -361,54 +365,6 @@
     </template>
     <!-- update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 -->
 
-    <template v-if="widget.type === 'secIdCard'">
-      <ty-sec-id-card
-        :value="dataModel"
-        :placeholder="widget.options.placeholder"
-        :style="{width: _width}"
-        :maxlength="18"
-        :disabled="widget.options.disabled"
-        :class="className"
-        :element="widget"
-        :rules="rules"
-        @onValTransfer="onValTransfer"
-      />
-    </template>
-    <template v-if="widget.type == 'amountWords'">
-        <ty-amount-words
-          :value="dataModel"
-          :style="{width: _width}"
-          :disabled="widget.options.disabled"
-          :placeholder="widget.options.placeholder"
-          :capitaled="widget.options.capitaled"
-          :element="widget"
-          :rules="rules"
-          @onValTransfer="onValTransfer"
-        />
-      </template>
-      <template v-if="widget.type == 'tels'">
-      <ty-tels
-        :value="dataModel"
-        :style="{width: _width}"
-        :disabled="widget.options.disabled"
-        :placeholder="widget.options.placeholder"
-        :element="widget"
-        :rules="rules"
-        @onValTransfer="onValTransfer"
-      />
-    </template>
-    <!-- <template>
-      <ty-date-range
-        v-if="widget.type === 'daterange'"
-        :element="widget"
-        :config="config"
-        :models.sync="dataModels"
-        :rules="rules"
-        :readOnly="readOnly"
-        :class="className"
-    />
-    </template> -->
-
   </el-form-item>
 </template>
 
@@ -436,11 +392,6 @@ import JFileUpload from './jeecg/JFileUpload'
 import moment from 'moment'
 import JSelect from '@/components/jeecg/JSelect'
 import JRadioGroup from '@/components/jeecg/JRadioGroup'
-
-// 金额
-import TyAmountWords from './ty/TyAmountWords' 
-import TyTels from './ty/TyTels.vue'
-import TySecIdCard from './ty/TySecIdCard.vue'
 // 日期
 import TyDateRange from './ty/TyDateRange.vue'
 export default {
@@ -457,10 +408,7 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
-    ,TyAmountWords,
-    TyTels,
-    TySecIdCard,
-    TyDateRange
+    ,TyDateRange
   },
   data () {
     return {
@@ -468,7 +416,6 @@ export default {
       dataModel: this.models[this.widget.model],
       dataModels: this.models,
       dataRules:this.rules,
-      dateRangeModel:''
     }
   },
   computed: {
@@ -567,17 +514,24 @@ export default {
       }
     },
     // update-end--Author:sunjianlei Date:20190705 for：新增自定义事件 -----------
-
-    // 新增ty组件传值
-    onValTransfer(e){
-      this.dataModel = e;
+    inpAsso(val){
+      this.$emit("inpAsso",val)
     }
   },
   watch: {
+    rules:{
+      deep: true,
+      handler(val) {
+        if(this.widget.type === 'daterange'){
+          console.log(val,'rulesrules')
+          this.$emit('update:rules', val)
+        }
+      }
+    },
     dataModel: {
       deep: true,
       handler (val) {
-        console.log(val,'datamodel')
+        console.log(val,'gitemdataModel')
         this.models[this.widget.model] = val
         this.$emit('update:models', {
           ...this.models,
@@ -585,37 +539,17 @@ export default {
         })
       }
     },
-    dateRangeModel: {
-      deep: true,
-      handler (val) {
-        console.log(val,'datamodel')
-        this.$emit('update:models', {
-          ...this.models,
-          ...val
-        })
-      }
-    },
     dataModels: {
       deep: true,
       handler(val) {
-
-        console.log(val,'models')
+        console.log(val,'gitemdataModels')
         this.$emit('update:models', val)
-        
-      }
-    },
-    dataRules:{
-      deep: true,
-      handler(val) {
-        console.log(val,'rulesrules')
-        this.$emit('update:rules', val)
       }
     },
     models: {
       immediate: true,
       deep: true,
       handler(val) {
-        console.log(val,'modelsss')
         // update-begin--Author:sunjianlei Date:20191211 for：特殊类型特殊处理
         let model = val[this.widget.model]
         if (this.widget.type === 'date' && model) {
@@ -628,7 +562,6 @@ export default {
             return model[index] = moment(item).format(format)
           }) : model = moment(model).format(format)
         }
-        console.log(val,model,'model')
         this.dataModel = model
         // update-end--Author:sunjianlei Date:20191211 for：特殊类型特殊处理
         this.dataModels = val

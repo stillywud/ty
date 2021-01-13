@@ -71,7 +71,11 @@ export default {
 
       if (options.remote === 'dict' && options.dictCode) {
         // 如果是数据字典，就通过 dictCode 查询字典 item
-        this.remoteOptions = await _api.getDictItems({ code: options.dictCode })
+        // this.remoteOptions = await _api.getDictItems({ code: options.dictCode })
+        this.remoteOptions = [
+          {text:'衣服', title:'衣服', label:'衣服', value:'yifu'},
+          {text:'袜子', title:'袜子', label:'袜子', value:'wazi'}
+        ]
       } else if (options.remote === true && options.remoteFunc) {
         // 通过远程 URL 取值
         let { remoteFunc, props } = options
