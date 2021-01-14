@@ -139,7 +139,7 @@
       <!-- update-begin--Author:sunjianlei Date:20200220 for：switch新增属性  -->
 
       <el-form-item label="选项" v-if="Object.keys(data.options).indexOf('options')>=0">
-        <el-radio-group v-model="data.options.remote" size="mini" style="margin-bottom:10px;">
+        <el-radio-group v-model="data.options.remote" @change="changeRemove" size="mini" style="margin-bottom:10px;">
           <el-radio-button :label="false">静态数据</el-radio-button>
           <!-- update-begin--Author:sunjianlei Date:20190521 for：新增数据字典对接参数 -->
           <el-radio-button label="dict">数据字典</el-radio-button>
@@ -1384,6 +1384,40 @@ export default {
       this.fllinkage();
       this.dvLinkage = false
     },
+    changeRemove(val){
+      if(this.data.type === 'radio'){
+        console.log(val,'radio')
+        let arr = [];
+        this.list.forEach(item=>{
+          if(item.type === 'radio'){
+            let behaviorLinkage = item.behaviorLinkage;
+            if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+              behaviorLinkage.forEach(it => {
+                let targets = it.targets;
+                if(Array.isArray(targets) && targets.length > 0){
+                  targets.forEach(li => {
+                    arr.push(li);
+                  })
+                }
+              })
+            }
+          }
+        })
+        
+        this.list.map(item=>{
+          let items = {...item}
+          if(items.model !== this.data.model){
+            if(arr.includes(items.model)){
+              items.options.cellLinkage = false
+            }
+          }
+          return items
+        })
+        this.dvValue[`${this.data.model}_dvValueBo_1`] = false
+        this.dvValue[`${this.data.model}_dvValueBo_2`] = false
+        this.data.behaviorLinkage = []
+      }
+    }
   },
   watch: {
 
@@ -1490,40 +1524,7 @@ export default {
 
       this.generateRule()
     },
-    'data.options.remote':function(val){
-      if(this.data.type === 'radio'){
-        console.log(val,'radio')
-        let arr = [];
-        this.list.forEach(item=>{
-          if(item.type === 'radio'){
-            let behaviorLinkage = item.behaviorLinkage;
-            if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
-              behaviorLinkage.forEach(it => {
-                let targets = it.targets;
-                if(Array.isArray(targets) && targets.length > 0){
-                  targets.forEach(li => {
-                    arr.push(li);
-                  })
-                }
-              })
-            }
-          }
-        })
-        
-        this.list.map(item=>{
-          let items = {...item}
-          if(items.model !== this.data.model){
-            if(arr.includes(items.model)){
-              items.options.cellLinkage = false
-            }
-          }
-          return items
-        })
-        this.dvValue[`${this.data.model}_dvValueBo_1`] = false
-        this.dvValue[`${this.data.model}_dvValueBo_2`] = false
-        this.data.behaviorLinkage = []
-      }
-    }
+    
     // 'data.options.defaultValue':function(val){
     //   if(this.data.type === 'radio'){
     //     let arr = [];

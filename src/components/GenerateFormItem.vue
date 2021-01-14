@@ -523,7 +523,6 @@ export default {
       deep: true,
       handler(val) {
         if(this.widget.type === 'daterange'){
-          console.log(val,'rulesrules')
           this.$emit('update:rules', val)
         }
       }
@@ -531,7 +530,6 @@ export default {
     dataModel: {
       deep: true,
       handler (val) {
-        console.log(val,'gitemdataModel')
         this.models[this.widget.model] = val
         this.$emit('update:models', {
           ...this.models,
@@ -542,7 +540,6 @@ export default {
     dataModels: {
       deep: true,
       handler(val) {
-        console.log(val,'gitemdataModels')
         this.$emit('update:models', val)
       }
     },

@@ -79,7 +79,7 @@ export const basicComponents = [
     icon: 'icon-radio-active',
     hideTitle: false,
     behaviorLinkage:[],
-      cellLinkage:false,
+    cellLinkage:false,
     options: {
       inline: true,
       defaultValue: '',

@@ -88,6 +88,9 @@
         if(val && this.element.behaviorLinkage.length > 0){
           // console.log({val,element:this.element})
           this.$emit('inpAsso', {val,behaviorLinkage:this.element.behaviorLinkage,model:this.element.model})
+          this.$nextTick(()=>{
+            
+          })
         }
         
       }

@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="data.config.allowPrint" style="text-align: right;">
+      
       <el-button
           v-print="'#printContent'"
           class="j-btn-print"
@@ -11,7 +12,6 @@
           :circle="true"
       />
     </div>
-    {{models}}--{{rules}}
     <el-form
         ref="generateForm"
         id="printContent"
@@ -130,7 +130,6 @@ export default {
       let remoteAPIList = []
       this.rules = {}
       _utils.recursiveAllWidget(genList, (item, parent) => {
-        console.log(item,this.models,'itemitem')
         if(item.assoStatus !==1){
           // 如果组件应用了填值规则，就记录出来批量执行
           if (item.options.fillRuleCode) {
@@ -335,6 +334,8 @@ export default {
         val2.forEach(item=>{
           if(item.value === val1){
             targets = item.targets // 我要展示组件
+            // console.log(this.$refs.generateForm.clearValidate)
+            
           }else if(item.targets){
             targets1 = targets1.concat(...item.targets) // 我要屏蔽组件
           }
@@ -368,11 +369,19 @@ export default {
           }
           return obj;
         })
-        let s = cloneDeep(this.models)
-        this.models = s;
+        // let s = cloneDeep(this.models)
+        // this.models = s;
+        // 这里可能有问题，后续再解决， 清除重复展示的校验
+        setTimeout(()=>{
+          this.$refs.generateForm.clearValidate(targets)
+        },0)
+        
       })
       
-    }
+    },
+    // ss(){
+    //   this.$refs.generateForm.clearValidate(["input_1610524099315_496041",""])
+    // }
   },
   watch: {
     // update-begin--Author:sunjianlei Date:20200207 for：设备变化处理 -----------
@@ -407,7 +416,6 @@ export default {
       deep: true,
       immediate: true,
       handler(val) {
-        console.log(22,val)
         // update-begin--Author:sunjianlei Date:20191031 for：旧版本兼容 -----------
         updateOldVersionJSON(val)
         // update-end--Author:sunjianlei Date:20191031 for：旧版本兼容 -----------
@@ -424,7 +432,6 @@ export default {
     value: {
       deep: true,
       handler(val) {
-        conosle.log(val,this.models,'this.modelsthis.models')
         this.models = {...this.models, ...val}
       }
     }
