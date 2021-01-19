@@ -66,8 +66,17 @@
       </template>
 
       <template v-if="data.type ==='mlist'"><!--移动端模版列表页 card配置-->
+        <el-form-item label="搜索框占位符" >
+          <el-input v-model="data.options.searchPlaceholder" placeholder="请输入搜索框占位符"></el-input>
+        </el-form-item>
         <el-form-item label="card模块字段" >
           <el-input v-model="data.options.cardFeild" placeholder="多个字段请使用逗号按顺序隔开"></el-input>
+        </el-form-item>
+        <el-form-item label="筛选数据接口" >
+          <el-input v-model="data.options.filterUrl" placeholder="请输入筛选数据接口"></el-input>
+        </el-form-item>
+        <el-form-item label="列表数据接口" >
+          <el-input v-model="data.options.cardUrl" placeholder="请输入列表数据接口"></el-input>
         </el-form-item>
       </template>
 

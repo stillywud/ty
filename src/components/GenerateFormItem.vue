@@ -394,6 +394,7 @@ import JSelect from '@/components/jeecg/JSelect'
 import JRadioGroup from '@/components/jeecg/JRadioGroup'
 // 日期
 import TyDateRange from './ty/TyDateRange.vue'
+
 export default {
   name: 'GenerateFormItem',
   mixins: [GenerateFormItemMixins],
@@ -408,7 +409,8 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
-    ,TyDateRange
+    ,TyDateRange,
+    
   },
   data () {
     return {

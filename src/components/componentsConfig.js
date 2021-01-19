@@ -337,7 +337,10 @@ export const basicComponents = [
     hideLabel:true,
     options:{
       cardFeild:'',
-
+      cardUrl:'', // 列表页接口
+      filterUrl:'', //筛选接口/ 
+      searchInput:'',
+      searchPlaceholder:'请输入关键词'
     }
   },
 ]

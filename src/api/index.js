@@ -52,6 +52,12 @@ export const getDictItems = (params) => {
 
 const getTransitURL = url => `/sys/common/transitRESTful?url=${encodeURIComponent(url)}`
 
+/* mlist 列表呀*/
+const getMlistCardURL = (url,params) => getAction(url, params)
+/* mlist 筛选*/
+const getMlistFilterURL = (url,params) => getAction(url, params)
+
+
 export default {
   queryUserInfoByToken,
   getUserList,
@@ -70,4 +76,6 @@ export default {
     put: (url, parameter) => putAction(getTransitURL(url), parameter),
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
   },
+  getMlistCardURL,
+  getMlistFilterURL
 }

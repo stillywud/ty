@@ -152,11 +152,12 @@
           width="1000px"
           form
           :center="false"
+          :action="previewAction"
           :dialogOptions="(generateWidgetForm.config||{}).dialogOptions"
           switchFullscreen
         >
           <generate-form insite="true" 
-          v-if="previewVisible" 
+          v-if="previewVisible && !previewAction" 
           :data="generateWidgetForm" 
           :userInfo="generateUserInfo" 
           :value="widgetModels" 
@@ -168,6 +169,9 @@
               高度：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
             </template>
           </generate-form>
+          <ty-m-listp
+            :data="generateWidgetForm" 
+          />
         </cus-dialog>
         <!-- update-end--Author:sunjianlei Date:20190716 for：新增用户自定义弹窗边距 -->
 
@@ -244,7 +248,7 @@ import {ACCESS_TOKEN, BASE_URL} from '@/api/request'
 import { changeTheme } from '@/util/theme'
 import DebugConfig from '@/components/DebugConfig'
 // update-end--Author:sunjianlei Date:20190528 for：将请求写在源码内部，token通过参数传入 --------------------
-
+import TyMListp from './ty/TyMListp.vue'
 export default {
   name: 'jm-design-form',
   components: {
@@ -254,7 +258,8 @@ export default {
     FormConfig,
     WidgetForm,
     CusDialog,
-    GenerateForm
+    GenerateForm,
+    TyMListp
   },
   props: {
     preview: {
@@ -313,6 +318,7 @@ export default {
       // update-end--Author:sunjianlei Date:20190606 for：新增JEECG组件 ------------
 
       resetJson: false,
+      previewAction:true,
       
       widgetForm: {
         list: [],
@@ -698,8 +704,17 @@ export default {
     handlePreview () {
       // update-begin--Author:sunjianlei Date:20190708 for：防止修改了属性后导致设计器也被修改
       // console.log(this.getJSON())
+      let list = this.getJSON().list;
+      if(Array.isArray(list) && list.length > 0){
+        if(list[0].type === 'mlist'){
+          this.previewAction = false;
+        }else{
+          this.previewAction = true;
+        }
+      }
       
       this.generateWidgetForm = this.getJSON()
+
       this.previewVisible = true
     },
     handleTest () {

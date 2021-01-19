@@ -1,5 +1,15 @@
 <template>
     <div class="ty-m-list">
+        <div class="search-filter-list">
+            <el-input
+                class="search-list"
+                :readonly="true"
+                :placeholder="element.options.searchPlaceholder"
+                >
+                <i slot="suffix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+            <el-button class="filter-list" icon="el-icon-office-building">筛选</el-button>
+        </div>
         <el-card
             :body-style="{ padding: '0px 10px' }"
             shadow="always">
@@ -30,7 +40,6 @@ export default {
     methods:{
         paramsFn(){
             let val = this.element.options.cardFeild;
-            console.log(val)
             let valArr = val.split(',')
             return valArr
         }
@@ -39,6 +48,19 @@ export default {
 </script>
 <style lang="scss">
 .ty-m-list{
+    .search-filter-list{
+        display: flex;
+        margin-bottom:10px;
+        .filter-list{
+            min-width: 60px;
+            margin-left: 10px;
+            padding: 0;
+        }
+        .search-list{
+            
+            flex: 1;
+        }
+    }
     .list-item{
         p{
             display: flex;
