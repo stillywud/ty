@@ -126,7 +126,6 @@ export const WidgetDraggable = {
           }
         })
       }
-
       let element = this.data.list[index]
       if (element.jeecg_auth && element.jeecg_auth.enabled) {
         this.$confirm('删除字段将会同时删除已配置的权限，您确定吗？', '删除字段', {

@@ -25,10 +25,20 @@
                 </p>
             </div>
         </el-card>
+        <el-button
+          title="删除"
+          style="bottom: -20px;"
+          class="widget-action-delete"
+          type="danger" circle plain
+          @click.stop="handleWidgetDelete(index)"
+      >
+        <i class="iconfont icon-trash"></i>
+      </el-button>
     </div>
 </template>
 <script>
 import Until from './until.js'
+import { ElementAction, WidgetDraggable } from '@/mixins/CommonMixins'
 export default {
     name:"TyMList",
     data(){
@@ -36,7 +46,8 @@ export default {
           
         }
     },
-    props:['placeholder','element','rules'],
+    props:['placeholder','element','rules','data','index'],
+    mixins: [ElementAction, WidgetDraggable],
     methods:{
         paramsFn(){
             let val = this.element.options.cardFeild;
@@ -48,6 +59,7 @@ export default {
 </script>
 <style lang="scss">
 .ty-m-list{
+    position: relative;
     .search-filter-list{
         display: flex;
         margin-bottom:10px;

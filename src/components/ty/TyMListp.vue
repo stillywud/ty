@@ -38,12 +38,32 @@
             <p v-if="loading" align="center">加载中...</p>
             <p v-if="noMore" align="center">没有更多了</p>
         </div>
-        <el-drawer
-            title="我是标题"
-            :visible.sync="drawer"
-            :with-header="false">
-            <span>我来啦!</span>
-            </el-drawer>
+        <div class="a1" @click="a1drawer" v-if="drawer">
+            <div class="a1-body" @click.stop="a1body">
+                <div class="a1-hed">
+                    <i class="el-icon-close" @click="a1close"></i>
+                </div>
+                <div class="a1-con">
+                    <div class="a1-con-list">
+                        <div class="a1-con-list-1">
+                            <div :class="[groupName === item.groupName] ? 'active' : '' ">{{item.groupName}}</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                            <div>测试数据测试数据测试数据</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="a1-fot">
+                    <el-button>重置</el-button>
+                    <el-button type="primary">确认</el-button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -57,7 +77,8 @@ export default {
             loading: false,
             drawer: false,
             seaInpVal:'',
-            list:[]
+            list:[],
+            groupName:''
         }
     },
     props:['data'],
@@ -96,6 +117,13 @@ export default {
                     this.list = records;
                 }
             })
+        },
+        a1close(){
+            this.drawer = false
+        },
+        a1body(){},
+        a1drawer(){
+            this.drawer = false
         }
     }
 }
@@ -137,6 +165,94 @@ export default {
                 span:nth-child(2){
                     font-size: 13px;
                 }
+            }
+        }
+    }
+    .a1{
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,.5);
+        z-index: 10;
+        height: 100%;
+        width: 100%;
+        .a1-body{
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 85%;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            .a1-hed{
+                width: 100%;
+                height: 40px;
+                position: relative;
+                .el-icon-close{
+                    position: absolute;
+                    right: 5px;
+                    top: 10px;
+                    font-size: 20px;
+                }
+            }
+            .a1-con{
+                flex: 1;
+                position: relative;
+                background-color: #f7f7f7;
+                overflow: hidden;
+                .a1-con-list{
+                    -webkit-overflow-scrolling: touch;
+                    overflow: hidden;
+                    overflow-y: auto;
+                    box-sizing: border-box;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 1;
+                    width: calc(100% + 17px);
+                    .a1-con-list-1{
+                        background: #fff;
+                        position: relative;
+                        margin: 0;
+                        padding: 10px 0 0 10px;
+                        &::after{
+                            content: "";
+                            display: block;
+                            clear: both;
+                        }
+                        > div{
+                            box-sizing: border-box;
+                            float: left;
+                            width: 29.99%;
+                            padding-right: 10px;
+                            height: 30px;
+                            line-height: 30px;
+                            margin-bottom: 10px;
+                            margin-right: 10px;
+                            padding: 0 5px;
+                            color: #666;
+                            background-color: #f7f7f7;
+                            border-radius: 4px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                        }
+                        
+                    }
+                }
+            }
+            .a1-fot{
+                width: 100%;
+                height: 50px;
+                border-top: 1px solid #ddd;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
