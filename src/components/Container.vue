@@ -157,7 +157,7 @@
           switchFullscreen
         >
           <generate-form insite="true" 
-          v-if="previewVisible && !previewAction" 
+          v-if="previewVisible && previewAction" 
           :data="generateWidgetForm" 
           :userInfo="generateUserInfo" 
           :value="widgetModels" 
@@ -170,6 +170,7 @@
             </template>
           </generate-form>
           <ty-m-listp
+            v-if="!previewAction"
             :data="generateWidgetForm" 
           />
         </cus-dialog>

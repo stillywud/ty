@@ -41,8 +41,8 @@ service.interceptors.response.use(response => {
 const BASE_URL = "BASE_URL"
 const ACCESS_TOKEN = "ACCESS_TOKEN"
 // 仅供测试使用
-const TEST_BASE_URL = "http://localhost:8080/jeecg-boot"
-const TEST_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NzAzMzE5NzQsInVzZXJuYW1lIjoiYWRtaW4ifQ.bLW1ST5F4VdIWjOqWmHr-dcO48BFZhb8DtN3cIC1oZw"
+const TEST_BASE_URL = "http://192.168.30.146:8102/jeecg-boot"
+const TEST_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiQXV0aG9yaXphdGlvblNlcnZlciJdLCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFwaSJdLCJncm91cGlkIjoidHlfb2F1dGhfaGJ4cyIsImV4cCI6MTYxMTA1NTE4MywianRpIjoiNDhhN2FmZmUtY2FmNy00ODBjLWI5NGUtNzlhYjQwODliN2RhIiwiY2xpZW50X2lkIjoiY2xpZW50X3Bhc3NfMSIsInVzZXJuYW1lIjoiYWRtaW4ifQ.xeJ61wRKVNLVXG-ErfXr2a4wH2H6WcVwud5ulJKyL-8"
 
 export {
   service as request,

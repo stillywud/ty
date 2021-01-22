@@ -336,9 +336,9 @@ export const basicComponents = [
     icon: 'icon-date',
     hideLabel:true,
     options:{
-      cardFeild:'',
-      cardUrl:'', // 列表页接口
-      filterUrl:'', //筛选接口/ 
+      cardFeild:'applyTitle,groupName,createBy,createTime,auditStatus',
+      cardUrl:'/workflow/auditInfo/queryApplyList', // 列表页接口
+      filterUrl:'/approval/formGroup/list', //筛选接口/ 
       searchInput:'',
       searchPlaceholder:'请输入关键词'
     }

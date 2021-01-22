@@ -116,9 +116,11 @@ export default {
     }
     // update-end--Author:sunjianlei Date:20190620 for：新增全局的JS、CSS增强代码 ------------
     this.data.list.forEach(item=>{
-      if(item.type === 'radio' && item.options.defaultValue){
-        let behaviorLinkage = item.behaviorLinkage;
-        this.inpAsso({val:item.options.defaultValue,behaviorLinkage})
+      if(item.type === 'radio'){
+        if(this.models[item.model]){
+          let behaviorLinkage = item.behaviorLinkage;
+          this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
+        }
       }
     })
   },

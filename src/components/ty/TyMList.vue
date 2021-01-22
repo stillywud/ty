@@ -25,7 +25,8 @@
                 </p>
             </div>
         </el-card>
-        <el-button
+        <!-- 操作按钮 -->
+      <el-button
           title="删除"
           style="bottom: -20px;"
           class="widget-action-delete"
@@ -37,8 +38,8 @@
     </div>
 </template>
 <script>
-import Until from './until.js'
 import { ElementAction, WidgetDraggable } from '@/mixins/CommonMixins'
+import Until from './until.js'
 export default {
     name:"TyMList",
     data(){
@@ -46,8 +47,8 @@ export default {
           
         }
     },
-    props:['placeholder','element','rules','data','index'],
     mixins: [ElementAction, WidgetDraggable],
+    props:['placeholder','element','rules','data','index'],
     methods:{
         paramsFn(){
             let val = this.element.options.cardFeild;

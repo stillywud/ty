@@ -54,6 +54,7 @@ const getTransitURL = url => `/sys/common/transitRESTful?url=${encodeURIComponen
 
 /* mlist 列表呀*/
 const getMlistCardURL = (url,params) => getAction(url, params)
+const postMlistCardURL = (url,params) => postAction(url, params)
 /* mlist 筛选*/
 const getMlistFilterURL = (url,params) => getAction(url, params)
 
@@ -77,5 +78,6 @@ export default {
     http: (url, parameter) => httpAction(getTransitURL(url), parameter),
   },
   getMlistCardURL,
+  postMlistCardURL,
   getMlistFilterURL
 }

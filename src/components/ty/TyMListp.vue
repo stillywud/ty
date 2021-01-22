@@ -8,7 +8,7 @@
                 >
                 <i slot="suffix" @click.stop="search" class="el-input__icon el-icon-search"></i>
             </el-input>
-            <el-button class="filter-list" @click="drawer = true" icon="el-icon-office-building">筛选</el-button>
+            <el-button class="filter-list" @click="drawerShow" icon="el-icon-office-building">筛选</el-button>
         </div>
         <div class="infinite-list-wrapper" style="overflow:auto">
             <div
@@ -16,21 +16,20 @@
             v-infinite-scroll="load"
             infinite-scroll-disabled="disabled">
                 <el-card
-                    v-for="i in count"
+                    v-for="i in list"
                     :body-style="{ padding: '0px 10px'}"
-                    :key="i"
+                    :key="i.id"
                     class="el-card-tpl"
                     shadow="always">
                     <div class="list-item">
-                        <div>{{i}}</div>
                         <p class="item-1">
-                            <span>{{paramsFn()[0] || ''}}</span>
-                            <span>{{paramsFn()[1] || ''}}</span>
+                            <span>{{i[paramsFn()[0]] || ''}}</span>
+                            <span>{{i[paramsFn()[1]] || ''}}</span>
                         </p>
-                        <p class="item-2">{{paramsFn()[2] || ''}}</p>
+                        <p class="item-2">{{i[paramsFn()[2]] || ''}}</p>
                         <p class="item-3">
-                            <span>{{paramsFn()[3] || ''}}</span>
-                            <span>{{paramsFn()[4] || ''}}</span>
+                            <span>{{i[paramsFn()[3]] || ''}}</span>
+                            <span>{{i[paramsFn()[4]] || ''}}</span>
                         </p>
                     </div>
                 </el-card>
@@ -46,21 +45,17 @@
                 <div class="a1-con">
                     <div class="a1-con-list">
                         <div class="a1-con-list-1">
-                            <div :class="[groupName === item.groupName] ? 'active' : '' ">{{item.groupName}}</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
-                            <div>测试数据测试数据测试数据</div>
+                            <div 
+                                v-for="(item,index) in filterlist" 
+                                :key="index" 
+                                 @click="groupNameBtn(item)"
+                                :class="[groupName === item.groupName ? 'active' : '' ]">{{item.groupName}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="a1-fot">
-                    <el-button>重置</el-button>
-                    <el-button type="primary">确认</el-button>
+                    <el-button @click="groupNameReset">重置</el-button>
+                    <el-button type="primary" @click="onConfirm">确认</el-button>
                 </div>
             </div>
         </div>
@@ -78,28 +73,32 @@ export default {
             drawer: false,
             seaInpVal:'',
             list:[],
-            groupName:''
+            filterlist:[],
+            groupName:'',
+            pageNo:1,
+            total:1,
+            cardUrl:this.data.list[0] ? this.data.list[0].options.cardUrl : '',
+            filterUrl:this.data.list[0] ? this.data.list[0].options.filterUrl : '',
         }
     },
     props:['data'],
     computed: {
         noMore () {
-            return this.count >= 20
+            return this.list.length >= this.total
         },
         disabled () {
             return this.loading || this.noMore
         }
     },
     mounted(){
-        console.log(this.data)
+        //console.log(this.data)
+        //this.init(1)
     },
     methods:{
         load () {
             this.loading = true
-            setTimeout(() => {
-            this.count += 2
-            this.loading = false
-            }, 2000)
+            console.log('22')
+            this.init(this.pageNo)
         },
         paramsFn(){
             // return []
@@ -110,20 +109,65 @@ export default {
         search(){
             let element = this.data.list[0];
             let cardUrl = element.options.cardUrl;
-            _api.getMlistCardURL(cardUrl,{keyword:seaInpVal,page:1,pageSize:20}).then(res=>{
-                let {success, result, message} = res;
-                let {records} = result
-                if(success){
-                    this.list = records;
-                }
-            })
+            //cardUrl = '/workflow/auditInfo/queryApplyList'
+            document.querySelector(".infinite-list-wrapper").scrollTop = 0
+            this.init(1)
+        },
+        init(pageNo){
+            if(this.cardUrl){
+               _api.postMlistCardURL(this.cardUrl,{keywords:this.seaInpVal,groupName:this.groupName,pageNo,pageSize:20}).then(res=>{
+                    console.log(res)
+                    this.loading = false
+                    let {success, result, message} = res;
+                    let {records,total} = result
+                    if(success){
+                        this.list = (pageNo === 1 ? [] : this.list).concat(records);
+                        this.pageNo = this.pageNo + 1;
+                        this.total = total
+                    }
+                })
+            }else{
+                this.loading = false
+                this.$message.error('接口地址为空')
+            }
+            
+        },
+        drawerShow(){
+            if(this.filterUrl){
+                this.drawer = true;
+                _api.getMlistFilterURL(this.filterUrl,{pageNo:1,pageSize:999}).then(res=>{
+                    this.loading = false
+                    let {success, result, message} = res;
+                    let {records,total} = result
+                    if(success){
+                        this.filterlist = records;
+                    }
+                })
+            }else{
+                this.$message.error('接口地址为空')
+            }
+            
+        },
+        groupNameReset(){
+            this.groupName = ''
+        },
+        groupNameBtn(o){
+            this.groupName = o.groupName
+        },
+        onConfirm(){
+            this.drawer = false
+            this.groupNameReset();
+            this.init(1)
+
         },
         a1close(){
             this.drawer = false
+            this.groupNameReset();
         },
         a1body(){},
         a1drawer(){
-            this.drawer = false
+            this.drawer = false;
+            this.groupNameReset();
         }
     }
 }
@@ -214,7 +258,7 @@ export default {
                     right: 0;
                     bottom: 0;
                     z-index: 1;
-                    width: calc(100% + 17px);
+                    width: calc(100% + 8px);
                     .a1-con-list-1{
                         background: #fff;
                         position: relative;
@@ -241,6 +285,10 @@ export default {
                             overflow: hidden;
                             text-overflow: ellipsis;
                             white-space: nowrap;
+                            &.active{
+                                background: #1989fa;
+                                color: #fff;
+                            }
                         }
                         
                     }

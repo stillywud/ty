@@ -1254,13 +1254,14 @@ export default {
     // update-begin--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
     handleOptionsDictChange(value) {
       // 通过 code 查询字典 item---模拟数据
-      // _api.getDictItems({
-      //   code: value
-      // }).then(dictOptions => {
-      //   this.$set(this.data, 'dictOptions', dictOptions)
-      // })
-      let dictOptions = [
-        {text:'衣服', title:'衣服', value:'yifu'},
+       _api.getDictItems({
+         code: value
+       }).then(dictOptions => {
+         this.$set(this.data, 'dictOptions', dictOptions)
+       })
+      /*
+      //let dictOptions = [
+      //  {text:'衣服', title:'衣服', value:'yifu'},
         {text:'袜子', title:'袜子', value:'wazi'}
       ]
       dictOptions = dictOptions.map(item=>{
@@ -1268,7 +1269,7 @@ export default {
         obj.label = item.text;
         return obj;
       })
-      this.$set(this.data, 'dictOptions', dictOptions)
+      this.$set(this.data, 'dictOptions', dictOptions)*/
       this.$set(this.data.options, 'dictCode', value)
       this.handleRemoveDefaultValue()
     },
