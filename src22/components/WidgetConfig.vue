@@ -325,12 +325,12 @@
             
           </div>
         </template>
-        <el-button 
+        <!--el-button 
           type="text"
           v-if="data.options.remote === true || data.options.remote === 'dict_obj'"
           @click="handleTwoLevelLinkage">
           二级联动
-        </el-button>
+        </el-button-->
       </el-form-item>
 
       

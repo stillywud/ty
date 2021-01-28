@@ -1,7 +1,6 @@
 <template>
   <div>
     <div v-if="data.config.allowPrint" style="text-align: right;">
-      
       <el-button
           v-print="'#printContent'"
           class="j-btn-print"
@@ -16,10 +15,7 @@
         ref="generateForm"
         id="printContent"
         :size="data.config.size"
-        :model="models" 
-        :rules="rules" 
-        :label-position="isMobile ? 'top' : data.config.labelPosition" 
-        :label-width="data.config.labelWidth + 'px'"
+        :model="models" :rules="rules" :label-position="isMobile ? 'top' : data.config.labelPosition" :label-width="data.config.labelWidth + 'px'"
         @data-begin="()=>'此处为临时解决一进入表单就触发校验的问题'"
         @validate="handleFormValidate"
         @data-end="()=>'此处为临时解决一进入表单就触发校验的问题'"
@@ -39,7 +35,7 @@
               :data="data"
               :config="data.config"
               :models.sync="models"
-              :rules.sync="rules"
+              :rules="rules"
               :widget="item"
               :remote="remote"
               :readOnly="readOnly"
@@ -47,6 +43,7 @@
               @popupCgreportOk="handlePopupCgreportOk"
               @dialogChange="handleDialogChange"
               @inpAsso="inpAsso"
+              @inpAssa="inpAssa"
           ></generate-form-item>
         </template>
 
@@ -66,8 +63,9 @@ import * as _utils from '../util/utils'
 import { changeTheme } from '@/util/theme'
 import { executeRuleByCodeBatch } from '@/util/utils'
 import { execRemoteAPI } from '@/api/execRemoteAPI'
+import {getAction} from '@/api/manage'
 // update-end--Author:sunjianlei Date:20190808 for：新增自定义 import
-import {omit, cloneDeep, uniq, pullAll} from 'lodash-es'
+import {pullAll, uniq} from 'lodash-es'
 export default {
   name: 'jm-generate-form',
   mixins: [GenerateFormMixins, JsExpandMixins],
@@ -115,18 +113,35 @@ export default {
       })
     }
     // update-end--Author:sunjianlei Date:20190620 for：新增全局的JS、CSS增强代码 ------------
+
+    // update-start--Author:mx Date:20190724 for：选项关联 --
+    //this.models = { "select_1611819423024_884562": "小红", "select_1611819424725_592951": "溜冰" }
+    //this.$store.commit('SET_SELECT_VAL',this.models)
     this.data.list.forEach(item=>{
-      if(item.type === 'radio'){
+      
+      if(item.type === 'select' && !item.options.multiple  && item.options.remote === 'dict_obj'){
+        console.log('5555',this.models,item.model,this.models[item.model])
         if(this.models[item.model]){
+          let twolevelLinkage = item.twolevelLinkage;
+        
+        this.inpAssa({val:this.models[item.model],twolevelLinkage,element:item})
+        }
+        
+      }else if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
+        //if(this.models[item.model]){
+          console.log('2222')
           let behaviorLinkage = item.behaviorLinkage;
           this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
-        }
+        //}
       }
     })
+    //this.$store.commit('SET_DESIGN_DATA', {})
+    // update-end--Author:mx Date:20190724 for：选项关联 --
+  
   },
   methods: {
     generateModel(genList) {
-        console.log(genList,'genList')
+
       // update-begin--Author:sunjianlei Date:20190815 for：递归创建model，为了适应嵌套布局 ------------
       let fillRuleCodesMap = {}
       let remoteAPIList = []
@@ -157,7 +172,7 @@ export default {
             }
             this.$set(this.models, item.model, modelValue)
           }
-          
+
           let rulesMaps = item.rules.map(item => {
             if (item.pattern) {
               return { ...item, pattern: new RegExp(item.pattern) }
@@ -323,53 +338,114 @@ export default {
       return []
     },
     // update-end--Author:sunjianlei Date:20190704 for：新增自定义方法 -----------
+    
+    // update-start--Author:mx Date:20190724 for：选项关联 --
+    recurLinkage(arr){
+      // 递归需要隐藏的可以创建管线选项的组件
+      let valArr = []
+      let that = this;
+      function asd(arr){
+        that.data.list.forEach(it=>{
+          arr.forEach(item=>{
+            if(it.model === item){
+              let fils = it.createLinkage === true || it.type === 'select' && !it.options.multiple // && !it.options.showLabel
+              if(fils){
+                let valarr1 = []
+                it.behaviorLinkage.forEach(its=>{
+                  valArr = valArr.concat(...its.targets)
+                  valarr1 = valarr1.concat(...its.targets)
+                })
+                asd(valarr1);
+              }
+            }
+          })
+        })
+        return valArr
+      }
+      asd(arr);
+      return valArr
+    },
+    targetsResult(arr){
+      let val = []
+      this.data.list.forEach(it=>{
+        arr.forEach(item=>{
+          if(it.model === item){
+            let fils = it.createLinkage === true || it.type === 'select' && !it.options.multiple // && !it.options.showLabel
+            if(fils && it.options.remote === false){
+              it.behaviorLinkage.forEach(ip=>{
+                console.log(ip.value , it.options.defaultValue)
+                if(ip.value === it.options.defaultValue){
+                  val.push(...ip.targets)
+                }
+              })
+            }
+          }
+        })
+      })
+      val = val.concat(...arr)
+      return uniq(val)
+    },
     inpAsso(val){
       this.$nextTick(()=>{
-        // 多个关联同一个组建有问题
+        // 多个关联同一个组建有问题\
         let val1 = val.val;
         let val2 = val.behaviorLinkage;
         let model = val.model;
         let targets = [];
         let targets1 = [];
 
-        // 当前要展示的组件；当前radio要隐藏的组件
         val2.forEach(item=>{
           if(item.value === val1){
             targets = item.targets // 我要展示组件
-            // console.log(this.$refs.generateForm.clearValidate)
-            
           }else if(item.targets){
             targets1 = targets1.concat(...item.targets) // 我要屏蔽组件
           }
         });
+        //  控制展示
 
-        let b1PullAll = pullAll(targets1,targets); // 当前那些组件需要隐藏
+
+        // pullAll 返回不相同的值
+        // 对比去重剩余这些组件需要隐藏
+        targets1 = targets1.length > 0 ? uniq(targets1) : [];
+        targets1 = targets1.concat(this.recurLinkage(targets1))
+        let b1PullAll = pullAll(targets1,targets);
+        b1PullAll = uniq(b1PullAll)
         let a1 = []
-        // 拿到除去当前选中radio展示组件
-        
-          
+
+        // 获取当前list所有展示组件
         this.data.list.forEach(item=>{
           // assostatus
-          if(item.type === 'radio'){
+          if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
             if(item.model !== model){
               item.behaviorLinkage.forEach(it=>{
-                if(it.value === this.models[item.model]){
+                // 不拿被隐藏的select
+                //console.log(it.value === item.options.defaultValue , item,!b1PullAll.includes(item.model),it,item.options.defaultValue)
+                if(it.value === (item.options.defaultValue || this.models[item.model]) && !b1PullAll.includes(item.model)){
                   a1.push(...it.targets)
                 }
               })
             }
           }
         })
+        // 当前操作需要隐藏的组件与全部list需要展示的组件在做一边去重，用老判断当前需要隐藏的组件是否在其他组件中被展示了，如果被展示了还是让他展示，如果没有就取出来
         let b2PullAll = pullAll(b1PullAll,a1); // 
-        this.data.list = this.data.list.map(item =>{
-          let obj = {...item}
+        b2PullAll.forEach(item=>{
+          this.$delete(this.models,item)
+        })
+
+        
+        // 
+        targets = this.targetsResult(targets)
+        this.data.list.map(item =>{
+          // let obj = {...item}
+          // 如果当前组件包含在隐藏中的则位1 让他隐藏
           if(b2PullAll.includes(item.model)){
-            obj.assoStatus = 1;
+            item.assoStatus = 1;
           }
           if(targets.includes(item.model)){
-            obj.assoStatus = 2;
-          }
-          return obj;
+            item.assoStatus = 2;
+          }else
+          return item;
         })
         // let s = cloneDeep(this.models)
         // this.models = s;
@@ -377,13 +453,91 @@ export default {
         setTimeout(()=>{
           this.$refs.generateForm.clearValidate(targets)
         },0)
-        
+        /**/
       })
       
     },
-    // ss(){
-    //   this.$refs.generateForm.clearValidate(["input_1610524099315_496041",""])
-    // }
+    inpAssa(val){
+      // this.$emit("inpAssa",val)
+      let val1 = val.val;
+      let val2 = val.twolevelLinkage;
+      let model = val.model;
+      let element = val.element;
+
+      let objtw = []//{}
+      let ajaxArr = []
+      let objw = {}
+      this.data.list.forEach(item => {
+        val.twolevelLinkage.forEach((it,index) => {
+          if(it === item.model){
+            // objtw[it] = item;
+            objtw.push(item)
+            let paramser = {}
+            if(item.options.remote === 'dict_obj'){
+              //对象字典
+              paramser = {
+                tableName:item.options.dictObjCode,
+                valueField:item.options.props.objValue,
+                labelField:item.options.props.objLabel,
+                foreignKey:item.options.props.primaryKey,
+                mainTableName:element.options.dictObjCode,
+                mainValueField:element.options.props.objValue,
+                mainValue:val1
+              }
+            }
+            ajaxArr.push(getAction('/sys/dict/getSubTableDictItems',paramser))
+          }
+        })
+      })
+      Promise.all(ajaxArr).then(res=>{
+        console.log(res)
+        res.forEach((response,index)=>{
+          let remoteOptions = null
+            // 返回值可能存在的情况：
+            // 1、直接返回了个数组
+            // 2、result是个数组
+            // 3、result.records是个数组（后台包裹了分页对象）
+            console.log(response)
+            if (Array.isArray(response)) {
+              remoteOptions = response
+            } else if (response.success) {
+              if (Array.isArray(response.result)) {
+                remoteOptions = response.result
+              } else if (response.result && Array.isArray(response.result.records)) {
+                remoteOptions = response.result.records
+              }
+            }
+            if(remoteOptions === null){
+              remoteOptions = null
+            }else{
+              //if(objtw[index].options.remote === 'dict_obj'){
+                remoteOptions = remoteOptions.map(item => {
+                  return {
+                    value: item.value,
+                    label: item.label,
+                    text: item.text,
+                  }
+                })
+              //}
+            }
+            objw[objtw[index].model] = remoteOptions
+        })
+        console.log(objw)
+        this.$nextTick(()=>{
+          this.data.list.map(it => {
+          Object.keys(objw).forEach(ip => {
+            if(ip === it.model){
+              it.remoteOptionstw = objw[ip]
+            }
+          })
+          return it;
+        })
+        console.log(this.data.list, this.models,'this.data.list2')
+        })
+        
+      })
+    }
+    // update-end--Author:mx Date:20190724 for：选项关联 --
   },
   watch: {
     // update-begin--Author:sunjianlei Date:20200207 for：设备变化处理 -----------
@@ -427,8 +581,6 @@ export default {
         // update-end--Author:sunjianlei Date:20200302 for： 重新渲染 {{ }} 变量 -----------
 
         this.generateModel(val.list)
-
-       
       }
     },
     value: {

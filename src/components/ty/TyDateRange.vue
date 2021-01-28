@@ -35,6 +35,7 @@
                     <el-input 
                         v-model="durationModel"
                         @input="inputC"
+                        :disabled="true"
                         :placeholder="`请输入${element.options.required ? '(必填)':''}`" />
                 </div>
             </div>

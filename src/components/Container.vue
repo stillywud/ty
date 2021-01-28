@@ -7,21 +7,14 @@
           <div class="components-list">
             <div class="widget-cate">基础字段</div>
             <draggable tag="ul" :list="basicComponents"
-              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, handle:'.handle', ghostClass: 'ghost'}"
+              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
               @end="handleMoveEnd"
               @start="handleMoveStart"
               :move="handleMove"
             >
               <!-- update-begin--Author:sunjianlei Date:20190530 for：新增class配置选项 -->
               <template v-for="(item, index) in basicComponents">
-                <li 
-                  :key="index" 
-                  class="form-edit-widget-label" 
-                  :class="[
-                    editliable === 2 && item.type !== 'mlist' ? 'handle' : editliable === 0 ? 'handle' : '',
-                    item.class
-                  ]" 
-                  :data-type="item.type">
+                <li :key="index" class="form-edit-widget-label" :class="item.class" :data-type="item.type">
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
@@ -33,7 +26,7 @@
 
             <div class="widget-cate">高级字段</div>
             <draggable tag="ul" :list="advanceComponents"
-              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost', handle:'.handle',}"
+              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
               @end="handleMoveEnd"
               @start="handleMoveStart"
               :move="handleMove"
@@ -41,14 +34,7 @@
 
               <!-- update-begin--Author:sunjianlei Date:20190530 for：新增class配置选项 -->
               <template v-for="(item, index) in advanceComponents">
-                <li 
-                  :key="index" 
-                  class="form-edit-widget-label" 
-                  :class="[
-                    editliable === 2 && item.type !== 'mlist' ? 'handle' : editliable === 0 ? 'handle' : '',
-                    item.class
-                  ]" 
-                  :data-type="item.type">
+                <li :key="index" class="form-edit-widget-label" :class="item.class" :data-type="item.type">
                   <a>
                     <i class="icon iconfont" :class="item.icon"></i>
                     <span>{{item.name}}</span>
@@ -60,20 +46,13 @@
 
             <div class="widget-cate">布局字段</div>
             <draggable tag="ul" :list="layoutComponents"
-              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost', handle:'.handle',}"
+              v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
               @end="handleMoveEnd"
               @start="handleMoveStart"
               :move="handleMove"
             >
 
-              <li 
-                :class="[
-                  editliable === 2 && item.type !== 'mlist' ? 'handle' : editliable === 0 ? 'handle' : '',
-                  'form-edit-widget-label data-grid'
-                ]" 
-                v-for="(item, index) in layoutComponents" 
-                :key="index" 
-                :data-type="item.type">
+              <li class="form-edit-widget-label data-grid" v-for="(item, index) in layoutComponents" :key="index" :data-type="item.type">
                 <a>
                   <i class="icon iconfont" :class="item.icon"></i>
                   <span>{{item.name}}</span>
@@ -84,20 +63,13 @@
             <!-- update-begin--Author:sunjianlei Date:20190606 for：新增JEECG组件 -->
             <div class="widget-cate">JEECG 字段</div>
             <draggable tag="ul" :list="jeecgComponents"
-                       v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost', handle:'.handle',}"
+                       v-bind="{group:{ name:'people', pull:'clone',put:false},sort:false, ghostClass: 'ghost'}"
                        @end="handleMoveEnd"
                        @start="handleMoveStart"
                        :move="handleMove"
             >
 
-              <li 
-                :class="[
-                  editliable === 2 && item.type !== 'mlist' ? 'handle' : editliable === 0 ? 'handle' : '',
-                  'form-edit-widget-label'
-                ]" 
-                v-for="(item, index) in jeecgComponents" 
-                :key="index" 
-                :data-type="item.type">
+              <li class="form-edit-widget-label" v-for="(item, index) in jeecgComponents" :key="index" :data-type="item.type">
                 <a>
                   <i class="icon iconfont" :class="item.icon"></i>
                   <span>{{item.name}}</span>
@@ -146,33 +118,22 @@
         <cus-dialog
           :title="previewTitle"
           :visible="previewVisible"
-          @on-close="previewVisible = false"
+          @on-close="handleClose"
           ref="widgetPreview"
           @on-submit="handleTest"
           width="1000px"
           form
           :center="false"
-          :action="previewAction"
           :dialogOptions="(generateWidgetForm.config||{}).dialogOptions"
           switchFullscreen
         >
-          <generate-form insite="true" 
-          v-if="previewVisible && previewAction" 
-          :data="generateWidgetForm" 
-          :userInfo="generateUserInfo" 
-          :value="widgetModels" 
-          :remote="remoteFuncs" 
-          ref="generateForm" :readOnly="readOnly" action="preview">
+          <generate-form insite="true" v-if="previewVisible" :data="generateWidgetForm" :userInfo="generateUserInfo" :value="widgetModels" :remote="remoteFuncs" ref="generateForm" :readOnly="readOnly" action="preview">
 
             <template v-slot:blank="scope">
               宽度：<el-input v-model="scope.model.blank.width" style="width: 100px"></el-input>
               高度：<el-input v-model="scope.model.blank.height" style="width: 100px"></el-input>
             </template>
           </generate-form>
-          <ty-m-listp
-            v-if="!previewAction"
-            :data="generateWidgetForm" 
-          />
         </cus-dialog>
         <!-- update-end--Author:sunjianlei Date:20190716 for：新增用户自定义弹窗边距 -->
 
@@ -221,7 +182,6 @@
 </template>
 
 <script>
-
 import Draggable from 'vuedraggable'
 import WidgetConfig from './WidgetConfig'
 import FormConfig from './FormConfig'
@@ -231,7 +191,7 @@ import GenerateForm from './GenerateForm'
 import Clipboard from 'clipboard'
 
 // update-begin--Author:sunjianlei Date:20190722 for：新增import ------------
-import { recursiveAllWidget, defaultDialogOptions, updateOldVersionJSON, cloneObject, initAssoOptions} from '@/util/utils'
+import { recursiveAllWidget, defaultDialogOptions, updateOldVersionJSON, cloneObject, initAssoOptions } from '@/util/utils'
 // update-end--Author:sunjianlei Date:20190722 for：新增import ------------
 
 
@@ -249,7 +209,7 @@ import {ACCESS_TOKEN, BASE_URL} from '@/api/request'
 import { changeTheme } from '@/util/theme'
 import DebugConfig from '@/components/DebugConfig'
 // update-end--Author:sunjianlei Date:20190528 for：将请求写在源码内部，token通过参数传入 --------------------
-import TyMListp from './ty/TyMListp.vue'
+
 export default {
   name: 'jm-design-form',
   components: {
@@ -259,8 +219,7 @@ export default {
     FormConfig,
     WidgetForm,
     CusDialog,
-    GenerateForm,
-    TyMListp
+    GenerateForm
   },
   props: {
     preview: {
@@ -319,8 +278,6 @@ export default {
       // update-end--Author:sunjianlei Date:20190606 for：新增JEECG组件 ------------
 
       resetJson: false,
-      previewAction:true,
-      
       widgetForm: {
         list: [],
         config: {
@@ -667,22 +624,6 @@ export default {
 
     // update-end--Author:sunjianlei Date:20190709 for：查询出当前登录的用户信息 --------------------
   },
-  computed:{
-    editliable(){
-      return this.$store.getters.editliable
-    }
-    // editable(){
-    //   let editliable = this.$store.getters.editliable
-    //   if(editliable === 1){
-
-    //   }else if(editliable === 2){
-
-    //   }else{
-    //     return '.handle'
-    //   }
-    //   return this.$store.getters.editable
-    // } 
-  },
   mounted () {
     if (window.desformName) this.previewTitle = window.desformName
   },
@@ -704,18 +645,7 @@ export default {
     },
     handlePreview () {
       // update-begin--Author:sunjianlei Date:20190708 for：防止修改了属性后导致设计器也被修改
-      // console.log(this.getJSON())
-      let list = this.getJSON().list;
-      if(Array.isArray(list) && list.length > 0){
-        if(list[0].type === 'mlist'){
-          this.previewAction = false;
-        }else{
-          this.previewAction = true;
-        }
-      }
-      
       this.generateWidgetForm = this.getJSON()
-
       this.previewVisible = true
     },
     handleTest () {
@@ -725,6 +655,10 @@ export default {
       }).catch(e => {
         this.$refs.widgetPreview.end()
       })
+    },
+    handleClose(){
+      this.previewVisible = false;
+      this.$store.commit('SET_SELECT_VAL',{})
     },
     handleGenerateJson () {
       this.jsonVisible = true
@@ -796,10 +730,8 @@ export default {
 
       // 将权限设置保存至数据库
       if (auths.length > 0) _authAPI.updateBatch(auths).then()
-
       /// 初始化关联选项
       initAssoOptions(json)
-
       return json
       // update-end--Author:sunjianlei Date:20190722 for：去除不对外开放的字段
     },
@@ -856,7 +788,7 @@ export default {
     // update-begin--Author:sunjianlei Date:20190524 for：新增Online对接参数 --------------------
     handleCgformChange(cgform) {
       this.currentCgform = cgform
-    },
+    }
     // update-end--Author:sunjianlei Date:20190524 for：新增Online对接参数 --------------------
   },
   watch: {

@@ -35,31 +35,16 @@
       :index="index"
       :data="data"
   ></j-tabs>
-
-  <ty-m-list
-      v-else-if="element.type === 'mlist'"
-      mode="design"
-      :element="element"
-      :select.sync="selectWidget"
-      :index="index"
-      :data="data"
-  />
   <!-- update-end--Author:sunjianlei Date:20190808 for：布局组件封装进 formItem 组件中 -->
 
   <!--  update-begin--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
   <el-form-item class="widget-view"
       v-else-if="element && element.key"
-      :class="[element.options.cellLinkage ?'cellLinkage--9tg5O':'', formItemClass]"
+      :class="[element.cellLinkage ?'cellLinkage--9tg5O':'', formItemClass]"
       :label="formItemLabel"
       :data-type="element.type"
       @click.native.stop="handleSelectWidget(index)"
     >
-    <template v-if="element.type === 'daterange'">
-        <ty-date-range
-          :element="element"
-          :index="index"
-      />
-      </template>
     <!--  update-end--Author:sunjianlei Date:20190530 for：新增data-type属性 -->
         <template v-if="element.type == 'input'">
           <el-input
@@ -187,6 +172,7 @@
           >
             <el-option v-for="item in (element.dictOptions || element.options.options)" :key="item.value" :value="item.value" :label="element.options.showLabel?item.label:item.value"></el-option>
           </el-select>
+          <div v-if="handleBhlfil(element.behaviorLinkage)>0 && !element.options.multiple" class="leftCornerMark--3_a15"></div>
         </template>
 
         <template v-if="element.type=='switch'">
@@ -321,7 +307,8 @@ import _api from '../api'
 // update-begin--Author:sunjianlei Date:20190527 for：新增子表组件区域
 import JEditable from './jeecg/JEditable/JEditable'
 // update-begin--Author:sunjianlei Date:20190613 for：新增自定义组件 --------
-import * as _util from '../util/utils'
+// import * as _util from '../util/utils'
+import {handleBhlfil} from '@/util/utils'
 import { WidgetDraggable } from '../mixins/CommonMixins'
 import WidgetFormItemMixins from '../mixins/WidgetFormItemMixins'
 import {ctypes} from './componentsConfig'
@@ -333,9 +320,7 @@ import JText from './jeecg/JText'
 import JDivider from './jeecg/JDivider'
 import JFileUpload from './jeecg/JFileUpload'
 import JAreaLinkage from './jeecg/JAreaLinkage'
-// 日期
-import TyDateRange from './ty/TyDateRange.vue'
-import TyMList from './ty/TyMList.vue'
+
 
 export default {
   name: 'WidgetFormItem',
@@ -348,12 +333,11 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButton, JTableDict, JText, JDivider, JFileUpload, JAreaLinkage
     // update-end--Author:sunjianlei Date:20190613 for：新增自定义组件 --------
-    ,TyDateRange,
-    TyMList
   },
   data () {
     return {
       ctypes,
+      handleBhlfil
       // selectWidget: this.select
     }
   },
@@ -385,20 +369,65 @@ export default {
               code: this.element.options.dictCode
           }).then(dictOptions => {
             this.$set(this.element, 'dictOptions', dictOptions)
+            let arr = [];
+            dictOptions.forEach(item => {
+              let obj = {...item}
+              obj.value = item.value;
+              obj.targets = [];
+              // 如果出现数字典修改的情况
+              this.element.behaviorLinkage.forEach(it=>{
+                if(obj.value === it.value){
+                  obj.targets = it.targets
+                }
+              })
+              arr.push(obj)
+            })
+            this.$set(this.element, 'behaviorLinkage', arr)
+            this.fllinkage();
           })
       }
       // update-end--Author:sunjianlei Date:20190722 for：新增数据字典的处理 ----------------
+      else if(this.element.options.remote === 'dict_obj' && this.element.options.dictObjCode){
+        // 对象字典
+        _api.getDictObjItems({
+            code: this.element.options.dictObjCode
+        }).then(dictObjOptions => {
+          this.$set(this.element, 'dictObjOptions', dictObjOptions)
+        })
+      }
   },
   methods: {
-    handleBhlfil(arr){
-      // 过滤当前选择
-      let i = arr.filter((function(e) {
-            return e.targets && e.targets.length > 0
+    fllinkage(){
+      // 选中的组件添加（删除）一个class类
+      let arr = [];
+      this.data.list.forEach(item=>{
+        if(Array.isArray(item.behaviorLinkage)){
+          let behaviorLinkage = item.behaviorLinkage;
+          if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+            behaviorLinkage.forEach(it => {
+              let targets = it.targets;
+              if(Array.isArray(targets) && targets.length > 0){
+                targets.forEach(li => {
+                  arr.push(li);
+                })
+              }
+            })
+          }
         }
-      ));
-      let len  = i.length
-      return len
-    }
+      })
+      this.data.list.map(item=>{
+        // let items = {...item}
+        if(item.model !== this.data.model){
+          if(arr.includes(item.model)){
+            item.cellLinkage = true
+          }else{
+            item.cellLinkage = false;
+            item.assoStatus = 2
+          }
+        }
+        return item
+      })
+    },
     // handleSelectWidget (index) {
     //   this.selectWidget = this.data.list[index]
     // },

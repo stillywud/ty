@@ -13,7 +13,7 @@ export default {
       let { dictOptions, options } = this.element
       if (options.remote === 'dict') {
         return dictOptions || []
-      } else if (options.remote === true) {
+      } else if (options.remote === 'dict_obj') {
         return null
       } else {
         return options.options

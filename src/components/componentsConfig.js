@@ -7,7 +7,17 @@ export const ctypes = {
   fileUpload: 'file-upload'
 }
 // update-end--Author:sunjianlei Date:20190621 for：types枚举 --------------------
-
+/**
+ * createLinkage:true, //可以创建关联选项
+ * cellLinkage:false,// 当前组件是否被选项关联
+ * isCellLinkage:true,// 是否支持被选项关联
+ * @@input、textarea、number、radio、checkbox、time、date、
+ * @@rate、select、switch、slider、imgupload、file-upload、editor、text、area-linkage、cascader
+ * false
+ * @@select-user、select-depart、table-dict、sub-table-design、grid
+ * @@tabs、card、divider、color、buttons
+ * behaviorLinkage:[] //填充被关联组件
+ * **/
 export const basicComponents = [
   {
     type: 'input',
@@ -15,6 +25,8 @@ export const basicComponents = [
     className: 'form-input',
     icon: 'icon-input',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       width: '100%',
       defaultValue: '',
@@ -26,7 +38,6 @@ export const basicComponents = [
       disabled: false,
       fillRuleCode: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -36,6 +47,8 @@ export const basicComponents = [
     className: 'form-textarea',
     icon: 'icon-textarea',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       width: '100%',
       defaultValue: '',
@@ -45,7 +58,6 @@ export const basicComponents = [
       placeholder: '',
       readonly: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -55,6 +67,8 @@ export const basicComponents = [
     className: 'form-number',
     icon: 'icon-number',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       width: '',
       required: false,
@@ -68,7 +82,6 @@ export const basicComponents = [
       controlsPosition: 'right',
       // update-end--Author:sunjianlei Date:20190611 for：修改计数器默认值 --------------------
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -78,8 +91,11 @@ export const basicComponents = [
     className: 'form-radio',
     icon: 'icon-radio-active',
     hideTitle: false,
-    behaviorLinkage:[],
     cellLinkage:false,
+    isCellLinkage:true,
+    createLinkage:true,
+    _dvValueBo:false,
+    behaviorLinkage:[],
     options: {
       inline: true,
       defaultValue: '',
@@ -95,14 +111,14 @@ export const basicComponents = [
           value: '选项3',
         }
       ],
-      
       required: false,
       width: '',
       remote: false,
       remoteOptions: [],
       props: {
         value: 'value',
-        label: 'label'
+        label: 'label',
+        primaryKey:''
       },
       remoteFunc: '',
       disabled: false,
@@ -116,6 +132,8 @@ export const basicComponents = [
     className: 'form-checkbox',
     icon: 'icon-checkbox',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       inline: true,
       defaultValue: [],
@@ -137,12 +155,12 @@ export const basicComponents = [
       remoteOptions: [],
       props: {
         value: 'value',
-        label: 'label'
+        label: 'label',
+        primaryKey:''
       },
       remoteFunc: '',
       disabled: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -152,6 +170,8 @@ export const basicComponents = [
     className: 'form-time',
     icon: 'icon-time',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: '',
       readonly: false,
@@ -167,7 +187,6 @@ export const basicComponents = [
       required: false,
       width: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -177,6 +196,8 @@ export const basicComponents = [
     className: 'form-date',
     icon: 'icon-date',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       // update-begin--Author:sunjianlei Date:20190710 for：扩展日期选择器 --------------------
       defaultValue: '',
@@ -195,7 +216,6 @@ export const basicComponents = [
       width: '',
       // update-end--Author:sunjianlei Date:20190710 for：扩展日期选择器 --------------------
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -205,6 +225,8 @@ export const basicComponents = [
     className: 'form-rate',
     icon: 'icon-rate',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: null,
       max: 5,
@@ -212,7 +234,6 @@ export const basicComponents = [
       allowHalf: false,
       required: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -221,13 +242,13 @@ export const basicComponents = [
     className: 'form-color',
     icon: 'icon-color',
     hideTitle: false,
+    isCellLinkage:false,
     options: {
       defaultValue: '',
       disabled: false,
       showAlpha: false,
       required: false,
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -236,6 +257,12 @@ export const basicComponents = [
     className: 'form-select',
     icon: 'icon-select',
     hideTitle: false,
+    cellLinkage:false,
+    behaviorLinkage:[],
+    twolevelLinkage:[],
+    isCellLinkage:true,
+    _dvValueBo:false,
+    // createLinkage:true,
     options: {
       defaultValue: '',
       multiple: false,
@@ -260,11 +287,13 @@ export const basicComponents = [
       remoteOptions: [],
       props: {
         value: 'value',
-        label: 'label'
+        label: 'label',
+        objValue:'', // 对象字典
+        objLabel:'', // 对象字典
+        primaryKey:'' // 外键
       },
       remoteFunc: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
     remoteAPI: { url: '', executed: false },
   },
@@ -274,6 +303,10 @@ export const basicComponents = [
     className: 'form-switch',
     icon: 'icon-switch',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
+    // createLinkage:true,
+    _dvValueBo:false,
     options: {
       defaultValue: false,
       required: false,
@@ -281,7 +314,6 @@ export const basicComponents = [
       activeValue: '',
       inactiveValue: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
   },
   {
@@ -290,6 +322,8 @@ export const basicComponents = [
     className: 'form-slider',
     icon: 'icon-slider',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: 0,
       disabled: false,
@@ -301,48 +335,8 @@ export const basicComponents = [
       range: false,
       width: '',
       hidden: false,
-      cellLinkage:false,// 是否被关联
     },
-  },
-  {
-    type: 'daterange',
-    name: '日期区间',
-    className: 'form-daterange',
-    icon: 'icon-date',
-    hideLabel:true,
-    hideTitle: false,
-    options: {
-      defaultValue: [],
-      disabled: false,
-      startPlaceholder: '请选择',
-      startName:'开始时间',
-      endPlaceholder: '请选择',
-      endName:'结束时间',
-      durationType:true,// 是否展示时长
-      durationName:'时长',
-      durationPlaceholder:'',
-      format: 'YYYY-mm-DD',
-      formatType:1,// 1YYYY-mm-DD 2YYYY-mm-DD HH:ii:ss
-      required: false,
-      hidden: false,
-      cellLinkage:false,// 是否被关联
-    },
-    // remoteAPI: { url: '', executed: false },
-  },
-  {
-    type: 'mlist',
-    name: '移动端列表页',
-    className: 'form-mlist',
-    icon: 'icon-date',
-    hideLabel:true,
-    options:{
-      cardFeild:'applyTitle,groupName,createBy,createTime,auditStatus',
-      cardUrl:'/workflow/auditInfo/queryApplyList', // 列表页接口
-      filterUrl:'/approval/formGroup/list', //筛选接口/ 
-      searchInput:'',
-      searchPlaceholder:'请输入关键词'
-    }
-  },
+  }
 ]
 
 export const advanceComponents = [
@@ -361,6 +355,8 @@ export const advanceComponents = [
     className: 'form-tupian',
     icon: 'icon-tupian',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: [],
       size: {
@@ -386,6 +382,8 @@ export const advanceComponents = [
     className: 'form-file-upload',
     icon: 'icon-shangchuan',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: [],
       token: '',
@@ -405,6 +403,8 @@ export const advanceComponents = [
     className: 'form-editor',
     icon: 'icon-fuwenbenkuang',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: '',
       width: '',
@@ -419,6 +419,8 @@ export const advanceComponents = [
     className: 'form-cascader',
     icon: 'icon-jilianxuanze',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       defaultValue: [],
       width: '',
@@ -445,6 +447,7 @@ export const advanceComponents = [
     hideLabel: true,
     icon: 'icon-btn2',
     hideTitle: false,
+    isCellLinkage:false,
     options: {
       text: '按钮',
       icon: "",
@@ -467,6 +470,8 @@ export const advanceComponents = [
     icon: 'icon-text',
     hideTitle: false,
     hideLabel: true, // 是否隐藏label
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       text: '这里是一段文本',
       width: '100%',
@@ -490,6 +495,7 @@ export const advanceComponents = [
     hideTitle: false,
     hideLabel: true, // 是否隐藏label,
     formItemMargin: true, // 是否去掉 el-form-item 默认的外边距
+    isCellLinkage:false,
     options: {
       heightNumber: 40,
       type: 'horizontal',
@@ -504,6 +510,8 @@ export const advanceComponents = [
     className: 'form-area-linkage',
     icon: 'icon-jilianxuanze',
     hideTitle: false,
+    cellLinkage:false,
+    isCellLinkage:true,
     options: {
       width: '',
       placeholder: '请选择',
@@ -524,6 +532,7 @@ export const layoutComponents = [
     hideTitle: false,
     hideLabel: true,
     isContainer: true, // 容器组件
+    isCellLinkage:false,
     columns: [
       {
         span: 12,
@@ -550,6 +559,7 @@ export const layoutComponents = [
     hideTitle: false,
     hideLabel: true,
     isContainer: true, // 容器组件
+    isCellLinkage:false,
     list: [],
     options: {
       width: '100%',
@@ -590,6 +600,7 @@ export const jeecgComponents = [
     hideTitle: false,
     class: ['data-j-editable-design'],
     isContainer: true, // 容器组件
+    isCellLinkage:false,
     columns: [
       {
         span: 12,
@@ -625,6 +636,7 @@ export const jeecgComponents = [
     className: 'form-select-user',
     icon: 'icon-user-circle',
     hideTitle: false,
+    isCellLinkage:false,
     options: {
       keyMaps: [],
       defaultValue: '',
@@ -645,6 +657,7 @@ export const jeecgComponents = [
     className: 'form-select-depart',
     icon: 'icon-depart',
     hideTitle: false,
+    isCellLinkage:false,
     options: {
       keyMaps: [],
       defaultValue: '',
@@ -664,6 +677,7 @@ export const jeecgComponents = [
     className: 'form-dict',
     icon: 'icon-dict',
     hideTitle: false,
+    isCellLinkage:false,
     options: {
       width: '100%',
       defaultValue: "",

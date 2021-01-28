@@ -122,11 +122,12 @@ export default {
           let behaviorLinkage = item.behaviorLinkage;
           this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
         }
-      }else if(item.type === 'select' && !item.options.multiple  && (item.options.remote === true || item.options.remote === 'dict_obj')){
-        
       }
+      //else if(item.type === 'select' && !item.options.multiple  && (item.options.remote === true || item.options.remote === 'dict_obj')){
+        
+      //}
     })
-    this.$store.commit('SET_DESIGN_DATA', {})
+    //this.$store.commit('SET_DESIGN_DATA', {})
     // update-end--Author:mx Date:20190724 for：选项关联 --
   
   },

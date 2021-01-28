@@ -67,12 +67,6 @@ export default {
     },
     handleWidgetAdd($event) {
       console.log('widgetForm: handleWidgetAdd */*')
-      let list = this.data.list;
-      if(Array.isArray(list) && list[0].type === 'mlist'){
-        this.$store.commit('SET_EDITLIABLE',1)
-      }else if(Array.isArray(list) && list[0].type !== 'mlist'){
-        this.$store.commit('SET_EDITLIABLE',2)
-      }
       this.handleDraggableAdd(this.data.list, $event)
     }
   },

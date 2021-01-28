@@ -266,6 +266,11 @@ export function cloneWidget(vm, index) {
   let list = vm.data.list
 
   let element = cloneElement(list[index])
+  // 用户复制的时候--
+  //if(!(element.createLinkage === true || element.type === 'select' && !element.options.multiple && !element.options.showLabel)){
+    element.cellLinkage = false;
+    element.twolevelLinkage = [];
+  //}
   list.splice(index + 1, 0, element)
 
   vm.$nextTick(() => (vm.selectWidget = list[++index]))
@@ -422,13 +427,24 @@ export function alwaysResolve(promise) {
     }
   })
 }
+
+
+export function handleBhlfil(arr){
+  // 过滤当前选择
+  let i = arr.filter((function(e) {
+        return e.targets && e.targets.length > 0
+    }
+  ));
+  let len  = i.length
+  return len
+}
 /**
  * 初始化关联选项
 */
 export function initAssoOptions(json){
   let arr = [];
   json.list.forEach(item=>{
-    if(item.type === 'radio'){
+    if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
       let behaviorLinkage = item.behaviorLinkage;
       if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
         behaviorLinkage.forEach(it => {

@@ -38,48 +38,6 @@
         </div>
       </el-form-item>
 
-      <template v-if="data.type ==='daterange'"><!--日期范围配置-->
-        <el-form-item label="开始时间标题" >
-          <el-input v-model="data.options.startName"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间标题">
-          <el-input v-model="data.options.endName"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间占位符" >
-          <el-input v-model="data.options.startPlaceholder"></el-input>
-        </el-form-item>
-        <el-form-item label="结束时间占位符">
-          <el-input v-model="data.options.endPlaceholder"></el-input>
-        </el-form-item>
-        <el-form-item label="日期类型">
-          <el-select v-model="data.options.formatType" placeholder="请选择">
-            <el-option label="年-月-日" :value="1"></el-option>
-            <el-option label="年-月-日 时:分:秒" :value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="自动计算时长">
-          <el-switch v-model="data.options.durationType" ></el-switch>
-        </el-form-item>
-        <el-form-item label="时长标题">
-          <el-input v-model="data.options.durationName"></el-input>
-        </el-form-item>
-      </template>
-
-      <template v-if="data.type ==='mlist'"><!--移动端模版列表页 card配置-->
-        <el-form-item label="搜索框占位符" >
-          <el-input v-model="data.options.searchPlaceholder" placeholder="请输入搜索框占位符"></el-input>
-        </el-form-item>
-        <el-form-item label="card模块字段" >
-          <el-input v-model="data.options.cardFeild" placeholder="多个字段请使用逗号按顺序隔开"></el-input>
-        </el-form-item>
-        <el-form-item label="筛选数据接口" >
-          <el-input v-model="data.options.filterUrl" placeholder="请输入筛选数据接口"></el-input>
-        </el-form-item>
-        <el-form-item label="列表数据接口" >
-          <el-input v-model="data.options.cardUrl" placeholder="请输入列表数据接口"></el-input>
-        </el-form-item>
-      </template>
-
       <el-form-item label="占位内容" v-if="Object.keys(data.options).indexOf('placeholder')>=0 && (data.type!='time' || data.type!='date')">
         <el-input v-model="data.options.placeholder"></el-input>
       </el-form-item>
@@ -146,15 +104,94 @@
         <p v-if="activeValueEqInactiveValue" class="j-p-tip" style="color: red;">开启时的值和关闭时的值不能相同</p>
       </el-form-item>
       <!-- update-begin--Author:sunjianlei Date:20200220 for：switch新增属性  -->
-
+      
       <el-form-item label="选项" v-if="Object.keys(data.options).indexOf('options')>=0">
-        <el-radio-group v-model="data.options.remote" @change="changeRemove" size="mini" style="margin-bottom:10px;">
+        <!--
+            下面展示选项包含组件
+            radio
+            checkbox
+            select
+            
+            data.options.remote：false静态数据、true远端数据、dict数据字典、dict_obj对象字典
+
+            关联选项只能是静态数据
+
+            数据关联（二级联动）只能是对象字典或者远端数据
+          -->
+        <el-radio-group v-model="data.options.remote" size="mini" class="el-mx-radg4">
           <el-radio-button :label="false">静态数据</el-radio-button>
           <!-- update-begin--Author:sunjianlei Date:20190521 for：新增数据字典对接参数 -->
           <el-radio-button label="dict">数据字典</el-radio-button>
+          <!-- update--Author:mx Date:20210122 for：新增对象字典对接参数 -->
+          <el-radio-button label="dict_obj">对象字典</el-radio-button>
           <el-radio-button :label="true">远端数据</el-radio-button>
         </el-radio-group>
-        <template v-if="data.options.remote === 'dict'">
+        <template v-if="data.options.remote === 'dict_obj'">
+          <el-select
+              v-model="data.options.dictObjCode"
+              filterable
+              placeholder="请选择对象字典"
+              style="width:100%;"
+              @change="handleOptionsDictObjChange"
+          >
+            <el-option
+                v-for="item in dictObjOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                :disabled="item.disabled">
+            </el-option>
+          </el-select>
+          <template v-if="!!data.dictObjOptions">
+              <el-input size="mini" placeholder="请输入内容" class="el-mx-radg4-select">
+                <template slot="prepend">值</template>
+                <el-select 
+                v-model="data.options.props.objValue" 
+                filterable
+                clearable slot="append" 
+                placeholder="请选择">
+                  <el-option
+                        v-for="item in data.dictObjOptions"
+                        :key="item.value"
+                        :value="item.value"
+                        :label="item.label"
+                ></el-option>
+                </el-select>
+              </el-input>
+              <el-input size="mini"  placeholder="请输入内容" class="el-mx-radg4-select">
+                <template slot="prepend">标签</template>
+                <el-select 
+                v-model="data.options.props.objLabel"
+                filterable
+                clearable slot="append" 
+                placeholder="请选择">
+                  <el-option
+                        v-for="item in data.dictObjOptions"
+                        :key="item.value"
+                        :value="item.value"
+                        :label="item.label"
+                ></el-option>
+                </el-select>
+              </el-input>
+              <el-input size="mini"  placeholder="请输入外键" class="el-mx-radg4-select">
+                <template slot="prepend">外键</template>
+                <el-select 
+                v-model="data.options.props.primaryKey" 
+                filterable
+                clearable slot="append" 
+                placeholder="请选择">
+                  <el-option
+                        v-for="item in data.dictObjOptions"
+                        :key="item.value"
+                        :value="item.value"
+                        :label="item.label"
+                ></el-option>
+                </el-select>
+              </el-input>
+          </template>
+        </template>
+        <!-- update-end--Author:mx Date:20200122 for：新增对象字典对接参数 -->
+        <template v-else-if="data.options.remote === 'dict'">
           <el-select
               v-model="data.options.dictCode"
               filterable
@@ -175,8 +212,21 @@
               <span>默认值</span>
               <el-divider direction="vertical"/>
               <el-button type="text" @click="handleOptionsClearDefaultValue">清空</el-button>
-              <el-divider direction="vertical"/>
-              <el-button type="text" @click="handleBehaviorLinkage(2)">选项关联<span v-if="dvValue[`${data.model}_dvValueBo_2`]">(已设置)</span></el-button>
+              <template
+                v-if="data.type=='select' && !data.options.multiple || data.createLinkage" 
+              >
+                <el-divider direction="vertical"/>
+                <!--
+                  静态数据：
+                  选项关联：下拉框且是单选项
+                -->
+                <el-button 
+                  type="text"
+                  @click="handleBehaviorLinkage(data.options.remote)">
+                  关联选项
+                  <span v-if="data._dvValueBo">(已设置)</span>
+                </el-button>
+              </template>
             </div>
             <!-- radio 默认值-->
             <template v-if="data.type === 'radio'">
@@ -231,6 +281,9 @@
             <el-input size="mini" v-model="data.options.props.label">
               <template slot="prepend">标签</template>
             </el-input>
+            <!--el-input size="mini" placeholder="请输入外键" v-model="data.options.props.primaryKey">
+              <template slot="prepend">外键</template>
+            </el-input-->
           </div>
         </template>
         <template v-else>
@@ -239,13 +292,18 @@
               <draggable tag="ul" :list="data.options.options"
                 v-bind="{group:{ name:'options'}, ghostClass: 'ghost',handle: '.drag-item'}"
                 handle=".drag-item"
+                @end="handleMoveEndLink"
               >
                 <li v-for="(item, index) in data.options.options" :key="index" >
                   <el-radio
                     :label="item.value"
                     style="margin-right: 5px;"
                   >
-                    <el-input :style="{'width': data.options.showLabel? '90px': '180px' }" size="mini" v-model="item.value"></el-input>
+                    <el-input 
+                      :style="{'width': data.options.showLabel? '90px': '180px' }" 
+                      size="mini" 
+                      @input="handleLinkageInput"
+                      v-model="item.value"></el-input>
                     <el-input style="width:90px;" size="mini" v-if="data.options.showLabel" v-model="item.label"></el-input>
                     <!-- <input v-model="item.value"/> -->
                   </el-radio>
@@ -284,14 +342,33 @@
             <el-button type="text" @click="handleAddOption">添加选项</el-button>
             <el-divider direction="vertical"/>
             <el-button type="text" @click="handleRemoveDefaultValue">清空默认值</el-button>
-            <template v-if="data.type==='radio'">
+            <template
+              v-if="data.type=='select' && !data.options.multiple || data.createLinkage" 
+            >
               <el-divider direction="vertical"/>
-              <el-button type="text" @click="handleBehaviorLinkage(1)">选项关联<span v-if="dvValue[`${data.model}_dvValueBo_1`]">(已设置)</span></el-button>
+              <!--
+                静态数据：
+                选项关联：下拉框且是单选项
+              -->
+              <el-button 
+                type="text"
+                @click="handleBehaviorLinkage(data.options.remote)">
+                关联选项
+                <span v-if="data._dvValueBo">(已设置)</span>
+              </el-button>
             </template>
+            
           </div>
         </template>
-
+        <el-button 
+          type="text"
+          v-if="data.options.remote === 'dict_obj'"
+          @click="handleTwoLevelLinkage">
+          数据联动
+        </el-button>
       </el-form-item>
+
+      
 
       <el-form-item label="远端数据" v-if="data.type=='cascader'">
         <div>
@@ -816,7 +893,7 @@
       <!-- update-end--Author:sunjianlei Date:20190705 for：新增其他通用属性 -->
 
       <!-- update-begin--Author:sunjianlei Date:20190531 for：新增设计子表属性 -->
-      <template v-if="data.type != 'grid' && data.type != 'mlist' && data.type != 'sub-table-design' && data.type != 'buttons' && data.type != ctypes.card && data.type != ctypes.tabs && data.type!=ctypes.text && data.type!=ctypes.divider">
+      <template v-if="data.type != 'grid' && data.type != 'sub-table-design' && data.type != 'buttons' && data.type != ctypes.card && data.type != ctypes.tabs && data.type!=ctypes.text && data.type!=ctypes.divider">
         <!-- update-end--Author:sunjianlei Date:20190531 for：新增设计子表属性 -->
 
         <el-form-item label="数据绑定Key">
@@ -872,7 +949,7 @@
       <!-- update-end--Author:sunjianlei Date:20200110 for：新增远程取值API配置 -->
 
       <!-- update-begin--Author:sunjianlei Date:20190906 for：新增权限控制 -->
-      <el-form-item v-if="data.jeecg_auth && data.type !== 'mlist'" :label="'权限控制' + (data.isSubItem ? '（子表）' : '')">
+      <el-form-item v-if="data.jeecg_auth" :label="'权限控制' + (data.isSubItem ? '（子表）' : '')">
         <el-checkbox
             v-model="data.jeecg_auth.enabled"
             @change="v=>handleAuthChange(v,data)"
@@ -896,18 +973,17 @@
       <!-- update-end--Author:sunjianlei Date:20190906 for：新增权限控制 -->
 
     </el-form>
-        <!--//选项关联 -->
-    <el-dialog
 
-      title="单选框-选项关联"
+    <!--update-start--Author:mx Date:20190724 for：选项关联 -->
+    <el-dialog
+      :title="title"
       :visible.sync="dvLinkage"
       append-to-body
       destroy-on-close
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       custom-class="linkDialog--1pgLy"
-      width="700px"
-      @closed="dvLinkageClosed">
+      width="700px">
       <div class="linkModal--1pgLy">
         <div class="description--1CkVL">根据选择的选项，显示其他控件。当前控件和上级选项不能被关联显示。</div>
         <el-table
@@ -919,7 +995,7 @@
           <el-table-column
             prop="value"
             label="当选项为"
-            width="150">
+            width="200">
             <template slot-scope="scope">
               <span style="margin-left: 10px">{{ scope.row.value }}</span>
             </template>
@@ -934,13 +1010,16 @@
                 multiple
                 size="medium"
                 placeholder="请选择标签">
-                <el-option
-                  v-for="item in dvOptions"
+                <template v-for="item in dvOptions" >
+                  <el-option
+                  v-if="!item.disabled"
                   :key="item.fieldId"
                   :label="item.label"
-                  :disabled="item.disabled"
+                  
                   :value="item.fieldId">
-                </el-option>
+                </el-option><!--:disabled="item.disabled"-->
+                </template>
+                
               </el-select>
             </template>
           </el-table-column>
@@ -951,6 +1030,63 @@
         <el-button type="primary" @click="handleSureBtn('dv')">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="数据联动"
+      :visible.sync="twLinkage"
+      append-to-body
+      destroy-on-close
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      custom-class="linkDialog--1pgLy"
+      width="700px">
+      <div class="linkModal--1pgLy">
+        <div class="description--1CkVL">请选择数据联动组件。</div>
+        <el-table
+          :data="twTableData"
+          row-key="key"
+          :header-cell-style="{background:'#f5f7fa'}"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="value"
+            label="当选项为"
+            width="200">
+            <template slot-scope="scope">
+              <span style="margin-left: 10px">{{ scope.row.value }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="targets"
+            label="关联以下控件">
+            <template slot-scope="scope">
+              <el-select
+                style="width:100%"
+                v-model="scope.row.targets"
+                multiple
+                size="medium"
+                @remove-tag="removeTagtw"
+                placeholder="请选择标签">
+                <template v-for="item in twOptions">
+                  <el-option
+                    v-if="!item.twdisabled"
+                    :key="item.fieldId"
+                    :label="item.label"
+                    :value="item.fieldId">
+                  </el-option>
+                </template>
+                
+              </el-select>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="twLinkage = false">取 消</el-button>
+        <el-button type="primary" @click="handleTlSureBtn">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!--update-end--Author:mx Date:20190724 for：选项关联 -->
   </div>
 </template>
 
@@ -967,8 +1103,10 @@
   import FmEditor from './Editor/tinymce'
   import JTableDict from '@/components/jeecgbiz/JTableDict'
   // update-end--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
-
+  import {cloneDeep, intersection} from 'lodash-es'
+import tinymce from '../lib/tinymce/tinymce'
 export default {
+  
   mixins: [WidgetConfigMixins],
   components: {
     JTableDict,
@@ -983,6 +1121,7 @@ export default {
   // update-end--Author:sunjianlei Date:20190528 for：新增内部查询cgform方法 --------------------
   data() {
     return {
+      cloneDeep,
       validator: {
         type: null,
         required: null,
@@ -990,21 +1129,29 @@ export default {
         range: null,
         length: null
       },
-
+      title:'选项关联',
       // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
       ctypes,
       dictOptions: [{label: "Loading...", value: "loading", disabled: true}],
+      dictObjOptions: [{label: "Loading...", value: "loading", disabled: true}],
       cgformFields: [],
       subtabFields: {},
       subtabFieldSource: {},
       subTableOptions: [{value: "当前Online表单没有子表", disabled: true}, {label: '点击重新选择Online表单', value: "__reselect-cgform__"}],
       fs: {btn: false}
       // update-end--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
+
+      // update-start--Author:mx Date:20190724 for：选项关联 --
       ,dvLinkage:false,
       dvTableData:[],
       dvValue:{},
       cacheDvValue:{},
-      dvOptions:[]
+      dvOptions:[],
+
+      twLinkage:false,
+      twTableData:[],
+      twOptions:[]
+      // update-end--Author:mx Date:20190724 for：选项关联 --
 
     }
   },
@@ -1043,6 +1190,10 @@ export default {
     // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
     this.loadDictList()
     // update-end--Author:sunjianlei Date:20190528 for：新增内部查询字典方法 --------------------
+  
+    // update-begin--Author:mx Date:20190528 for：新增内部查询对象字典方法 --------------------
+    this.loadDictObjList()
+    // update-end--Author:mx Date:20190528 for：新增内部查询对象字典方法 --------------------
   },
   methods: {
 
@@ -1148,19 +1299,31 @@ export default {
           this.data.options.defaultValue = ''
         }
         this.data.options.options.splice(index, 1)
+        // 删除静态数据 动态丢改项目关联数据
+        if(Array.isArray(this.data.behaviorLinkage) && this.data.behaviorLinkage.length >= 0){
+          this.data.behaviorLinkage.splice(index, 1);
+          this.delLinkage()
+        }
       }
 
     },
     handleAddOption () {
+      let len = new Date().getTime()
       if (this.data.options.showLabel) {
         this.data.options.options.push({
-          value: '新选项',
-          label: '新选项'
+          value: '新选项'+len,
+          label: '新选项'+len
         })
       } else {
         this.data.options.options.push({
-          value: '新选项'
+          value: '新选项'+len
         })
+        if(Array.isArray(this.data.behaviorLinkage) &&  this.data.behaviorLinkage.length > 0){
+           this.data.behaviorLinkage.push({
+             value: '新选项'+len,
+             targets:[]
+           })
+        }
       }
 
     },
@@ -1195,7 +1358,6 @@ export default {
       this.data.rules = []
       Object.keys(this.validator).forEach(key => {
         if (this.validator[key]) {
-          console.log(this.validator[key],key,'this.validator[key]')
           this.data.rules.push(this.validator[key])
         }
       })
@@ -1220,19 +1382,13 @@ export default {
 
     // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
     loadDictList() {
-      // pageSize: 9999 是临时的查询所有数据的解决方案---开启模拟数据
-      // _api.getDictList({
-      //   pageNo: 1,
-      //   pageSize: 9999
-      // }).then(res => {
-      //   this.dictOptions = packageOptions(res.result.records, 'dictName,dictCode', 'dictCode')
-      // })
-      // 模拟数据
-      let records = [
-        {dictName:"物资类型",dictCode:"wz_cc_type",id:1},
-      ]
-      
-      this.dictOptions = packageOptions(records, 'dictName,dictCode', 'dictCode')
+      // pageSize: 9999 是临时的查询所有数据的解决方案
+      _api.getDictList({
+        pageNo: 1,
+        pageSize: 9999
+      }).then(res => {
+        this.dictOptions = packageOptions(res.result.records, 'dictName,dictCode', 'dictCode')
+      })
     },
     loadCgformFieldList(headId) {
       _api.getOnlineFormFieldList({
@@ -1253,23 +1409,12 @@ export default {
 
     // update-begin--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
     handleOptionsDictChange(value) {
-      // 通过 code 查询字典 item---模拟数据
-       _api.getDictItems({
-         code: value
-       }).then(dictOptions => {
-         this.$set(this.data, 'dictOptions', dictOptions)
-       })
-      /*
-      //let dictOptions = [
-      //  {text:'衣服', title:'衣服', value:'yifu'},
-        {text:'袜子', title:'袜子', value:'wazi'}
-      ]
-      dictOptions = dictOptions.map(item=>{
-        let obj = {...item};
-        obj.label = item.text;
-        return obj;
+      // 通过 code 查询字典 item
+      _api.getDictItems({
+        code: value
+      }).then(dictOptions => {
+        this.$set(this.data, 'dictOptions', dictOptions)
       })
-      this.$set(this.data, 'dictOptions', dictOptions)*/
       this.$set(this.data.options, 'dictCode', value)
       this.handleRemoveDefaultValue()
     },
@@ -1283,6 +1428,39 @@ export default {
     },
     // update-end--Author:sunjianlei Date:20190722 for：新增数据字典的处理 --------------------
 
+    // update-begin--Author:mx Date:0122 for：新增对象字典的处理 --------------------
+    loadDictObjList() {
+      // pageSize: 9999 是临时的查询所有数据的解决方案
+      _api.getOnlineFormList({
+        pageNo: 1,
+        pageSize: 9999
+      }).then(res => {
+        this.dictObjOptions = packageOptions(res.result.records, 'tableTxt,tableName', 'tableName')
+      })
+    },
+    loadCgformFieldList(headId) {
+      _api.getOnlineFormFieldList({
+        headId: headId
+      }).then(res => {
+        this.cgformFields = packageOptions(res.result, 'dbFieldTxt,dbFieldName', 'dbFieldName')
+      })
+    },
+    handleOptionsDictObjChange(value) {
+      // 通过 code 查询字典 item
+      _api.getDictObjItems({
+        code: value
+      }).then(dictObjOptions => {
+        this.$set(this.data, 'dictObjOptions', dictObjOptions)
+      })
+      this.$set(this.data.options, 'dictObjCode', value)
+      this.$set(this.data.options.props, 'objValue', '')
+      this.$set(this.data.options.props, 'objLabel', '')
+      // this.handleRemoveDefaultValue()
+
+    },
+    // update-end--Author:mx Date:0122 for：新增对象字典的处理 --------------------
+
+    
     // update-begin--Author:sunjianlei Date:20190724 for：修复子表绑定值不正确的问题 --
     querySubTable(code) {
       if (!Object.keys(this.subtabFields).includes(code)) {
@@ -1297,11 +1475,57 @@ export default {
       }
     },
     // update-end--Author:sunjianlei Date:20190724 for：修复子表绑定值不正确的问题 --
+
+    // update-start--Author:mx Date:20190724 for：选项关联 --
+    handleMoveEndLink(o){
+      if(this.data.options.remote === false && Array.isArray(this.data.behaviorLinkage) && this.data.behaviorLinkage.length > 0){
+        let newIndex = o.newIndex;
+        let oldIndex = o.oldIndex;
+        let arr = [...this.data.behaviorLinkage];
+        let del1 = arr.splice(oldIndex,1);
+        arr.splice(newIndex,0,...del1)
+        this.data.behaviorLinkage = arr
+      }
+    },
+    handleLinkageInput(){
+      if(this.data.options.remote === false && Array.isArray(this.data.behaviorLinkage) && this.data.behaviorLinkage.length > 0){
+        this.data.options.options.forEach((item,index) => {
+          this.$set(this.data.behaviorLinkage,index,{...this.data.behaviorLinkage[index],value:item.value})
+        })
+      }
+    },
+    fillUniqage(fmodel,cmodel){
+      // 查找父组件
+      let arrObj = {};
+      let uniqBool = false
+      this.list.forEach(item=>{
+        if(Array.isArray(item.behaviorLinkage)){
+          arrObj[item.model] = [];
+          let behaviorLinkage = item.behaviorLinkage;
+          if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+            behaviorLinkage.forEach(it => {
+              let targets = it.targets;
+              if(Array.isArray(targets) && targets.length > 0){
+                targets.forEach(li => {
+                  arrObj[item.model].push(li);
+                })
+              }
+            })
+          }
+        }
+      })
+      if(Array.isArray(arrObj[fmodel]) && arrObj[fmodel].includes(cmodel)){
+        uniqBool = true
+      }else{
+        uniqBool = false
+      }
+      return uniqBool;
+    },
     fllinkage(){
       // 选中的组件添加（删除）一个class类
       let arr = [];
       this.list.forEach(item=>{
-        if(item.type === 'radio'){
+        if(Array.isArray(item.behaviorLinkage)){
           let behaviorLinkage = item.behaviorLinkage;
           if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
             behaviorLinkage.forEach(it => {
@@ -1315,64 +1539,63 @@ export default {
           }
         }
       })
-      
       this.list.map(item=>{
-        let items = {...item}
-        if(items.model !== this.data.model){
-          if(arr.includes(items.model)){
-            items.options.cellLinkage = true
+        // let items = {...item}
+        if(item.model !== this.data.model){
+          if(arr.includes(item.model)){
+            item.cellLinkage = true
           }else{
-            items.options.cellLinkage = false
+            item.cellLinkage = false
           }
         }
-        return items
+        return item
       })
     },
     handleBehaviorLinkage(n){
-      // n 1 静态数据  2 字典表
-      // radio关联选项
+      // n false 静态数据 \ dict 数据字典表 \ true 远端数据 \ dict_obj 对象字典
       
       let dvTableData = [];
       let dvOptions = [];
       let optionsData = [];
-      if(n === 1){
+      // 读取静态数据
+      if(n === false){
         optionsData = this.data.options.options
-      }else if(n === 2){
+        
+      }else if(n === 'dict'){
         optionsData = this.data.dictOptions
+
       }
+      // dvTableData 初始化关联选项弹窗数据
       optionsData.forEach(item => {
         let obj = {...item}
         obj.value = item.value;
         obj.targets = [];
-        dvTableData.push(obj)
-      })
-      dvTableData.forEach(item => {
+        // 如果出现数字典修改的情况
         this.data.behaviorLinkage.forEach(it=>{
-          if(item.value === it.value){
-            item.targets = it.targets
+          if(obj.value === it.value){
+            obj.targets = it.targets
           }
         })
+        dvTableData.push(obj)
       })
       this.dvTableData = dvTableData;
+      // 禁止某些组件被选择、禁止选择当前组件、如果当前组件被父级组件关联以后父级组件需要禁用
+     
       this.list.forEach(item => {
-        if(item.data !=='tabs' && item.data !=='card' && item.data !== 'divider' && item.data !== 'editor'){
           let obj = {};
           obj.value = item.model
           obj.label = item.name
           obj.fieldId = item.model
-          if(item.model === this.data.model){
+          if(item.model === this.data.model || item.isCellLinkage === false || this.fillUniqage(item.model, this.data.model)){
             obj.disabled = true;
           }
           dvOptions.push(obj)
-        }
       })
-     
+      // 设计器所选择的组件
       this.dvOptions = dvOptions;
       this.dvLinkage = true;
     },
-    dvLinkageClosed(){
-    },
-    handleSureBtn(n){
+    handleSureBtn(){
       // 点击确定修改状态
       let dvValueBo = false;
       for(let arri of this.dvTableData){
@@ -1381,53 +1604,149 @@ export default {
           break;
         }
       }
-      let nb = this.data.options.remote === false ? 1 : this.data.options.remote === 'dict' ? 2:3
-        console.log(dvValueBo,`${this.data.model}_dvValueBo_${nb}`)
       if(dvValueBo){
-        this.dvValue[`${this.data.model}_dvValueBo_${nb}`] = true;
+        this.data._dvValueBo = true;
         this.data.behaviorLinkage = this.dvTableData
       }else{
-        this.dvValue[`${this.data.model}_dvValueBo_${nb}`] = false
+        this.data._dvValueBo = false
         this.data.behaviorLinkage = []
       }
-      
       this.fllinkage();
       this.dvLinkage = false
     },
-    changeRemove(val){
-      if(this.data.type === 'radio'){
-        console.log(val,'radio')
-        let arr = [];
-        this.list.forEach(item=>{
-          if(item.type === 'radio'){
-            let behaviorLinkage = item.behaviorLinkage;
-            if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
-              behaviorLinkage.forEach(it => {
-                let targets = it.targets;
-                if(Array.isArray(targets) && targets.length > 0){
-                  targets.forEach(li => {
-                    arr.push(li);
-                  })
-                }
-              })
-            }
-          }
-        })
-        
-        this.list.map(item=>{
-          let items = {...item}
-          if(items.model !== this.data.model){
-            if(arr.includes(items.model)){
-              items.options.cellLinkage = false
-            }
-          }
-          return items
-        })
-        this.dvValue[`${this.data.model}_dvValueBo_1`] = false
-        this.dvValue[`${this.data.model}_dvValueBo_2`] = false
+    delLinkage(){
+      // 删除或者修改静态数据的时候动态更改选项关联数据
+      let dvValueBo = false;
+      for(let arri of this.data.behaviorLinkage){
+        if(arri.targets.length >0){
+          dvValueBo = true;
+          break;
+        }
+      }
+      if(!dvValueBo){
+        this.data._dvValueBo = false
         this.data.behaviorLinkage = []
       }
+      this.fllinkage()
+    },
+    recurtwLinkage(op){
+      // 递归需要隐藏的可以创建管线选项的组件
+      let valArr = []
+      let that = this;
+      function asd(op){
+        that.list.forEach(it=>{
+          let fils = it.type === 'select' && !it.options.multiple  && it.options.remote === 'dict_obj' // && !it.options.showLabel
+          if(fils){
+            // let valarr1 = []
+            if(Array.isArray(it.twolevelLinkage) && it.twolevelLinkage.includes(op)){
+              valArr.push(it.model)
+              asd(it.model);
+            }
+          }
+        })
+        return valArr
+      }
+      asd(op);
+      console.log(valArr,'valArrvalArrvalArr')
+      return valArr
+    },
+    fillTwUniqage(fmodel,cmodel){
+      // 查找父组件
+      let arrObj = {};
+      let arrbol = false;
+      let uniqBool = false;
+      let arrg = [];
+      this.list.forEach(item=>{
+        if(item.type === 'select' && !item.options.multiple && item.options.remote === 'dict_obj'){
+          arrObj[item.model] = [];
+          let twolevelLinkage = item.twolevelLinkage;
+          arrObj[item.model].push(...twolevelLinkage);
+
+          arrg.push(...twolevelLinkage)
+        }
+      })
+      
+      for(let i in arrObj){
+        let inarr = intersection(arrObj[i],[fmodel,cmodel])
+        if(inarr.length === 2){
+          arrbol = true;
+          break;
+        }
+      }
+      
+      if(
+      //  Array.isArray(arrObj[fmodel]) && arrObj[fmodel].includes(cmodel)
+        // || 
+        arrbol // 同级被选择以后不可以在互选
+        || arrg.includes(fmodel) // 如果同级的里面存在元素则下一位就不可以在选择已被选择元素
+        //  || 
+        // arrg.includes(fmodel)
+      ){
+        // 说明被父级包含了
+        uniqBool = true
+      }else{
+        uniqBool = false
+      }
+
+      return uniqBool;
+    },
+    removeTagtw(o){
+      console.log(o)
+    },
+    handleTwoLevelLinkage(){
+      // n false 静态数据 \ dict 数据字典表 \ true 远端数据 \ dict_obj 对象字典
+      let twOptions = [];
+      let targets = [];
+      let title = this.data.name;
+      this.data.twolevelLinkage.forEach(it=>{
+        targets.push(it)
+      })
+      this.twTableData = [
+        {value:title,targets}
+      ];
+      let recurtwLinkageArr =  this.recurtwLinkage(this.data.model);
+      this.list.forEach(item => {
+        if(
+          item.type === "select" && 
+          !item.multiple && 
+          item.options.remote === 'dict_obj'
+         ){
+           let obj = {};
+            obj.value = item.model
+            obj.label = item.name
+            obj.fieldId = item.model
+            if(item.model === this.data.model || recurtwLinkageArr.includes(item.model) || this.fillTwUniqage(item.model, this.data.model)){
+              // 自己不能选择 、树形父级不能选择 、
+              obj.twdisabled = true
+            }
+            if(targets.includes(item.model)){
+               obj.twdisabled = false
+            }
+
+           twOptions.push(obj)
+         }
+        
+      })
+      this.twOptions = twOptions;
+      console.log(twOptions,'twOptions')
+      this.twLinkage = true;
+    },
+    handleTlSureBtn(){
+      let dvValueBo = false;
+      if(this.twTableData[0].targets.length >0){
+        dvValueBo = true;
+      }
+      if(dvValueBo){
+        this.data.twolevelLinkage = this.twTableData[0].targets
+      }else{
+        this.data.twolevelLinkage = []
+      }
+      this.fllinkage();
+      this.twLinkage = false
     }
+    // update-end--Author:mx Date:20190724 for：选项关联 --
+
+    
   },
   watch: {
 
@@ -1492,21 +1811,15 @@ export default {
       // update-end--Author:sunjianlei Date:20200420 for：解决这里会清空时间选择器默认值的问题 --------------------
     },
     'data.options.required': function(val) {
-        if (val) {
-          if(this.data.type!=='daterange'){
-            this.validator.required = {required: true, message: `${this.data.name}必须填写`}
-          }else{
-            this.validator.required = {required: true, message: `请选择${this.data.options.startName}或${this.data.options.endName}`}
-          }
-          
-        } else {
-          this.validator.required = null
-        }
+      if (val) {
+        this.validator.required = {required: true, message: `${this.data.name}必须填写`}
+      } else {
+        this.validator.required = null
+      }
 
-        this.$nextTick(() => {
-          this.generateRule()
-        })
-      
+      this.$nextTick(() => {
+        this.generateRule()
+      })
     },
     'data.options.dataType': function (val) {
       if (!this.show) {
@@ -1534,19 +1847,13 @@ export default {
 
       this.generateRule()
     },
-    
-    // 'data.options.defaultValue':function(val){
-    //   if(this.data.type === 'radio'){
-    //     let arr = [];
-    //     let behaviorLinkage = this.data.options.behaviorLinkage;
-    //     if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
-    //         let targets = behaviorLinkage[0].targets;
-    //         if(Array.isArray(targets) && targets.length > 0){
-    //           this.data.assoStatus = 2;
-    //         }
-    //     }
-    //   }
-    // }
+    'data.options.remote':function(newVal,oldVal){
+      if(oldVal === false){
+        this.handleRemoveDefaultValue();// 清空静态数据
+      }else if(oldVal ==='dict'){
+        this.handleOptionsClearDefaultValue();// 清空字典数据
+      }
+    }
   }
 }
 </script>
@@ -1591,7 +1898,47 @@ export default {
       padding: 0 8px;
     }
   }
-
+</style>
+<style lang="scss">
+  .el-mx-radg4{
+    margin-bottom:10px;
+    .el-radio-button__inner{
+      padding: 7px;
+    }
+  }
+  .el-mx-radg4-input{
+    margin-top: 4px;
+    > .el-input-group__prepend{
+      padding: 0;
+      min-width: 42px;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
+  .el-mx-radg4-select{
+    margin-top: 4px;
+    > .el-input__inner{
+      width: 0;
+      padding: 0;
+      margin: 0;
+      border-left: 0;
+    }
+    > .el-input-group__append{
+      background-color: #fff;
+      padding: 0;
+      width: auto;
+      .el-select{
+        width: 100%;
+        margin: 0;
+      }
+    }
+    > .el-input-group__prepend{
+      padding: 0;
+      min-width: 42px;
+      text-align: center;
+      font-size: 12px;
+    }
+  }
 </style>
 <!--update-end--Author:sunjianlei Date:20190529 for：新增子表操作事件 ---------------------->
 <style lang="scss">

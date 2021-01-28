@@ -77,6 +77,7 @@ export const WidgetDraggable = {
 
     handleDraggableAdd(list, $event) {
       const { newIndex } = $event
+
       //为拖拽到容器的元素添加唯一 key
       const key = _utils.randomKey()
 
@@ -117,16 +118,76 @@ export const WidgetDraggable = {
         } else {
           this.selectWidget = this.data.list[index + 1]
         }
-
         this.$nextTick(() => {
-          this.data.list.splice(index, 1)
-          let list = this.data.list;
-          if(list.length === 0){
-            this.$store.commit('SET_EDITLIABLE',0)
-          }
+          this.data.list.splice(index, 1);
         })
       }
+
       let element = this.data.list[index]
+      this.data.list.map(item=>{
+        if(element.options.remote === 'dict_obj'){
+          if(Array.isArray(item.twolevelLinkage) && item.twolevelLinkage.length > 0){
+            item.twolevelLinkage = item.twolevelLinkage.filter(ip => {
+              return ip !== element.model
+            })
+          }
+            
+        }else{
+          let lk = item.type=='select' && !item.options.multiple || item.createLinkage
+          let arr = []
+          if(lk){
+            item.behaviorLinkage.map(it=>{
+              if(it.targets.includes(element.model)){
+                it.targets = it.targets.filter(ip => {
+                  return ip !== element.model
+                })
+              }
+              arr = arr.concat(...it.targets)
+              return it;
+            })
+            if(arr.length === 0){
+              item._dvValueBo = false
+            }
+          }
+        }
+        return item;
+      })
+      
+      if(element.type=='select' && !element.options.multiple || element.createLinkage){
+        // 选中的组件（删除）一个class类
+        let arr = [];
+        this.data.list.forEach(item=>{
+          if(item.model !== element.model){
+            if(Array.isArray(item.behaviorLinkage)){
+              let behaviorLinkage = item.behaviorLinkage;
+              if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
+                behaviorLinkage.forEach(it => {
+                  let targets = it.targets;
+                  if(Array.isArray(targets) && targets.length > 0){
+                    targets.forEach(li => {
+                      arr.push(li);
+                    })
+                  }
+                })
+              }
+            }
+          }
+        })
+        this.data.list.map(item=>{
+          // let items = {...item}
+          if(item.model !== element.model){
+            if(arr.includes(item.model)){
+              item.cellLinkage = true
+            }else{
+              item.cellLinkage = false
+            }
+          }
+          return item
+        })
+        console.log(this.data.list)
+      }
+      
+
       if (element.jeecg_auth && element.jeecg_auth.enabled) {
         this.$confirm('删除字段将会同时删除已配置的权限，您确定吗？', '删除字段', {
           type: 'warning'

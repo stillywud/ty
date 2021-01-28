@@ -50,17 +50,7 @@
       @popupCgreportOk="handlePopupCgreportOk"
       @dialogChange="handleDialogChange"
   />
-  <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件  :rules.sync="dataRules"-->
-    <div v-else-if="widget.type === 'daterange' && widget.assoStatus !==1">
-      <ty-date-range
-          :element="widget"
-          :config="config"
-          :models.sync="dataModels"
-          :rules.sync="rules"
-          :readOnly="readOnly"
-          :class="className"
-      />
-    </div>
+  <!-- update-end--Author:sunjianlei Date:20190808 for：新增自定义组件 -->
 
   <el-form-item 
     v-else-if="widget.assoStatus !==1"
@@ -207,9 +197,12 @@
           v-model="dataModel"
           :width="_width"
           :element="widget"
-          :options="_options"
+          :options.sync="_options"
           :readOnly="readOnly"
           :class="className"
+          @inpAsso="inpAsso"
+          @inpAssa="inpAssa"
+          :models.sync="models"
       >
       </j-select>
     </template>
@@ -392,13 +385,11 @@ import JFileUpload from './jeecg/JFileUpload'
 import moment from 'moment'
 import JSelect from '@/components/jeecg/JSelect'
 import JRadioGroup from '@/components/jeecg/JRadioGroup'
-// 日期
-import TyDateRange from './ty/TyDateRange.vue'
 
 export default {
   name: 'GenerateFormItem',
   mixins: [GenerateFormItemMixins],
-  props: ['config', 'widget', 'models', 'rules', 'remote', 'readOnly', 'className'],
+  props: ['config', 'widget', 'models', 'rules', 'remote', 'readOnly', 'className','data'],
   components: {
     JSelect,
     JRadioGroup,
@@ -409,15 +400,12 @@ export default {
     // update-end--Author:sunjianlei Date:20190527 for：新增子表组件区域
     JSelectUser, JSelectDepart, JButtons, JButton, JTableDict, JText, JDivider, JCheckboxGroup, JFileUpload, JAreaLinkage
     //  update-end--Author:sunjianlei Date:20190612 for：新增自定义组件 ---------
-    ,TyDateRange,
-    
   },
   data () {
     return {
       ctypes,
       dataModel: this.models[this.widget.model],
-      dataModels: this.models,
-      dataRules:this.rules,
+      dataModels: this.models
     }
   },
   computed: {
@@ -518,17 +506,12 @@ export default {
     // update-end--Author:sunjianlei Date:20190705 for：新增自定义事件 -----------
     inpAsso(val){
       this.$emit("inpAsso",val)
-    }
+    },
+    // inpAssa(val){
+    //   this.$emit("inpAssa",val)
+    // }
   },
   watch: {
-    rules:{
-      deep: true,
-      handler(val) {
-        if(this.widget.type === 'daterange'){
-          this.$emit('update:rules', val)
-        }
-      }
-    },
     dataModel: {
       deep: true,
       handler (val) {
