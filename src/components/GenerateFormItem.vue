@@ -202,6 +202,7 @@
           :class="className"
           @inpAsso="inpAsso"
           @inpAssa="inpAssa"
+          @clearp="clearp"
           :models.sync="models"
       >
       </j-select>
@@ -507,9 +508,12 @@ export default {
     inpAsso(val){
       this.$emit("inpAsso",val)
     },
-    // inpAssa(val){
-    //   this.$emit("inpAssa",val)
-    // }
+    inpAssa(val){
+      this.$emit("inpAssa",val)
+    },
+    clearp(val){
+      this.$emit('clearp',val)
+    }
   },
   watch: {
     dataModel: {

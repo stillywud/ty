@@ -10,12 +10,12 @@
       :filterable="element.options.filterable"
       :class="className"
       :loading="loading"
-      @focus="focusa"
       :id="`${element.model}`"
       @change="change1"
+      @clear="clear1"
   >
     <el-option
-        v-for="item in optionsA"
+        v-for="item in options"
         :key="item.value"
         :value="item.value"
         :label="element.options.showLabel || element.options.remote ? item.label : item.value"
@@ -64,19 +64,10 @@
       }
     },
     watch: {
-      options:{
-        deep: true,
-        immediate: true,
-        handler(val) {
-          console.log(val,'333')
-          this.optionsA = val
-        }
-      },
       value: {
         deep: true,
         immediate: true,
         handler(val) {
-          // let vald = null;
           if (this.element.options.multiple) {
             
             if (!val) {
@@ -102,58 +93,40 @@
           
         }
       },
-      // dataModel(val) {
-      //   this.$emit('input', val)
-      //   console.log(val)
-      //   let remote = this.element.options.remote
-      //   let twolevelLinkage = this.element.twolevelLinkage
-
-        
-      //   console.log(val , (remote === true || remote === 'dict_obj') , Array.isArray(twolevelLinkage) , twolevelLinkage.length > 0)
-      //   if(val && (remote === true || remote === 'dict_obj') && Array.isArray(twolevelLinkage) && twolevelLinkage.length > 0){
-      //     this.$emit("inpAssa",{val,twolevelLinkage:this.element.twolevelLinkage,model:this.element.model})
-      //     twolevelLinkage.forEach(item=>{
-      //       document.getElementById([item]).value = ''
-      //       this.$set(this.models,item,'')
-      //     })
-      //  }else if(val && this.element.behaviorLinkage.length > 0){
-      //     console.log({val,element:this.element})
-      //     this.$emit('inpAsso', {val,behaviorLinkage:this.element.behaviorLinkage,model:this.element.model})
-      //     this.$nextTick(()=>{
-            
-      //     })
-      //   }
-      // }
     },
     computed: {},
     methods:{
-      focusa(){
-        if(this.element.remoteOptionstw){
-          // this.$emit('update:options', this.element.remoteOptionstw);
-          this.optionsA = this.element.remoteOptionstw
-        }
-      },
       change1(val){
         this.$emit('input', val)
-        console.log(val)
         let remote = this.element.options.remote
         let twolevelLinkage = this.element.twolevelLinkage
-        console.log(val , (remote === true || remote === 'dict_obj') , Array.isArray(twolevelLinkage), twolevelLinkage.length > 0)
         if(val && (remote === true || remote === 'dict_obj') && Array.isArray(twolevelLinkage) && twolevelLinkage.length > 0){
           this.$emit("inpAssa",{val,twolevelLinkage:this.element.twolevelLinkage,model:this.element.model,element:this.element})
           twolevelLinkage.forEach(item=>{
-            //document.getElementById([item]).value = ''
             this.$set(this.models,item,'')
             this.$store.commit('SET_SELECT_VAL',{...this.$store.getters.selectVal,[item]:''})
           })
-          console.log(this.models)
        }else if(val && this.element.behaviorLinkage.length > 0){
-          console.log({val,element:this.element})
           this.$emit('inpAsso', {val,behaviorLinkage:this.element.behaviorLinkage,model:this.element.model})
           this.$nextTick(()=>{
             
           })
         }
+      },
+      clear1(){
+        let remote = this.element.options.remote
+        if(remote === 'dict_obj'){
+            let twolevelLinkage = this.element.twolevelLinkage
+            if(Array.isArray(twolevelLinkage) && twolevelLinkage.length > 0){
+              this.$emit("clearp",this.element)
+              twolevelLinkage.forEach(item=>{
+                this.$set(this.models,item,'')
+                
+                this.$store.commit('SET_SELECT_VAL',{...this.$store.getters.selectVal,[item]:''})
+              })
+          }
+        }
+        
       }
     },
   }

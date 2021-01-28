@@ -39,15 +39,9 @@ export default {
 
     // 下拉或单选多选的选项，根据是否远程加载
     _options() {
-      //this.$nextTick(()=>{
-        let { options } = this.widget
-        return (options.remote ? this.remoteOptions : options.options)  
-      //})
-      
-    },
-  },
-  watch: {
-    
+      let { options } = this.widget
+      return (options.remote ? options.remote === 'dict_obj' ? this.widget.remoteOptionstw : this.remoteOptions : options.options)  
+    }
   },
   created() {
     // 加载远端数据或字典
@@ -68,88 +62,9 @@ export default {
       // let types = ['select-user', 'select-depart']
       // return (this.isExternal && types.includes(type))
     },
-    inpAssa(val){
-      console.log(val,'ssssssss',this.widget)
-      // this.$emit("inpAssa",val)
-      let val1 = val.val;
-      let val2 = val.twolevelLinkage;
-      let model = val.model;
-
-      let objtw = []//{}
-      let ajaxArr = []
-      let objw = {}
-      this.data.list.forEach(item => {
-        val.twolevelLinkage.forEach((it,index) => {
-          if(it === item.model){
-            // objtw[it] = item;
-            objtw.push(item)
-            let paramser = {}
-            if(item.options.remote === 'dict_obj'){
-              //对象字典
-              paramser = {
-                tableName:item.options.dictObjCode,
-                valueField:item.options.props.objValue,
-                labelField:item.options.props.objLabel,
-                foreignKey:item.options.props.primaryKey,
-                mainTableName:this.widget.options.dictObjCode,
-                mainValueField:this.widget.options.props.objValue,
-                mainValue:val1
-              }
-            }
-            ajaxArr.push(getAction('/sys/dict/getSubTableDictItems',paramser))
-          }
-        })
-      })
-      Promise.all(ajaxArr).then(res=>{
-        console.log(res)
-        res.forEach((response,index)=>{
-          let remoteOptions = null
-            // 返回值可能存在的情况：
-            // 1、直接返回了个数组
-            // 2、result是个数组
-            // 3、result.records是个数组（后台包裹了分页对象）
-            if (Array.isArray(response)) {
-              remoteOptions = response
-            } else if (response.success) {
-              if (Array.isArray(response.result)) {
-                remoteOptions = response.result
-              } else if (response.result && Array.isArray(response.result.records)) {
-                remoteOptions = response.result.records
-              }
-            }
-            if(remoteOptions === null){
-              remoteOptions = null
-            }else{
-              if(objtw[index].options.remote === 'dict_obj'){
-                remoteOptions = remoteOptions.map(item => {
-                  return {
-                    value: item.value,
-                    label: item.label,
-                    text: item.text,
-                  }
-                })
-              }
-            }
-            objw[objtw[index].model] = remoteOptions
-        })
-        console.log(objw)
-        this.data.list.map(it => {
-          Object.keys(objw).forEach(ip => {
-            if(ip === it.model){
-              it.remoteOptionstw = objw[ip]
-              // this.models[it.model] = ''
-              this.$set(this.models,it.model,'')
-            }
-          })
-          return it;
-        })
-        console.log(this.data.list, this.models,'this.data.list1')
-      })
-    },
     // 加载远程数据和字典
     async loadRemoteDict() {
       let { options } = this.widget
-      console.log(this.widget,options,this.data,this.list,'this.widget')
       if (options.remote === 'dict' && options.dictCode) {
         // 如果是数据字典，就通过 dictCode 查询字典 item
         this.remoteOptions = await _api.getDictItems({ code: options.dictCode })
@@ -188,7 +103,6 @@ export default {
         }
         // 内部请求直接请求，外部请求需要中转
         let response
-        console.log(remoteFunc,options,'remoteFunc')
         if (/^https?/.test(remoteFunc)) {
           response = await _api.transitRESTful.get(remoteFunc,parameter)
         } else {
@@ -199,7 +113,6 @@ export default {
         // 1、直接返回了个数组
         // 2、result是个数组
         // 3、result.records是个数组（后台包裹了分页对象）
-        console.log(response)
         if (Array.isArray(response)) {
           remoteOptions = response
         } else if (response.success) {
@@ -214,14 +127,15 @@ export default {
           return Promise.reject(response)
         }
         if(options.remote === 'dict_obj'){
-          this.remoteOptions = remoteOptions.map(item => {
-            return {
-              value: item.value,
-              label: item.label,
-              text: item.text,
-              // children: item[options.props.children]
-            }
+          let arr = []
+          remoteOptions.forEach(item=>{
+            let obj = {};
+            obj.value = item.value;
+            obj.label = item.label;
+            obj.text = item.text;
+            arr.push(obj)
           })
+          this.$set(this.widget,'remoteOptionstw',arr)
         }else{
           this.remoteOptions = remoteOptions.map(item => {
             return {
@@ -232,12 +146,14 @@ export default {
             }
           })
         }
-        
-        console.log(this.remoteOptions,'this.remoteOptions')
         return Promise.resolve(remoteOptions)
       }
 
     },
+    // clearp(){
+    //   console.log(this.widget)
+    //   this.$set(this.widget,'remoteOptionstw',[])
+    // }
 
   }
 }

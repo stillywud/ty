@@ -262,6 +262,7 @@ export const basicComponents = [
     twolevelLinkage:[],
     isCellLinkage:true,
     _dvValueBo:false,
+    remoteOptionstw:[],
     // createLinkage:true,
     options: {
       defaultValue: '',

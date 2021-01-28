@@ -44,6 +44,7 @@
               @dialogChange="handleDialogChange"
               @inpAsso="inpAsso"
               @inpAssa="inpAssa"
+              @clearp="clearp"
           ></generate-form-item>
         </template>
 
@@ -115,27 +116,17 @@ export default {
     // update-end--Author:sunjianlei Date:20190620 for：新增全局的JS、CSS增强代码 ------------
 
     // update-start--Author:mx Date:20190724 for：选项关联 --
-    //this.models = { "select_1611819423024_884562": "小红", "select_1611819424725_592951": "溜冰" }
-    //this.$store.commit('SET_SELECT_VAL',this.models)
+    // this.models = { "select_1611832001568_840895": "小明", "select_1611832119704_743473": "乒乓球", "select_1611832439492_447593": "小红", "select_1611832458770_352240": "足球" }
+    this.$store.commit('SET_SELECT_VAL',this.models)
     this.data.list.forEach(item=>{
-      
       if(item.type === 'select' && !item.options.multiple  && item.options.remote === 'dict_obj'){
-        console.log('5555',this.models,item.model,this.models[item.model])
-        if(this.models[item.model]){
-          let twolevelLinkage = item.twolevelLinkage;
-        
+        let twolevelLinkage = item.twolevelLinkage;
         this.inpAssa({val:this.models[item.model],twolevelLinkage,element:item})
-        }
-        
       }else if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
-        //if(this.models[item.model]){
-          console.log('2222')
-          let behaviorLinkage = item.behaviorLinkage;
-          this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
-        //}
+        let behaviorLinkage = item.behaviorLinkage;
+        this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
       }
     })
-    //this.$store.commit('SET_DESIGN_DATA', {})
     // update-end--Author:mx Date:20190724 for：选项关联 --
   
   },
@@ -462,7 +453,11 @@ export default {
       let val1 = val.val;
       let val2 = val.twolevelLinkage;
       let model = val.model;
-      let element = val.element;
+      let element = val.element
+      if(!val1){
+        return
+      }
+      
 
       let objtw = []//{}
       let ajaxArr = []
@@ -490,14 +485,12 @@ export default {
         })
       })
       Promise.all(ajaxArr).then(res=>{
-        console.log(res)
         res.forEach((response,index)=>{
           let remoteOptions = null
             // 返回值可能存在的情况：
             // 1、直接返回了个数组
             // 2、result是个数组
             // 3、result.records是个数组（后台包裹了分页对象）
-            console.log(response)
             if (Array.isArray(response)) {
               remoteOptions = response
             } else if (response.success) {
@@ -510,7 +503,7 @@ export default {
             if(remoteOptions === null){
               remoteOptions = null
             }else{
-              //if(objtw[index].options.remote === 'dict_obj'){
+              if(objtw[index].options.remote === 'dict_obj'){
                 remoteOptions = remoteOptions.map(item => {
                   return {
                     value: item.value,
@@ -518,13 +511,11 @@ export default {
                     text: item.text,
                   }
                 })
-              //}
+              }
             }
             objw[objtw[index].model] = remoteOptions
         })
-        console.log(objw)
-        this.$nextTick(()=>{
-          this.data.list.map(it => {
+        this.data.list = this.data.list.map(it => {
           Object.keys(objw).forEach(ip => {
             if(ip === it.model){
               it.remoteOptionstw = objw[ip]
@@ -532,9 +523,16 @@ export default {
           })
           return it;
         })
-        console.log(this.data.list, this.models,'this.data.list2')
-        })
-        
+      })
+    },
+    clearp(val){
+      this.data.list = this.data.list.map(it => {
+          val.twolevelLinkage.forEach(item=>{
+            if(item === it.model){
+              it.remoteOptionstw = []
+            }
+          })
+        return it;
       })
     }
     // update-end--Author:mx Date:20190724 for：选项关联 --
