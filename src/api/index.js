@@ -28,7 +28,8 @@ export const getOnlineFormFieldListByCode = (params) => getAction('/online/cgfor
 export const getQiniuUploadToken = (params) => getAction('/desform/getQiniuUploadToken', params)
 
 /** 查询对象字典 **/
-// export const getDictObjList = (params) =>getAction('http://192.168.30.185:8083/jeecg-boot/sys/dict/getMainTableDictItems',params) //getAction('https://www.fastmock.site/mock/43590fe9e1a9a3af3dc043ffe4661782/dx/api/confirmOrderPage', params)
+export const getMainTableDictItems = (params) =>getAction('/sys/dict/getMainTableDictItems',params) 
+//getAction('https://www.fastmock.site/mock/43590fe9e1a9a3af3dc043ffe4661782/dx/api/confirmOrderPage', params)
 
 const dictObjCacheMap = {}
 
@@ -102,5 +103,5 @@ export default {
 
 
   getDictObjItems,
-  //getDictObjList,
+  getMainTableDictItems,
 }

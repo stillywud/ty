@@ -131,9 +131,12 @@
           v-model="dataModel"
           :width="_width"
           :element="widget"
-          :options="_options"
+          :options.sync="_options"
           :readOnly="readOnly"
           :class="className"
+          @inpAsso="inpAsso"
+          @inpAssa="inpAssa"
+          :models.sync="models"
       />
       <!-- update-end--Author:sunjianlei Date:20190724 for：checkbox组件优化 -->
     </template>

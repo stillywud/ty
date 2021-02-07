@@ -120,7 +120,9 @@ export const basicComponents = [
       props: {
         value: 'value',
         label: 'label',
-        primaryKey:''
+        objValue:'', // 对象字典
+        objLabel:'', // 对象字典
+        primaryKey:'' // 外键
       },
       remoteFunc: '',
       disabled: false,
@@ -135,7 +137,12 @@ export const basicComponents = [
     icon: 'icon-checkbox',
     hideTitle: false,
     cellLinkage:false,
+    behaviorLinkage:[],
+    twolevelLinkage:[],
     isCellLinkage:true,
+    _dvValueBo:false,
+    remoteOptionstw:[],
+    createLinkage:true,
     options: {
       inline: true,
       defaultValue: [],
@@ -158,7 +165,9 @@ export const basicComponents = [
       props: {
         value: 'value',
         label: 'label',
-        primaryKey:''
+        objValue:'', // 对象字典
+        objLabel:'', // 对象字典
+        primaryKey:'' // 外键
       },
       remoteFunc: '',
       disabled: false,
@@ -265,7 +274,7 @@ export const basicComponents = [
     isCellLinkage:true,
     _dvValueBo:false,
     remoteOptionstw:[],
-    // createLinkage:true,
+    createLinkage:true,
     options: {
       defaultValue: '',
       multiple: false,

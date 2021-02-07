@@ -172,7 +172,7 @@
           >
             <el-option v-for="item in (element.dictOptions || element.options.options)" :key="item.value" :value="item.value" :label="element.options.showLabel?item.label:item.value"></el-option>
           </el-select>
-          <div v-if="handleBhlfil(element.behaviorLinkage)>0 && !element.options.multiple" class="leftCornerMark--3_a15"></div>
+          <div v-if="handleBhlfil(element.behaviorLinkage)>0" class="leftCornerMark--3_a15"></div>
         </template>
 
         <template v-if="element.type=='switch'">

@@ -133,7 +133,7 @@ export const WidgetDraggable = {
           }
             
         }else{
-          let lk = item.type=='select' && !item.options.multiple || item.createLinkage
+          let lk = item.createLinkage
           let arr = []
           if(lk){
             item.behaviorLinkage.map(it=>{
@@ -153,7 +153,7 @@ export const WidgetDraggable = {
         return item;
       })
       
-      if(element.type=='select' && !element.options.multiple || element.createLinkage){
+      if(element.createLinkage){
         // 选中的组件（删除）一个class类
         let arr = [];
         this.data.list.forEach(item=>{

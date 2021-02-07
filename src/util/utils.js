@@ -447,7 +447,7 @@ export function handleBhlfil(arr){
 export function initAssoOptions(json){
   let arr = [];
   json.list.forEach(item=>{
-    if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
+    if(item.createLinkage === true){
       let behaviorLinkage = item.behaviorLinkage;
       if(Array.isArray(behaviorLinkage) && behaviorLinkage.length >0){
         behaviorLinkage.forEach(it => {
@@ -466,7 +466,6 @@ export function initAssoOptions(json){
   json.list = json.list.map(item=>{
     let obj = {...item};
     if(uniqArr.includes(obj.model)){
-      console.log(obj)
       obj.assoStatus = 1
     }
     return obj;

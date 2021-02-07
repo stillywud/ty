@@ -213,7 +213,7 @@
               <el-divider direction="vertical"/>
               <el-button type="text" @click="handleOptionsClearDefaultValue">清空</el-button>
               <template
-                v-if="data.type=='select' && !data.options.multiple || data.createLinkage" 
+                v-if="data.createLinkage" 
               >
                 <el-divider direction="vertical"/>
                 <!--
@@ -343,7 +343,7 @@
             <el-divider direction="vertical"/>
             <el-button type="text" @click="handleRemoveDefaultValue">清空默认值</el-button>
             <template
-              v-if="data.type=='select' && !data.options.multiple || data.createLinkage" 
+              v-if="data.createLinkage" 
             >
               <el-divider direction="vertical"/>
               <!--
@@ -362,7 +362,7 @@
         </template>
         <el-button 
           type="text"
-          v-if="data.options.remote === 'dict_obj' && (data.type ==='select' || data.type === 'radio')"
+          v-if="data.options.remote === 'dict_obj' && ['select','radio','checkbox'].includes(data.type)"
           @click="handleTwoLevelLinkage">
           数据联动
         </el-button>
@@ -399,21 +399,22 @@
           v-model="data.options.defaultValue"
           :show-alpha="data.options.showAlpha"
         ></el-color-picker>
-
-        <el-switch
+        <template v-if="data.type=='switch'">
+          <el-switch
+              v-model="data.options.defaultValue"
+              :active-value="data.options.activeValue||true"
+              :inactive-value="data.options.inactiveValue||false"
+          />
+          <el-divider v-if="data.type=='switch'" direction="vertical"/>
+          <el-button 
+            type="text"
             v-if="data.type=='switch'"
-            v-model="data.options.defaultValue"
-            :active-value="data.options.activeValue||true"
-            :inactive-value="data.options.inactiveValue||false"
-        />
-        <el-divider v-if="data.type=='switch'" direction="vertical"/>
-        <el-button 
-          type="text"
-          v-if="data.type=='switch'"
-          @click="handleBehaviorLinkage('switch')">
-          关联选项
-          <span v-if="data._dvValueBo">(已设置)</span>
-        </el-button>
+            @click="handleBehaviorLinkage('switch')">
+            关联选项
+            <span v-if="data._dvValueBo">(已设置)</span>
+          </el-button>
+        </template>
+        
 
         <template v-if="data.type === 'date'" >
            <el-radio-group v-model="data.options.defaultValueType" size="mini" @input="data.options.defaultValue=''" >
@@ -1428,7 +1429,7 @@ export default {
     },
     /** 清空默认值 */
     handleOptionsClearDefaultValue() {
-      if (this.data.type === 'checkbox') {
+      if (this.data.type === 'checkbox' || this.data.type === 'select' && this.data.options.multiple) {
         this.$set(this.data.options, 'defaultValue', [])
       } else {
         this.$set(this.data.options, 'defaultValue', null)
@@ -1645,7 +1646,7 @@ export default {
       let that = this;
       function asd(op){
         that.list.forEach(it=>{
-          let fils = it.type === 'select' && !it.options.multiple  && it.options.remote === 'dict_obj' // && !it.options.showLabel
+          let fils = ['select','radio','checkbox'].includes(it.type)  && it.options.remote === 'dict_obj' // && !it.options.showLabel
           if(fils){
             // let valarr1 = []
             if(Array.isArray(it.twolevelLinkage) && it.twolevelLinkage.includes(op)){
@@ -1666,7 +1667,7 @@ export default {
       let uniqBool = false;
       let arrg = [];
       this.list.forEach(item=>{
-        if((item.type === 'select' && !item.options.multiple || item.type === 'radio') && item.options.remote === 'dict_obj'){
+        if(['select','radio','checkbox'].includes(item.type) && item.options.remote === 'dict_obj'){
           arrObj[item.model] = [];
           let twolevelLinkage = item.twolevelLinkage;
           arrObj[item.model].push(...twolevelLinkage);
@@ -1716,8 +1717,7 @@ export default {
       let recurtwLinkageArr =  this.recurtwLinkage(this.data.model);
       this.list.forEach(item => {
         if(
-          (item.type === "select" && 
-          !item.multiple || item.type === 'radio') && 
+          ['select','radio','checkbox'].includes(item.type) && 
           item.options.remote === 'dict_obj'
          ){
            let obj = {};
@@ -1856,21 +1856,13 @@ export default {
       this.generateRule()
     },
     'data.options.remote':function(newVal,oldVal){
-
-      // this.$nextTick(() => {
-      //   console.log(this.data,this.data.options)
+      if(['select','radio','checkbox'].includes(this.data.type)){
         if(oldVal === false){
-      //     console.log(2)
           this.handleRemoveDefaultValue();// 清空静态数据
-      //     if (this.data.type === 'checkbox' || (this.data.type === 'select' && this.data.options.multiple === true)) {
-      //     this.$set(this.data.options, 'defaultValue', [])
-      //   } else {
-      //     this.$set(this.data.options, 'defaultValue', '')
-      //   }
         }else if(oldVal ==='dict'){
           this.handleOptionsClearDefaultValue();// 清空字典数据
         }
-      // })
+      }
       
     }
   }

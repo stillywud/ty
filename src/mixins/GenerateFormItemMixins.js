@@ -78,7 +78,7 @@ export default {
           if(options.dictObjCode){
             let a1 = false
             this.data.list.forEach(item=>{
-              if((item.type === 'select' && !item.options.multiple || item.type === 'radio')&&  item.options.remote === 'dict_obj'){
+              if(['select','radio','checkbox'].includes(item.type) &&  item.options.remote === 'dict_obj'){
                 if(Array.isArray(item.twolevelLinkage) && item.twolevelLinkage.length > 0){
                   if(item.twolevelLinkage.includes(this.widget.model)){
                     // 如果存在 就不能往下走

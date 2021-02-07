@@ -85,6 +85,7 @@
           <el-header class="btn-bar" style="height: 45px;">
             <slot name="action">
             </slot>
+            <el-button v-if="appList" type="text" size="medium" icon="el-icon-mobile" @click="handleApp">app列表设计</el-button>
             <el-button v-if="upload" type="text" size="medium" icon="el-icon-upload2" @click="handleUpload">导入JSON</el-button>
             <el-button v-if="preview" type="text" size="medium" icon="el-icon-view" @click="handlePreview">预览</el-button>
             <el-button v-if="generateJson" type="text" size="medium" icon="el-icon-tickets" @click="handleGenerateJson">生成JSON</el-button>
@@ -176,7 +177,9 @@
         </cus-dialog>
       </el-container>
     </el-main>
+    <app-list v-if="showApplist" ref='applist' :cgform="currentCgform" :widgetForm="widgetForm" @changeWidgetForm='changeWidgetForm'></app-list>
     <el-footer height="30px">Powered by <a target="_blank" href="http://www.jeecg.org">JEECG BOOT</a></el-footer>
+
   </el-container>
 
 </template>
@@ -209,6 +212,8 @@ import {ACCESS_TOKEN, BASE_URL} from '@/api/request'
 import { changeTheme } from '@/util/theme'
 import DebugConfig from '@/components/DebugConfig'
 // update-end--Author:sunjianlei Date:20190528 for：将请求写在源码内部，token通过参数传入 --------------------
+//
+import AppList from '@/components/app/AppList.vue'
 
 export default {
   name: 'jm-design-form',
@@ -219,7 +224,8 @@ export default {
     FormConfig,
     WidgetForm,
     CusDialog,
-    GenerateForm
+    GenerateForm,
+    AppList
   },
   props: {
     preview: {
@@ -231,6 +237,10 @@ export default {
       default: false
     },
     generateJson: {
+      type: Boolean,
+      default: false
+    },
+    appList: {
       type: Boolean,
       default: false
     },
@@ -308,6 +318,8 @@ export default {
           transactional: true,
           // update-end--Author:sunjianlei Date:20190712 for：表单自定义属性
         },
+        appList: [],
+        onlieIDForApp: null
       },
       // update-begin--Author:sunjianlei Date:20190708 for：防止修改了属性后导致设计器也被修改、表单生成器其他属性 --------------
       generateWidgetForm: {},
@@ -597,8 +609,9 @@ export default {
 }`,
 
       // update-begin--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
-      currentCgform: {id: null}
+      currentCgform: {id: null},
       // update-end--Author:sunjianlei Date:20190528 for：新增内部查询方法 --------------------
+      showApplist: false
 
     }
   },
@@ -787,8 +800,21 @@ export default {
     // update-begin--Author:sunjianlei Date:20190524 for：新增Online对接参数 --------------------
     handleCgformChange(cgform) {
       this.currentCgform = cgform
-    }
+      this.widgetForm.onlieIDForApp = this.currentCgform.id
+    },
     // update-end--Author:sunjianlei Date:20190524 for：新增Online对接参数 --------------------
+    //打开app设计页面
+    handleApp() {
+      this.showApplist = true
+      this.$nextTick(()=>{
+        this.$refs.applist.init()
+      })
+    },
+    changeWidgetForm(data) {
+      this.showApplist = false
+      console.log(data)
+      this.widgetForm.appList = data
+    }
   },
   watch: {
     widgetForm: {

@@ -104,7 +104,7 @@
           twolevelLinkage.forEach(item=>{
             this.$set(this.models,item,'')
           })
-       }else if(val && this.element.behaviorLinkage.length > 0){
+       }else if(this.element.behaviorLinkage.length > 0){
           this.$emit('inpAsso', {val,behaviorLinkage:this.element.behaviorLinkage,model:this.element.model})
           this.$nextTick(()=>{
             

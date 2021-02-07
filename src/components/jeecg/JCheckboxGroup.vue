@@ -4,6 +4,7 @@
         :style="{width: width}"
         :disabled="readOnly || element.options.disabled"
         :class="className"
+        @change="change1"
     >
         <el-checkbox
             v-for="(item, index) in innerOptions"
@@ -25,6 +26,7 @@ export default {
     name: 'JCheckboxGroup',
     mixins: [DeviceMixins],
     props: {
+        models:{},
         value: {
             type: [Array, String, Number],
             default: () => []
@@ -95,11 +97,26 @@ export default {
                 }
             }
         },
-        dataModel(val) {
-            this.$emit('input', val)
-        }
+        // dataModel(val) {
+        //     this.$emit('input', val)
+        // }
     },
-    methods: {}
+    methods: {
+        change1(val){
+            this.$emit('input',val);
+            let remote = this.element.options.remote;
+            let twolevelLinkage = this.element.twolevelLinkage;
+            if(val && (remote === true || remote === 'dict_obj') && Array.isArray(twolevelLinkage) && twolevelLinkage.length > 0){
+                this.$emit("inpAssa",{val,twolevelLinkage,model:this.element.model,element:this.element})
+                twolevelLinkage.forEach(item => {
+                    this.$set(this.models,item,'')
+                })
+            }else if(val && this.element.behaviorLinkage.length > 0){
+                this.$emit('inpAsso', {val,behaviorLinkage:this.element.behaviorLinkage,model:this.element.model})
+            }
+
+        }
+    }
 }
 </script>
 

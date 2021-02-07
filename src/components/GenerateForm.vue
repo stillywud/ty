@@ -117,10 +117,10 @@ export default {
 
     // update-start--Author:mx Date:20190724 for：选项关联 --
     this.data.list.forEach(item=>{
-      if((item.type === 'select' && !item.options.multiple || item.type === 'radio') && item.options.remote === 'dict_obj'){
+      if(['select','radio','checkbox'].includes(item.type)  && item.options.remote === 'dict_obj'){
         let twolevelLinkage = item.twolevelLinkage;
         this.inpAssa({val:this.models[item.model],twolevelLinkage,element:item})
-      }else if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
+      }else if(item.createLinkage === true){
         let behaviorLinkage = item.behaviorLinkage;
         this.inpAsso({val:this.models[item.model] || item.options.defaultValue,behaviorLinkage})
       }
@@ -337,7 +337,7 @@ export default {
         that.data.list.forEach(it=>{
           arr.forEach(item=>{
             if(it.model === item){
-              let fils = it.createLinkage === true || it.type === 'select' && !it.options.multiple // && !it.options.showLabel
+              let fils = it.createLinkage === true
               if(fils){
                 let valarr1 = []
                 it.behaviorLinkage.forEach(its=>{
@@ -359,7 +359,7 @@ export default {
       this.data.list.forEach(it=>{
         arr.forEach(item=>{
           if(it.model === item){
-            let fils = it.createLinkage === true || it.type === 'select' && !it.options.multiple // && !it.options.showLabel
+            let fils = it.createLinkage === true
             if(fils && it.options.remote === false){
               it.behaviorLinkage.forEach(ip=>{
                 if(ip.value === it.options.defaultValue){
@@ -383,7 +383,9 @@ export default {
         let targets1 = [];
 
         val2.forEach(item=>{
-          if(item.value === val1){
+          if(Array.isArray(val1) && val1.length > 0 && val1.includes(item.value)){
+            targets = targets.concat(...item.targets)
+          }else if(item.value === val1){
             targets = item.targets // 我要展示组件
           }else if(item.targets){
             targets1 = targets1.concat(...item.targets) // 我要屏蔽组件
@@ -403,7 +405,7 @@ export default {
         // 获取当前list所有展示组件
         this.data.list.forEach(item=>{
           // assostatus
-          if(item.createLinkage === true || item.type === 'select' && !item.options.multiple){
+          if(item.createLinkage === true){
             if(item.model !== model){
               item.behaviorLinkage.forEach(it=>{
                 // 不拿被隐藏的select
@@ -460,7 +462,7 @@ export default {
       let ajaxArr = []
       let objw = {}
       this.data.list.forEach(item => {
-        val.twolevelLinkage.forEach((it,index) => {
+        val2.forEach((it,index) => {
           if(it === item.model){
             // objtw[it] = item;
             objtw.push(item)
@@ -474,7 +476,7 @@ export default {
                 foreignKey:item.options.props.primaryKey,
                 mainTableName:element.options.dictObjCode,
                 mainValueField:element.options.props.objValue,
-                mainValue:val1
+                mainValue:Array.isArray(val1) ? val1.join(',') : val1
               }
             }
             ajaxArr.push(getAction('/sys/dict/getSubTableDictItems',paramser))
